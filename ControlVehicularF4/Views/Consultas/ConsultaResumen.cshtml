@@ -1,0 +1,557 @@
+﻿@{
+    ViewBag.Title = "Resumen de Revistas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<link href="@Url.Content("~/Content/DataTable/jquery-ui.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/DataTable/dataTables.jqueryui.min.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/DataTable/DatatTableGrouping.css")" rel="stylesheet" type="text/css" media="screen" />
+
+<link href="@Url.Content("~/Content/bootstrap-toggle.min.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/ControlVehicular/Revista.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/chosen.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/bootstrap-datetimepicker.min.css")" rel="stylesheet" type="text/css" media="screen" />
+
+<link href="@Url.Content("~/Content/trirand/ui.jqgrid-bootstrap.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/trirand/ui.jqgrid.css")" rel="stylesheet" type="text/css" media="screen" /> 
+
+<style type="text/css" media="screen">
+    th.ui-th-column div {
+        white-space: normal !important;
+        height: auto !important;
+        padding: 2px;
+    }
+
+    .success-njl {
+            background-color: #5cb85c;
+            color:white;
+    }
+    .info-njl {
+            background-color: #5bc0de;
+            color:white;
+    }
+    .warning-njl {
+            background-color: #f0ad4e;
+            color:white;
+    }
+    .danger-njl {
+            background-color: #d9534f;
+            color:white;
+    }
+    .default-njl {
+            background-color: #777;
+            color:white;
+    }
+    .primary-njl {
+            background-color: #337ab7;
+            color:white;
+    }
+
+.no-js #loader { display: none;  }
+.js #loader { display: block; position: absolute; left: 100px; top: 0; }
+.se-pre-con {
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 9999;
+	background: url(../Images/loadingRubic.gif) center no-repeat #fff;
+}
+
+.se-text {
+	position: absolute;
+	left: 47%;
+	top: 54%;
+	z-index: 9999;
+}
+    
+</style>
+
+<h4>
+    <span class="label label-default">@ViewBag.Title</span>
+</h4>
+
+
+
+@*<div class="container">*@
+
+
+    <div class="row">
+
+        <div class="col-lg-12">
+            <div class="panel panel-default" style="background:#b9def0; box-shadow:0 20px 25px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important; border-radius: 15px 50px;">
+                <div class="panel-body" style="padding:15px;">
+
+                    <span class="label label-info">Seleccione Filtros</span>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-bookmark"></i>División</span>
+                                @Html.DropDownList("cmbMercados", (SelectList)ViewBag.Mercados)
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-briefcase"></i>Empresa</span>
+                                @Html.DropDownList("cmbEmpresas", (SelectList)ViewBag.Empresas)
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-flag"></i>Estación</span>
+                                @Html.DropDownList("cmbEstaciones", (SelectList)ViewBag.Estaciones)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user"></i>Fecha Revistas</span>
+
+                                <div class="input-append date" id="dateInicio" data-date="" data-date-format="yyyy-mm-dd">
+                                    <input size="16" type="text" value="" placeholder="Desde" readonly id="txtDateInicio">
+                                    <span class="add-on"><i class="icon-th"></i></span>
+                                </div>
+
+                                <div class="input-append date" id="dateFin" data-date="" data-date-format="yyyy-mm-dd">
+                                    <input size="16" type="text" value="" placeholder="Hasta" readonly id="txtDateFin">
+                                    <span class="add-on"><i class="icon-th"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                        </div>
+                        <div class="col-lg-4">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-10">
+                        </div>
+                        <div class="col-lg-2" style="text-align:right;">
+                            <a id="finalizar" class="btn btn-success" onclick="ConsultarRevistas(); return false;"><i class="glyphicon glyphicon-search"></i> Consultar </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-lg-12" id="divGridConsulta">
+            <table id="gridConsulta"></table>
+            <div id="pagerConsulta"></div>
+        </div>
+    </div>
+
+
+<!-- Modal Mensaje -->
+<div class="modal fade" id="modalMensaje" role="dialog">
+    <div class="modal-dialog modal-md" style="z-index:3500;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Información</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning" role="alert">
+                    @*<a href="#" class="close" data-dismiss="alert">&times;</a>*@
+                    <div id="divMsj">
+                        Unidad sin Revista Asignada.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <div class="se-pre-con"></div>
+    <div class="se-text">Procesando...</div>
+</div>
+
+
+
+@*</div>*@
+
+
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/trirand/jquery.jqGrid.js")
+    @Scripts.Render("~/Scripts/trirand/jquery.jqGrid.min.js")
+    @Scripts.Render("~/Scripts/trirand/i18n/grid.locale-en.js")
+
+    @Scripts.Render("~/Scripts/jquery.dataTables.min.js")
+    @Scripts.Render("~/Scripts/dataTables.jqueryui.min.js")
+    @Scripts.Render("~/Scripts/jquery.dataTables.rowGrouping.js")
+
+    @Scripts.Render("~/Scripts/bootstrap-toggle.min.js")
+    @Scripts.Render("~/Scripts/chosen.jquery.js")
+    @Scripts.Render("~/Scripts/jasny-bootstrap.js")
+    @Scripts.Render("~/Scripts/bootstrap-datetimepicker.js")
+    @Scripts.Render("~/Scripts/locales/bootstrap-datetimepicker.fr.js")
+    @Scripts.Render("~/Scripts/GeneralesJS/Funciones.js")
+    
+
+
+<script type="text/javascript">
+    var FechaActual = new Date().toISOString().substring(0, 10);
+    @if (Session["Usuario_ID"] == null) {
+        Response.Redirect(@Url.Action("Login", "Account"));
+    }
+
+    $(document).ready(function () {
+        reloadChosen('cmbMercados');
+        reloadChosen('cmbEmpresas');
+        reloadChosen('cmbEstaciones');
+        //setDateControl('dateInicio', FechaActual);
+        //setDateControl('dateFin', FechaActual);
+        
+        $('#dateInicio').datetimepicker({
+            language: 'en',
+            todayBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            minView: 2,
+            forceParse: 0
+            //,daysOfWeekDisabled: [0, 2, 3, 4, 5, 6]
+        });
+        $('#dateFin').datetimepicker({
+            language: 'es',
+            todayBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            minView: 2,
+            forceParse: 0
+            //,daysOfWeekDisabled: [1, 2, 3, 4, 5, 6]
+        });
+
+        $("#dateInicio").on("change", function (e) {
+            validaFechas();
+        });
+
+        $("#dateFin").on("change", function (e) {
+            validaFechas();
+        });
+
+    });
+
+    $(window).load(function () {
+        hideLoading();
+    });
+
+    function showLoading() {
+        $(".se-pre-con").fadeIn("slow");
+        $(".se-text").fadeIn("slow");
+    }
+    function hideLoading() {
+        $(".se-pre-con").fadeOut("slow");
+        $(".se-text").fadeOut("slow");
+    }
+
+    function validaFechas() {
+        if ($("#txtDateInicio").val().length > 0 && $("#txtDateFin").val().length > 0) {
+            var inicio = Date.parse($("#txtDateInicio").val());
+            var fin = Date.parse($("#txtDateFin").val());
+            console.log(inicio);
+            console.log(fin);
+            if (inicio > fin) {
+                $("#txtDateInicio").val($("#txtDateFin").val());
+                muestraMensaje('modalMensaje', 'divMsj', 'La fecha de inicio no puede ser mayor a la fecha final.');
+            }
+        }
+    }
+
+    //Obtiene Informacion de Compromisos para la unidad
+    function ConsultarRevistas() {
+        $("#divGridConsulta").html('<table id="gridConsulta"></table> <div id="pagerConsulta"></div>');
+        var rutaConsultas = "@Url.Action("obtieneConsultaRevistasResumen", "Consultas")";
+        //debugger;
+        var _mercado_id = $("#cmbMercados option:selected").val();
+        var _empresa_id = $("#cmbEmpresas option:selected").val();
+        var _estacion_id = $("#cmbEstaciones option:selected").val();
+        var _fechaInicio = ($("#txtDateInicio").val().length == 0 ? null : $("#txtDateInicio").val());
+        var _fechaFin = ($("#txtDateFin").val().length == 0 ? null : $("#txtDateFin").val());
+
+        
+        //if (_estacion_id == 0) {
+        //    muestraMensaje('modalMensaje', 'divMsj', 'Seleccione Estacion.');
+        //    return false;
+        //}
+
+        if (_fechaInicio == null || _fechaFin == null) {
+            muestraMensaje('modalMensaje', 'divMsj', 'Seleccione Rango de Fechas.');
+            return false;
+        }
+
+        var parametros = { empresa_ID: _empresa_id, mercado_id: _mercado_id, estacion_id: _estacion_id, fechaInicio: _fechaInicio, fechaFin: _fechaFin };
+        showLoading();
+        $.ajax({
+            type: "POST",
+            url: rutaConsultas,
+            cache: false,
+            dataType: 'json',
+            data: parametros,
+            success: creaTablaConsultaRevistas,
+            error: function (xhr, status, errormsg) {
+                alert(errormsg);
+                hideLoading();
+            }
+        });
+        
+
+    }
+
+    // Crea Tabla Consulta
+    function creaTablaConsultaRevistas(json, status, xhr) {
+        //limpiaTotales();
+        var objJson = JSON.parse(json);
+        var colsHead = ['Estacion_ID', 'Mercado', 'Estacion', 'Total', 'Revisadas', '%', 'Realizadas', 'Pendientes', 'Vencidas', '% Avance', 'Revistas', '%', 'Revistas', '%', 'Revistas', '%', 'Revistas', '%', 'Calificación Promedio', 'Cumplimiento Promedio %', 'Condiciones Flota %', 'TOTAL Revistas'];
+
+        var colsName = ["Estacion_ID", "Mercado", "Estacion", "RevistasUnidades", "RevistasRealizadasUnidades", "Revisado", "RevistasRealizadas", "RevistasPendientes", "RevistasVencidas", "Avance", "RevistasExcelentes", "Excelentes", "RevistasMenores", "Menores", "RevistasMayores", "Mayores", "RevistasCompromisos", "Compromisos", "RevistasPromedios", "RevistasPromediosCumplimiento", "RevistasCondicionesFlota", "RevistasTotal"];
+        var colModel = [
+                { name: 'Estacion_ID', index: 'Estacion_ID', width: 1 },
+                { name: 'Mercado', index: 'Mercado', width: 200 },
+                { name: 'Estacion', index: 'Estacion', width: 120, classes: 'primary-njl', summaryType: textSubSummary },
+                { name: 'RevistasUnidades', index: 'RevistasUnidades', width: 45, align: 'center', sorttype: 'int', summaryType: 'sum' },
+                { name: 'RevistasRealizadasUnidades', index: 'RevistasRealizadasUnidades', width: 65, align: 'center', sorttype: 'int', summaryType: 'sum' },
+                { name: 'Revisado', index: 'Revisado', width: 45, align: 'center', sorttype: 'int', classes: 'default-njl', summaryType: porcentajeRevisadoSubGroup },
+                { name: 'RevistasRealizadas', index: 'RevistasRealizadas', width: 70, align: 'center', sorttype: 'int', summaryType: 'sum' },
+                { name: 'RevistasPendientes', index: 'RevistasPendientes', width: 70, align: 'center', sorttype: 'int', summaryType: 'sum' },
+                { name: 'RevistasVencidas', index: 'RevistasVencidas', width: 50, align: 'center', sorttype: 'int', summaryType: 'sum' },
+                { name: 'Avance', index: 'Avance', width: 50, align: 'center', sorttype: 'int', summaryType: porcentajeAvanceSubGroup, classes: 'default-njl' },
+                { name: 'RevistasExcelentes', index: 'RevistasExcelentes', width: 55, align: 'center', sorttype: 'int', classes: 'info-njl', summaryType: 'sum' },
+                { name: 'Excelentes', index: 'Excelentes', width: 45, align: 'center', sorttype: 'int', classes: 'info-njl', summaryType: porcentajeExcelenteSubGroup },
+                { name: 'RevistasMenores', index: 'RevistasMenores', width: 55, align: 'center', sorttype: 'int', classes: 'warning-njl', summaryType: 'sum' },
+                { name: 'Menores', index: 'Menores', width: 45, align: 'center', sorttype: 'int', classes: 'warning-njl', summaryType: porcentajeMenoresSubGroup },
+                { name: 'RevistasMayores', index: 'RevistasMayores', width: 55, align: 'center', sorttype: 'int', classes: 'danger-njl', summaryType: 'sum' },
+                { name: 'Mayores', index: 'Mayores', width: 45, align: 'center', sorttype: 'int', classes: 'danger-njl', summaryType: porcentajeMayoresSubGroup },
+                { name: 'RevistasCompromisos', index: 'RevistasCompromisos', width: 55, align: 'center', sorttype: 'int', classes: 'default-njl', summaryType: 'sum' },
+                { name: 'Compromisos', index: 'Compromisos', width: 45, align: 'center', sorttype: 'int', classes: 'default-njl', summaryType: porcentajeCompromisosSubGroup },
+                { name: 'RevistasPromedios', index: 'RevistasPromedios', width: 70, align: 'center', sorttype: 'int', summaryType: 'avg' },
+                { name: 'RevistasPromediosCumplimiento', index: 'RevistasPromediosCumplimiento', width: 70, align: 'center', sorttype: 'int', summaryType: 'avg' },
+                { name: 'RevistasCondicionesFlota', index: 'RevistasCondicionesFlota', width: 70, align: 'center', sorttype: 'int', summaryType: 'avg' },
+                { name: 'RevistasTotal', index: 'RevistasTotal', width: 50, align: 'center', sorttype: 'int', summaryType: 'sum' },
+        ];
+        groupsCols = ['Mercado'];
+        groupsColShow = [false];
+        JqGridResumen(objJson, colsHead, colModel, 'gridConsulta', 'pagerConsulta', 'Estacion', groupsCols, '<strong>Resumen Revista Vehicular</strong>', groupsColShow);
+
+        var reportObjectsGrid = $('#' + 'gridConsulta');
+        reportObjectsGrid.setGridWidth($("#RevistasTotal").width());
+
+        jQuery("#" + "gridConsulta").jqGrid('setGroupHeaders', {
+            useColSpanStyle: false,
+            groupHeaders: [
+              { startColumnName: 'RevistasUnidades', numberOfColumns: 3, titleText: '<strong>Unidades</strong>' },
+              { startColumnName: 'RevistasRealizadas', numberOfColumns: 3, titleText: '<strong>Revistas > </strong>' },
+              { startColumnName: 'RevistasExcelentes', numberOfColumns: 2, titleText: '<strong>Excelentes</strong>' },
+              { startColumnName: 'RevistasMenores', numberOfColumns: 2, titleText: '<strong>Menores</strong>' },
+              { startColumnName: 'RevistasMayores', numberOfColumns: 2, titleText: '<strong>Mayores</strong>' },
+              { startColumnName: 'RevistasCompromisos', numberOfColumns: 2, titleText: '<strong>Acciones</strong>' }
+            ]
+        });
+
+        jQuery('#list').setCell('12', 'Estacion', '', { 'background-color': 'red' }, '');
+
+        hideLoading();
+
+        $('.jqfoot').each(function (index, obj) {
+            var realizadas = parseInt($(obj.cells[6]).text());
+
+            //Avance por unidades
+            if ($(obj.cells[3]).text() > 0 && $(obj.cells[4]).text() > 0) {
+                $(obj.cells[5]).text(($(obj.cells[4]).text() / ($(obj.cells[3]).text() / 100)).toFixed(1));
+            }
+            //Avance Revistas
+            if ((parseInt($(obj.cells[6]).text()) + parseInt($(obj.cells[7]).text()) + parseInt($(obj.cells[8]).text())) > 0) {
+                console.log(parseInt($(obj.cells[6]).text()) + parseInt($(obj.cells[7]).text()) + parseInt($(obj.cells[8]).text()));
+                $(obj.cells[9]).text((parseInt($(obj.cells[6]).text()) / ((parseInt($(obj.cells[6]).text()) + parseInt($(obj.cells[7]).text()) + parseInt($(obj.cells[8]).text())) / 100)).toFixed(1));
+            }
+            //Exelentes
+            if (realizadas > 0 && parseInt($(obj.cells[10]).text()) > 0) {
+                $(obj.cells[11]).text((parseInt($(obj.cells[10]).text()) / (realizadas / 100)).toFixed(1));
+            }
+            //Menores
+            if (realizadas > 0 && parseInt($(obj.cells[12]).text()) > 0) {
+                $(obj.cells[13]).text((parseInt($(obj.cells[12]).text()) / (realizadas / 100)).toFixed(1));
+            }
+            //Mayores
+            if (realizadas > 0 && parseInt($(obj.cells[14]).text()) > 0) {
+                $(obj.cells[15]).text((parseInt($(obj.cells[14]).text()) / (realizadas / 100)).toFixed(1));
+            }
+            //Acciones
+            if (realizadas > 0 && parseInt($(obj.cells[16]).text()) > 0) {
+                $(obj.cells[17]).text((parseInt($(obj.cells[16]).text()) / (realizadas / 100)).toFixed(1));
+            }
+            //Promedios format
+            $(obj.cells[18]).text(parseFloat($(obj.cells[18]).text()).toFixed(1));
+            $(obj.cells[19]).text(parseFloat($(obj.cells[19]).text()).toFixed(1));
+            $(obj.cells[20]).text(parseFloat($(obj.cells[20]).text()).toFixed(1));
+        });
+    }
+
+
+    //TextSubSummary
+    function textSubSummary(val, name, record) {                
+        return '<span class="badge">SUBTOTAL</span>';
+    }
+
+    // Nivel summary
+    //var unidadesSub = 0;
+    function porcentajeRevisadoSubGroup(val, name, record) {
+        if (record["RevistasRealizadasUnidades"] > 0 && record["RevistasUnidades"] > 0) {
+            return ''; //(record["RevistasRealizadasUnidades"] / (record["RevistasUnidades"] / 100)).toFixed(1) + ' %';
+        } else {
+            return 0 + ' %';
+        }
+    }
+
+    // Nivel summary
+    function porcentajeAvanceSubGroup(val, name, record) {
+        if (record["RevistasRealizadas"] > 0) {
+            return '';//(record["RevistasRealizadas"] / ((record["RevistasRealizadas"] + record["RevistasPendientes"] + record["RevistasVencidas"]) / 100)).toFixed(1) + ' %';
+        } else {
+            return 0 + ' %';
+        }
+    }
+    // Nivel summary
+    function porcentajeExcelenteSubGroup(val, name, record) {
+        if (record["RevistasExcelentes"] > 0) {
+            return '';//(record["RevistasExcelentes"] / ((record["RevistasRealizadas"] + record["RevistasPendientes"]) / 100)).toFixed(1) + ' %';
+        } else {
+            return 0 + ' %';
+        }
+    }
+    // Nivel summary
+    function porcentajeMenoresSubGroup(val, name, record) {
+        if (record["RevistasMenores"] > 0) {
+            return '';//(record["RevistasMenores"] / ((record["RevistasRealizadas"] + record["RevistasPendientes"]) / 100)).toFixed(1) + ' %';
+        } else {
+            return 0 + ' %';
+        }
+    }
+    // Nivel summary
+    function porcentajeMayoresSubGroup(val, name, record) {
+        if (record["RevistasMayores"] > 0) {
+            return '';//(record["RevistasMayores"] / ((record["RevistasRealizadas"] + record["RevistasPendientes"]) / 100)).toFixed(1) + ' %';
+        } else {
+            return 0 + ' %';
+        }
+    }
+    // Nivel summary
+    function porcentajeCompromisosSubGroup(val, name, record) {
+        if (record["RevistasCompromisos"] > 0) {
+            return '';//(record["RevistasCompromisos"] / ((record["RevistasRealizadas"] + record["RevistasPendientes"]) / 100)).toFixed(1) + ' %';
+        } else {
+            return 0 + ' %';
+        }
+    }
+
+    //Dar formato a col
+    function formatExcelentes(cellvalue, options, rowObject) {
+        var cellHtml = "<span class='label label-info'>" + cellvalue + "</span>";
+        return cellHtml;
+    }
+
+    function JqGridResumen(_mydata, _colNames, _ColModel, _gridID, _pagerID, _shortNameCol, _groupCols, _title, _groupsColShow) {
+        $("#" + _gridID).jqGrid({
+            data: _mydata,
+            datatype: "local",
+            height: null,
+            width: null,
+            shrinkToFit: false,
+            rowNum: 30,
+            rowList: [30, 50, 100, _mydata.length],
+            colNames: _colNames,
+            colModel: _ColModel,
+            pager: "#" + _pagerID,
+            viewrecords: true,
+            sortname: _shortNameCol,
+            grouping: true,
+            footerrow: true,
+            groupingView: {
+                groupColumnShow: _groupsColShow,
+                groupSummary: [true],
+                showSummaryOnHide: [true]
+            },
+            gridComplete: function () {
+
+                var _TotalUnidades = $(this).jqGrid('getCol', 'RevistasUnidades', false, 'sum');
+                //console.log('_TotalUnidades: ' + _TotalUnidades);
+                var _TotalUnidadesRevista = $(this).jqGrid('getCol', 'RevistasRealizadasUnidades', false, 'sum');
+                //console.log('_TotalUnidadesRevista: ' + _TotalUnidadesRevista);
+
+                var _Realizadas = $(this).jqGrid('getCol', 'RevistasRealizadas', false, 'sum');
+                var _Pendientes = $(this).jqGrid('getCol', 'RevistasPendientes', false, 'sum');
+                var _Vencidas = $(this).jqGrid('getCol', 'RevistasVencidas', false, 'sum');
+                var _Excelentes = $(this).jqGrid('getCol', 'RevistasExcelentes', false, 'sum');
+                var _Menores = $(this).jqGrid('getCol', 'RevistasMenores', false, 'sum');
+                var _Mayores = $(this).jqGrid('getCol', 'RevistasMayores', false, 'sum');
+                var _Promedio = $(this).jqGrid('getCol', 'RevistasPromedios', false, 'avg');
+                var _Compromisos = $(this).jqGrid('getCol', 'RevistasCompromisos', false, 'sum');
+
+                var _Revisado = (_TotalUnidades > 0 ? (_TotalUnidadesRevista / (_TotalUnidades / 100)).toFixed(1) : 0);
+
+                //console.log('_Revisado: ' + _Revisado);
+                var _Avance = (_Realizadas > 0 ? (_Realizadas / ((_TotalUnidadesRevista + _Pendientes + _Vencidas) / 100)).toFixed(1) : 0);
+                var _pExcelentes = (_Excelentes > 0 ? (_Excelentes / ((_Realizadas + _Pendientes) / 100)).toFixed(2) : 0);
+                var _pMenores = (_Menores > 0 ? (_Menores / ((_Realizadas + _Pendientes) / 100)).toFixed(1) : 0);
+                var _pMayores = (_Mayores > 0 ? (_Mayores / ((_Realizadas + _Pendientes) / 100)).toFixed(1) : 0);
+                var _pCompromisos = (_Compromisos > 0 ? (_Compromisos / ((_Realizadas + _Pendientes) / 100)).toFixed(1) : 0);
+
+                var _Total = $(this).jqGrid('getCol', 'RevistasTotal', false, 'sum');
+
+                $(this).jqGrid('footerData', 'set', { RevistasUnidades: _TotalUnidades });
+                $(this).jqGrid('footerData', 'set', { RevistasRealizadasUnidades: _TotalUnidadesRevista });
+                $(this).jqGrid('footerData', 'set', { Revisado: _Revisado + ' %' });
+                
+                $(this).jqGrid('footerData', 'set', { RevistasRealizadas: _Realizadas });
+                $(this).jqGrid('footerData', 'set', { RevistasPendientes: _Pendientes });
+                $(this).jqGrid('footerData', 'set', { RevistasVencidas: _Vencidas });
+                $(this).jqGrid('footerData', 'set', { Avance: _Avance + ' %' });
+
+                $(this).jqGrid('footerData', 'set', { RevistasExcelentes: _Excelentes });
+                $(this).jqGrid('footerData', 'set', { RevistasMenores: _Menores });
+                $(this).jqGrid('footerData', 'set', { RevistasMayores: _Mayores });
+                $(this).jqGrid('footerData', 'set', { RevistasCompromisos: _Compromisos });
+                $(this).jqGrid('footerData', 'set', { Excelentes: _pExcelentes + ' %' });
+                $(this).jqGrid('footerData', 'set', { Menores: _pMenores + ' %' });
+                $(this).jqGrid('footerData', 'set', { Mayores: _pMayores + ' %' });
+                $(this).jqGrid('footerData', 'set', { Compromisos: _pCompromisos + ' %' });
+               // $(this).jqGrid('footerData', 'set', { RevistasPromedios: _Promedio.toFixed(1) });
+                $(this).jqGrid('footerData', 'set', { RevistasTotal: _Total });
+                $(this).jqGrid('footerData', 'set', { Estacion: '<span class="badge">TOTAL GENERAL</span>' });
+
+                var mygrid = _gridID;
+                var rows = $("#" + mygrid).getDataIDs();
+                for (var i = 0; i < rows.length; i++) {
+                    var status = parseInt($("#" + mygrid).getCell(rows[i], "Avance"));
+                    if (status < 90) {
+                        $("#" + mygrid).jqGrid('setRowData', rows[i], false, { color: 'white', weightfont: 'bold', background: '#d9534f' });
+                    } else {
+                        $("#" + mygrid).jqGrid('setRowData', rows[i], false, { color: 'white', weightfont: 'bold', background: '#5cb85c' });
+                    }
+                }
+
+            },
+            caption: _title
+        });
+        $("#" + _gridID).jqGrid('groupingGroupBy', _groupCols);
+    }
+
+</script>
+
+
+}

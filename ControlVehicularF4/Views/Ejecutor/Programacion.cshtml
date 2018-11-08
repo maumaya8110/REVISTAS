@@ -1,0 +1,228 @@
+﻿@{
+    ViewBag.Title = "Programacion";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<link href="@Url.Content("~/Content/DataTable/jquery-ui.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/DataTable/dataTables.jqueryui.min.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/DataTable/DatatTableGrouping.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/bootstrap-toggle.min.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/ControlVehicular/Revista.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/chosen.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/bootstrap-datetimepicker.min.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/trirand/ui.jqgrid-bootstrap.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/trirand/ui.jqgrid.css")" rel="stylesheet" type="text/css" media="screen" /> 
+
+<style type="text/css" media="screen">
+    th.ui-th-column div {
+        white-space: normal !important;
+        height: auto !important;
+        padding: 2px;
+    }
+
+    .success-njl {
+        background-color: #5cb85c;
+        color: white;
+    }
+
+    .info-njl {
+        background-color: #5bc0de;
+        color: white;
+    }
+
+    .warning-njl {
+        background-color: #f0ad4e;
+        color: white;
+    }
+
+    .danger-njl {
+        background-color: #d9534f;
+        color: white;
+    }
+
+    .default-njl {
+        background-color: #777;
+        color: white;
+    }
+
+    .primary-njl {
+        background-color: #337ab7;
+        color: white;
+    }
+</style>
+
+
+
+
+
+<h4>
+    <span class="label label-default">@ViewBag.Title</span>
+</h4>
+
+
+<div class="row">
+
+    <div class="col-sm-12">
+        <div class="panel panel-default" style="background:#b9def0; box-shadow:0 20px 25px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important; border-radius: 15px 50px;">
+            <div class="panel-body" style="padding:15px;">
+
+                <span class="label label-info">Seleccione Filtros</span>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-flag"></i>Estación</span>
+                            @Html.DropDownList("cmbEstaciones", (SelectList)ViewBag.Estaciones)
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user"></i>Fechas</span>
+
+                            <div class="input-append date" id="dateInicio" data-date="" data-date-format="yyyy-mm-dd">
+                                <input size="16" type="text" value="" readonly id="txtDateInicio">
+                                <span class="add-on"><i class="icon-th"></i></span>
+                            </div>
+                            <div class="input-append date" id="dateFin" data-date="" data-date-format="yyyy-mm-dd">
+                                <input size="16" type="text" value="" readonly id="txtDateFin">
+                                <span class="add-on"><i class="icon-th"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4" style="text-align:right;">
+                        <a id="finalizar" class="btn btn-success" onclick="ConsultarRevistas(); return false;"><i class="glyphicon glyphicon-search"></i> Consultar </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@*Grid*@
+<div class="row">
+    <div class="col-md-12" id="divGridConsulta">
+        <table id="gridConsulta"></table>
+        <div id="pagerConsulta"></div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/trirand/jquery.jqGrid.js")
+    @Scripts.Render("~/Scripts/trirand/jquery.jqGrid.min.js")
+    @Scripts.Render("~/Scripts/trirand/i18n/grid.locale-en.js")
+    @Scripts.Render("~/Scripts/jquery.dataTables.min.js")
+    @Scripts.Render("~/Scripts/dataTables.jqueryui.min.js")
+    @Scripts.Render("~/Scripts/jquery.dataTables.rowGrouping.js")
+    @Scripts.Render("~/Scripts/bootstrap-toggle.min.js")
+    @Scripts.Render("~/Scripts/chosen.jquery.js")
+    @Scripts.Render("~/Scripts/jasny-bootstrap.js")
+    @Scripts.Render("~/Scripts/bootstrap-datetimepicker.js")
+    @Scripts.Render("~/Scripts/locales/bootstrap-datetimepicker.fr.js")
+    @Scripts.Render("~/Scripts/GeneralesJS/Funciones.js")
+
+
+<script type="text/javascript">
+    var _Usuario_ID = '@ViewBag.Usuario_ID';
+    var FechaActual = new Date().toISOString().substring(0, 10);
+
+    $(document).ready(function () {
+        reloadChosen('cmbEstaciones');
+        setDateControl('dateInicio', FechaActual);
+        setDateControl('dateFin', FechaActual);
+    });
+
+    //Obtiene Informacion de Compromisos para la unidad
+    function ConsultarRevistas() {
+        $("#divGridConsulta").html('<table id="gridConsulta"></table> <div id="pagerConsulta"></div>');
+
+        var rutaConsultas = "@Url.Action("obtieneConsultaProgramacionUsuario", "Consultas")";
+        //debugger;
+        var _estacion_id = $("#cmbEstaciones option:selected").val();
+        var _fechaInicio = ($("#txtDateInicio").val().length == 0 ? null : $("#txtDateInicio").val());
+        var _fechaFin = ($("#txtDateFin").val().length == 0 ? null : $("#txtDateFin").val());
+        var parametros = { estacion_id: _estacion_id, fechaInicio: _fechaInicio, fechaFin: _fechaFin, usuario_ID: _Usuario_ID };
+        $.ajax({
+            type: "POST",
+            url: rutaConsultas,
+            cache: false,
+            dataType: 'json',
+            data: parametros,
+            success: creaTablaConsultaRevistas,
+            error: function (xhr, status, errormsg) {
+                alert(errormsg);
+            }
+        });
+    }
+
+    function creaTablaConsultaRevistas(json, status, xhr) {
+        //limpiaTotales();
+        var objJson = JSON.parse(json);
+        var colsHead = ['RevistaUnidades_ID', 'Estatus', 'Estacion Revista', 'Estacion Unidad', '#Economico', 'Modelo', 'Año', 'Fecha de Revista', 'Fecha Vencimiento', 'Fecha Concluida', 'Km. Ult. Manto', 'Kilometraje', 'Conductor Diferente', 'Evaluacion', 'Criticos'];
+        var colsName = ["RevistaUnidades_ID", "Estatus", "EstacionRevista", "EstacionUnidad", "NumeroEconomico", "Modelo", "Anio", "FechaRevista", "FechaVencimiento", "FechaConcluida", "KmUltManto", "Kilometraje", "ConductorDiferente", "Evaluacion", "Criticos"];
+        var colModel = [
+                { name: 'RevistaUnidades_ID', index: 'RevistaUnidades_ID', width: 1 },
+                { name: 'Estatus', index: 'Estatus', width: 100, classes: 'primary-njl' },
+                { name: 'EstacionRevista', index: 'EstacionRevista', width: 100, classes: 'primary-njl' },
+                { name: 'EstacionUnidad', index: 'EstacionUnidad', width: 100, classes: 'primary-njl' },
+                { name: 'NumeroEconomico', index: 'NumeroEconomico', width: 80, align: 'center' },
+                { name: 'Modelo', index: 'Modelo', width: 100 },
+                { name: 'Anio', index: 'Anio', width: 50, align: 'center' },
+                { name: 'FechaRevista', index: 'FechaRevista', width: 80, align: 'center' },
+                { name: 'FechaVencimiento', index: 'FechaVencimiento', width: 80, align: 'center' },
+                { name: 'FechaConcluida', index: 'FechaConcluida', width: 80, align: 'center' },
+                { name: 'KmUltManto', index: 'KmUltManto', width: 70, align: 'center' },
+                { name: 'Kilometraje', index: 'Kilometraje', width: 80, align: 'center' },
+                { name: 'ConductorDiferente', index: 'ConductorDiferente', width: 70, align: 'center', classes: 'default-njl' },
+                { name: 'Evaluacion', index: 'Evaluacion', width: 70, align: 'center', classes: 'info-njl' },
+                { name: 'Criticos', index: 'Criticos', width: 70, align: 'center', classes: 'warning-njl' }
+        ];        
+        groupsCols = ['Estatus'];
+        groupsColShow = [false];
+        JqGridResumen(objJson, colsHead, colModel, 'gridConsulta', 'pagerConsulta', 'Estatus', groupsCols, '<strong>Revista Vehicular por Usuario</strong>', groupsColShow);
+        var reportObjectsGrid = $('#' + 'gridConsulta');
+        reportObjectsGrid.setGridWidth($("#RevistasTotal").width());
+        jQuery("#" + "gridConsulta").jqGrid('setGroupHeaders', {
+            useColSpanStyle: false,
+        });
+        jQuery('#list').setCell('12', 'Estatus', '', { 'background-color': 'red' }, '');
+    }
+
+
+
+    function JqGridResumen(_mydata, _colNames, _ColModel, _gridID, _pagerID, _shortNameCol, _groupCols, _title, _groupsColShow) {
+        $("#" + _gridID).jqGrid({
+            data: _mydata,
+            datatype: "local",
+            height: null,
+            width: null,
+            shrinkToFit: false,
+            rowNum: 30,
+            rowList: [30, 50, 100, _mydata.length],
+            colNames: _colNames,
+            colModel: _ColModel,
+            pager: "#" + _pagerID,
+            viewrecords: true,
+            sortname: _shortNameCol,
+            grouping: true,
+            //footerrow: true,
+            groupingView: {
+                groupColumnShow: _groupsColShow
+                //groupSummary: [true],
+                //showSummaryOnHide: [true]
+            },
+            //gridComplete: function(){
+                //var _TotalUnidades = $(this).jqGrid('getCol', 'RevistasUnidades', false, 'sum');
+                //$(this).jqGrid('footerData', 'set', { RevistasUnidades: _TotalUnidades });
+                //$(this).jqGrid('footerData', 'set', { Estacion: '<span class="badge">TOTAL GENERAL</span>' });
+            //},
+            caption: _title
+        });
+        $("#" + _gridID).jqGrid('groupingGroupBy', _groupCols);
+    }
+</script>
+
+}

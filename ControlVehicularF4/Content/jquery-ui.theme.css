@@ -1,0 +1,443 @@
+/*!
+ * jQuery UI CSS Framework 1.12.1
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ *
+ * http://api.jqueryui.com/category/theming/
+ *
+ * To view and modify this theme, visit http://jqueryui.com/themeroller/?scope=_Trontastic&folderName=_Trontastic&cornerRadiusShadow=12px&offsetLeftShadow=-6px&offsetTopShadow=-6px&thicknessShadow=6px&opacityShadow=50&bgImgOpacityShadow=0&bgTextureShadow=flat&bgColorShadow=303030&opacityOverlay=30&bgImgOpacityOverlay=50&bgTextureOverlay=diagonals_small&bgColorOverlay=262626&iconColorError=cd0a0a&fcError=74736d&borderColorError=f1ac88&bgImgOpacityError=95&bgTextureError=gloss_wave&bgColorError=f6ecd5&iconColorHighlight=000000&fcHighlight=030303&borderColorHighlight=8cce3b&bgImgOpacityHighlight=55&bgTextureHighlight=glass&bgColorHighlight=f1fbe5&iconColorActive=ffffff&fcActive=ffffff&borderColorActive=696969&bgImgOpacityActive=0&bgTextureActive=flat&bgColorActive=4c4c4c&iconColorHover=b8ec79&fcHover=96f226&borderColorHover=000000&bgImgOpacityHover=60&bgTextureHover=glass&bgColorHover=000000&iconColorDefault=b8ec79&fcDefault=b8ec79&borderColorDefault=1b1613&bgImgOpacityDefault=40&bgTextureDefault=glass&bgColorDefault=0a0a0a&iconColorContent=9fda58&fcContent=ffffff&borderColorContent=4a4a4a&bgImgOpacityContent=55&bgTextureContent=gloss_wave&bgColorContent=000000&iconColorHeader=1f1f1f&fcHeader=222222&borderColorHeader=000000&bgImgOpacityHeader=85&bgTextureHeader=gloss_wave&bgColorHeader=9fda58&cornerRadius=6px&fsDefault=1.1em&fwDefault=bold&ffDefault=Segoe%20UI%2CHelvetica%2CArial%2Csans-serif
+ */
+
+
+/* Component containers
+----------------------------------*/
+_Trontastic .ui-widget {
+	font-family: Segoe UI,Helvetica,Arial,sans-serif;
+	font-size: 1.1em;
+}
+_Trontastic .ui-widget .ui-widget {
+	font-size: 1em;
+}
+_Trontastic .ui-widget input,
+_Trontastic .ui-widget select,
+_Trontastic .ui-widget textarea,
+_Trontastic .ui-widget button {
+	font-family: Segoe UI,Helvetica,Arial,sans-serif;
+	font-size: 1em;
+}
+_Trontastic .ui-widget.ui-widget-content {
+	border: 1px solid #1b1613;
+}
+_Trontastic .ui-widget-content {
+	border: 1px solid #4a4a4a;
+	background: #000000 url("images/ui-bg_gloss-wave_55_000000_500x100.png") 50% top repeat-x;
+	color: #ffffff;
+}
+_Trontastic .ui-widget-content a {
+	color: #ffffff;
+}
+_Trontastic .ui-widget-header {
+	border: 1px solid #000000;
+	background: #9fda58 url("images/ui-bg_gloss-wave_85_9fda58_500x100.png") 50% 50% repeat-x;
+	color: #222222;
+	font-weight: bold;
+}
+_Trontastic .ui-widget-header a {
+	color: #222222;
+}
+
+/* Interaction states
+----------------------------------*/
+_Trontastic .ui-state-default,
+_Trontastic .ui-widget-content .ui-state-default,
+_Trontastic .ui-widget-header .ui-state-default,
+_Trontastic .ui-button,
+
+/* We use html here because we need a greater specificity to make sure disabled
+works properly when clicked or hovered */
+html _Trontastic .ui-button.ui-state-disabled:hover,
+html _Trontastic .ui-button.ui-state-disabled:active {
+	border: 1px solid #1b1613;
+	background: #0a0a0a url("images/ui-bg_glass_40_0a0a0a_1x400.png") 50% 50% repeat-x;
+	font-weight: bold;
+	color: #b8ec79;
+}
+_Trontastic .ui-state-default a,
+_Trontastic .ui-state-default a:link,
+_Trontastic .ui-state-default a:visited,
+a_Trontastic .ui-button,
+a:link_Trontastic .ui-button,
+a:visited_Trontastic .ui-button,
+_Trontastic .ui-button {
+	color: #b8ec79;
+	text-decoration: none;
+}
+_Trontastic .ui-state-hover,
+_Trontastic .ui-widget-content .ui-state-hover,
+_Trontastic .ui-widget-header .ui-state-hover,
+_Trontastic .ui-state-focus,
+_Trontastic .ui-widget-content .ui-state-focus,
+_Trontastic .ui-widget-header .ui-state-focus,
+_Trontastic .ui-button:hover,
+_Trontastic .ui-button:focus {
+	border: 1px solid #000000;
+	background: #000000 url("images/ui-bg_glass_60_000000_1x400.png") 50% 50% repeat-x;
+	font-weight: bold;
+	color: #96f226;
+}
+_Trontastic .ui-state-hover a,
+_Trontastic .ui-state-hover a:hover,
+_Trontastic .ui-state-hover a:link,
+_Trontastic .ui-state-hover a:visited,
+_Trontastic .ui-state-focus a,
+_Trontastic .ui-state-focus a:hover,
+_Trontastic .ui-state-focus a:link,
+_Trontastic .ui-state-focus a:visited,
+a_Trontastic .ui-button:hover,
+a_Trontastic .ui-button:focus {
+	color: #96f226;
+	text-decoration: none;
+}
+
+_Trontastic .ui-visual-focus {
+	box-shadow: 0 0 3px 1px rgb(94, 158, 214);
+}
+_Trontastic .ui-state-active,
+_Trontastic .ui-widget-content .ui-state-active,
+_Trontastic .ui-widget-header .ui-state-active,
+a_Trontastic .ui-button:active,
+_Trontastic .ui-button:active,
+_Trontastic .ui-button.ui-state-active:hover {
+	border: 1px solid #696969;
+	background: #4c4c4c;
+	font-weight: bold;
+	color: #ffffff;
+}
+_Trontastic .ui-icon-background,
+_Trontastic .ui-state-active .ui-icon-background {
+	border: #696969;
+	background-color: #ffffff;
+}
+_Trontastic .ui-state-active a,
+_Trontastic .ui-state-active a:link,
+_Trontastic .ui-state-active a:visited {
+	color: #ffffff;
+	text-decoration: none;
+}
+
+/* Interaction Cues
+----------------------------------*/
+_Trontastic .ui-state-highlight,
+_Trontastic .ui-widget-content .ui-state-highlight,
+_Trontastic .ui-widget-header .ui-state-highlight {
+	border: 1px solid #8cce3b;
+	background: #f1fbe5 url("images/ui-bg_glass_55_f1fbe5_1x400.png") 50% 50% repeat-x;
+	color: #030303;
+}
+_Trontastic .ui-state-checked {
+	border: 1px solid #8cce3b;
+	background: #f1fbe5;
+}
+_Trontastic .ui-state-highlight a,
+_Trontastic .ui-widget-content .ui-state-highlight a,
+_Trontastic .ui-widget-header .ui-state-highlight a {
+	color: #030303;
+}
+_Trontastic .ui-state-error,
+_Trontastic .ui-widget-content .ui-state-error,
+_Trontastic .ui-widget-header .ui-state-error {
+	border: 1px solid #f1ac88;
+	background: #f6ecd5 url("images/ui-bg_gloss-wave_95_f6ecd5_500x100.png") 50% top repeat-x;
+	color: #74736d;
+}
+_Trontastic .ui-state-error a,
+_Trontastic .ui-widget-content .ui-state-error a,
+_Trontastic .ui-widget-header .ui-state-error a {
+	color: #74736d;
+}
+_Trontastic .ui-state-error-text,
+_Trontastic .ui-widget-content .ui-state-error-text,
+_Trontastic .ui-widget-header .ui-state-error-text {
+	color: #74736d;
+}
+_Trontastic .ui-priority-primary,
+_Trontastic .ui-widget-content .ui-priority-primary,
+_Trontastic .ui-widget-header .ui-priority-primary {
+	font-weight: bold;
+}
+_Trontastic .ui-priority-secondary,
+_Trontastic .ui-widget-content .ui-priority-secondary,
+_Trontastic .ui-widget-header .ui-priority-secondary {
+	opacity: .7;
+	filter:Alpha(Opacity=70); /* support: IE8 */
+	font-weight: normal;
+}
+_Trontastic .ui-state-disabled,
+_Trontastic .ui-widget-content .ui-state-disabled,
+_Trontastic .ui-widget-header .ui-state-disabled {
+	opacity: .35;
+	filter:Alpha(Opacity=35); /* support: IE8 */
+	background-image: none;
+}
+_Trontastic .ui-state-disabled .ui-icon {
+	filter:Alpha(Opacity=35); /* support: IE8 - See #6059 */
+}
+
+/* Icons
+----------------------------------*/
+
+/* states and images */
+_Trontastic .ui-icon {
+	width: 16px;
+	height: 16px;
+}
+_Trontastic .ui-icon,
+_Trontastic .ui-widget-content .ui-icon {
+	background-image: url("images/ui-icons_9fda58_256x240.png");
+}
+_Trontastic .ui-widget-header .ui-icon {
+	background-image: url("images/ui-icons_1f1f1f_256x240.png");
+}
+_Trontastic .ui-state-hover .ui-icon,
+_Trontastic .ui-state-focus .ui-icon,
+_Trontastic .ui-button:hover .ui-icon,
+_Trontastic .ui-button:focus .ui-icon {
+	background-image: url("images/ui-icons_b8ec79_256x240.png");
+}
+_Trontastic .ui-state-active .ui-icon,
+_Trontastic .ui-button:active .ui-icon {
+	background-image: url("images/ui-icons_ffffff_256x240.png");
+}
+_Trontastic .ui-state-highlight .ui-icon,
+_Trontastic .ui-button .ui-state-highlight.ui-icon {
+	background-image: url("images/ui-icons_000000_256x240.png");
+}
+_Trontastic .ui-state-error .ui-icon,
+_Trontastic .ui-state-error-text .ui-icon {
+	background-image: url("images/ui-icons_cd0a0a_256x240.png");
+}
+_Trontastic .ui-button .ui-icon {
+	background-image: url("images/ui-icons_b8ec79_256x240.png");
+}
+
+/* positioning */
+_Trontastic .ui-icon-blank { background-position: 16px 16px; }
+_Trontastic .ui-icon-caret-1-n { background-position: 0 0; }
+_Trontastic .ui-icon-caret-1-ne { background-position: -16px 0; }
+_Trontastic .ui-icon-caret-1-e { background-position: -32px 0; }
+_Trontastic .ui-icon-caret-1-se { background-position: -48px 0; }
+_Trontastic .ui-icon-caret-1-s { background-position: -65px 0; }
+_Trontastic .ui-icon-caret-1-sw { background-position: -80px 0; }
+_Trontastic .ui-icon-caret-1-w { background-position: -96px 0; }
+_Trontastic .ui-icon-caret-1-nw { background-position: -112px 0; }
+_Trontastic .ui-icon-caret-2-n-s { background-position: -128px 0; }
+_Trontastic .ui-icon-caret-2-e-w { background-position: -144px 0; }
+_Trontastic .ui-icon-triangle-1-n { background-position: 0 -16px; }
+_Trontastic .ui-icon-triangle-1-ne { background-position: -16px -16px; }
+_Trontastic .ui-icon-triangle-1-e { background-position: -32px -16px; }
+_Trontastic .ui-icon-triangle-1-se { background-position: -48px -16px; }
+_Trontastic .ui-icon-triangle-1-s { background-position: -65px -16px; }
+_Trontastic .ui-icon-triangle-1-sw { background-position: -80px -16px; }
+_Trontastic .ui-icon-triangle-1-w { background-position: -96px -16px; }
+_Trontastic .ui-icon-triangle-1-nw { background-position: -112px -16px; }
+_Trontastic .ui-icon-triangle-2-n-s { background-position: -128px -16px; }
+_Trontastic .ui-icon-triangle-2-e-w { background-position: -144px -16px; }
+_Trontastic .ui-icon-arrow-1-n { background-position: 0 -32px; }
+_Trontastic .ui-icon-arrow-1-ne { background-position: -16px -32px; }
+_Trontastic .ui-icon-arrow-1-e { background-position: -32px -32px; }
+_Trontastic .ui-icon-arrow-1-se { background-position: -48px -32px; }
+_Trontastic .ui-icon-arrow-1-s { background-position: -65px -32px; }
+_Trontastic .ui-icon-arrow-1-sw { background-position: -80px -32px; }
+_Trontastic .ui-icon-arrow-1-w { background-position: -96px -32px; }
+_Trontastic .ui-icon-arrow-1-nw { background-position: -112px -32px; }
+_Trontastic .ui-icon-arrow-2-n-s { background-position: -128px -32px; }
+_Trontastic .ui-icon-arrow-2-ne-sw { background-position: -144px -32px; }
+_Trontastic .ui-icon-arrow-2-e-w { background-position: -160px -32px; }
+_Trontastic .ui-icon-arrow-2-se-nw { background-position: -176px -32px; }
+_Trontastic .ui-icon-arrowstop-1-n { background-position: -192px -32px; }
+_Trontastic .ui-icon-arrowstop-1-e { background-position: -208px -32px; }
+_Trontastic .ui-icon-arrowstop-1-s { background-position: -224px -32px; }
+_Trontastic .ui-icon-arrowstop-1-w { background-position: -240px -32px; }
+_Trontastic .ui-icon-arrowthick-1-n { background-position: 1px -48px; }
+_Trontastic .ui-icon-arrowthick-1-ne { background-position: -16px -48px; }
+_Trontastic .ui-icon-arrowthick-1-e { background-position: -32px -48px; }
+_Trontastic .ui-icon-arrowthick-1-se { background-position: -48px -48px; }
+_Trontastic .ui-icon-arrowthick-1-s { background-position: -64px -48px; }
+_Trontastic .ui-icon-arrowthick-1-sw { background-position: -80px -48px; }
+_Trontastic .ui-icon-arrowthick-1-w { background-position: -96px -48px; }
+_Trontastic .ui-icon-arrowthick-1-nw { background-position: -112px -48px; }
+_Trontastic .ui-icon-arrowthick-2-n-s { background-position: -128px -48px; }
+_Trontastic .ui-icon-arrowthick-2-ne-sw { background-position: -144px -48px; }
+_Trontastic .ui-icon-arrowthick-2-e-w { background-position: -160px -48px; }
+_Trontastic .ui-icon-arrowthick-2-se-nw { background-position: -176px -48px; }
+_Trontastic .ui-icon-arrowthickstop-1-n { background-position: -192px -48px; }
+_Trontastic .ui-icon-arrowthickstop-1-e { background-position: -208px -48px; }
+_Trontastic .ui-icon-arrowthickstop-1-s { background-position: -224px -48px; }
+_Trontastic .ui-icon-arrowthickstop-1-w { background-position: -240px -48px; }
+_Trontastic .ui-icon-arrowreturnthick-1-w { background-position: 0 -64px; }
+_Trontastic .ui-icon-arrowreturnthick-1-n { background-position: -16px -64px; }
+_Trontastic .ui-icon-arrowreturnthick-1-e { background-position: -32px -64px; }
+_Trontastic .ui-icon-arrowreturnthick-1-s { background-position: -48px -64px; }
+_Trontastic .ui-icon-arrowreturn-1-w { background-position: -64px -64px; }
+_Trontastic .ui-icon-arrowreturn-1-n { background-position: -80px -64px; }
+_Trontastic .ui-icon-arrowreturn-1-e { background-position: -96px -64px; }
+_Trontastic .ui-icon-arrowreturn-1-s { background-position: -112px -64px; }
+_Trontastic .ui-icon-arrowrefresh-1-w { background-position: -128px -64px; }
+_Trontastic .ui-icon-arrowrefresh-1-n { background-position: -144px -64px; }
+_Trontastic .ui-icon-arrowrefresh-1-e { background-position: -160px -64px; }
+_Trontastic .ui-icon-arrowrefresh-1-s { background-position: -176px -64px; }
+_Trontastic .ui-icon-arrow-4 { background-position: 0 -80px; }
+_Trontastic .ui-icon-arrow-4-diag { background-position: -16px -80px; }
+_Trontastic .ui-icon-extlink { background-position: -32px -80px; }
+_Trontastic .ui-icon-newwin { background-position: -48px -80px; }
+_Trontastic .ui-icon-refresh { background-position: -64px -80px; }
+_Trontastic .ui-icon-shuffle { background-position: -80px -80px; }
+_Trontastic .ui-icon-transfer-e-w { background-position: -96px -80px; }
+_Trontastic .ui-icon-transferthick-e-w { background-position: -112px -80px; }
+_Trontastic .ui-icon-folder-collapsed { background-position: 0 -96px; }
+_Trontastic .ui-icon-folder-open { background-position: -16px -96px; }
+_Trontastic .ui-icon-document { background-position: -32px -96px; }
+_Trontastic .ui-icon-document-b { background-position: -48px -96px; }
+_Trontastic .ui-icon-note { background-position: -64px -96px; }
+_Trontastic .ui-icon-mail-closed { background-position: -80px -96px; }
+_Trontastic .ui-icon-mail-open { background-position: -96px -96px; }
+_Trontastic .ui-icon-suitcase { background-position: -112px -96px; }
+_Trontastic .ui-icon-comment { background-position: -128px -96px; }
+_Trontastic .ui-icon-person { background-position: -144px -96px; }
+_Trontastic .ui-icon-print { background-position: -160px -96px; }
+_Trontastic .ui-icon-trash { background-position: -176px -96px; }
+_Trontastic .ui-icon-locked { background-position: -192px -96px; }
+_Trontastic .ui-icon-unlocked { background-position: -208px -96px; }
+_Trontastic .ui-icon-bookmark { background-position: -224px -96px; }
+_Trontastic .ui-icon-tag { background-position: -240px -96px; }
+_Trontastic .ui-icon-home { background-position: 0 -112px; }
+_Trontastic .ui-icon-flag { background-position: -16px -112px; }
+_Trontastic .ui-icon-calendar { background-position: -32px -112px; }
+_Trontastic .ui-icon-cart { background-position: -48px -112px; }
+_Trontastic .ui-icon-pencil { background-position: -64px -112px; }
+_Trontastic .ui-icon-clock { background-position: -80px -112px; }
+_Trontastic .ui-icon-disk { background-position: -96px -112px; }
+_Trontastic .ui-icon-calculator { background-position: -112px -112px; }
+_Trontastic .ui-icon-zoomin { background-position: -128px -112px; }
+_Trontastic .ui-icon-zoomout { background-position: -144px -112px; }
+_Trontastic .ui-icon-search { background-position: -160px -112px; }
+_Trontastic .ui-icon-wrench { background-position: -176px -112px; }
+_Trontastic .ui-icon-gear { background-position: -192px -112px; }
+_Trontastic .ui-icon-heart { background-position: -208px -112px; }
+_Trontastic .ui-icon-star { background-position: -224px -112px; }
+_Trontastic .ui-icon-link { background-position: -240px -112px; }
+_Trontastic .ui-icon-cancel { background-position: 0 -128px; }
+_Trontastic .ui-icon-plus { background-position: -16px -128px; }
+_Trontastic .ui-icon-plusthick { background-position: -32px -128px; }
+_Trontastic .ui-icon-minus { background-position: -48px -128px; }
+_Trontastic .ui-icon-minusthick { background-position: -64px -128px; }
+_Trontastic .ui-icon-close { background-position: -80px -128px; }
+_Trontastic .ui-icon-closethick { background-position: -96px -128px; }
+_Trontastic .ui-icon-key { background-position: -112px -128px; }
+_Trontastic .ui-icon-lightbulb { background-position: -128px -128px; }
+_Trontastic .ui-icon-scissors { background-position: -144px -128px; }
+_Trontastic .ui-icon-clipboard { background-position: -160px -128px; }
+_Trontastic .ui-icon-copy { background-position: -176px -128px; }
+_Trontastic .ui-icon-contact { background-position: -192px -128px; }
+_Trontastic .ui-icon-image { background-position: -208px -128px; }
+_Trontastic .ui-icon-video { background-position: -224px -128px; }
+_Trontastic .ui-icon-script { background-position: -240px -128px; }
+_Trontastic .ui-icon-alert { background-position: 0 -144px; }
+_Trontastic .ui-icon-info { background-position: -16px -144px; }
+_Trontastic .ui-icon-notice { background-position: -32px -144px; }
+_Trontastic .ui-icon-help { background-position: -48px -144px; }
+_Trontastic .ui-icon-check { background-position: -64px -144px; }
+_Trontastic .ui-icon-bullet { background-position: -80px -144px; }
+_Trontastic .ui-icon-radio-on { background-position: -96px -144px; }
+_Trontastic .ui-icon-radio-off { background-position: -112px -144px; }
+_Trontastic .ui-icon-pin-w { background-position: -128px -144px; }
+_Trontastic .ui-icon-pin-s { background-position: -144px -144px; }
+_Trontastic .ui-icon-play { background-position: 0 -160px; }
+_Trontastic .ui-icon-pause { background-position: -16px -160px; }
+_Trontastic .ui-icon-seek-next { background-position: -32px -160px; }
+_Trontastic .ui-icon-seek-prev { background-position: -48px -160px; }
+_Trontastic .ui-icon-seek-end { background-position: -64px -160px; }
+_Trontastic .ui-icon-seek-start { background-position: -80px -160px; }
+/* ui-icon-seek-first is deprecated, use ui-icon-seek-start instead */
+_Trontastic .ui-icon-seek-first { background-position: -80px -160px; }
+_Trontastic .ui-icon-stop { background-position: -96px -160px; }
+_Trontastic .ui-icon-eject { background-position: -112px -160px; }
+_Trontastic .ui-icon-volume-off { background-position: -128px -160px; }
+_Trontastic .ui-icon-volume-on { background-position: -144px -160px; }
+_Trontastic .ui-icon-power { background-position: 0 -176px; }
+_Trontastic .ui-icon-signal-diag { background-position: -16px -176px; }
+_Trontastic .ui-icon-signal { background-position: -32px -176px; }
+_Trontastic .ui-icon-battery-0 { background-position: -48px -176px; }
+_Trontastic .ui-icon-battery-1 { background-position: -64px -176px; }
+_Trontastic .ui-icon-battery-2 { background-position: -80px -176px; }
+_Trontastic .ui-icon-battery-3 { background-position: -96px -176px; }
+_Trontastic .ui-icon-circle-plus { background-position: 0 -192px; }
+_Trontastic .ui-icon-circle-minus { background-position: -16px -192px; }
+_Trontastic .ui-icon-circle-close { background-position: -32px -192px; }
+_Trontastic .ui-icon-circle-triangle-e { background-position: -48px -192px; }
+_Trontastic .ui-icon-circle-triangle-s { background-position: -64px -192px; }
+_Trontastic .ui-icon-circle-triangle-w { background-position: -80px -192px; }
+_Trontastic .ui-icon-circle-triangle-n { background-position: -96px -192px; }
+_Trontastic .ui-icon-circle-arrow-e { background-position: -112px -192px; }
+_Trontastic .ui-icon-circle-arrow-s { background-position: -128px -192px; }
+_Trontastic .ui-icon-circle-arrow-w { background-position: -144px -192px; }
+_Trontastic .ui-icon-circle-arrow-n { background-position: -160px -192px; }
+_Trontastic .ui-icon-circle-zoomin { background-position: -176px -192px; }
+_Trontastic .ui-icon-circle-zoomout { background-position: -192px -192px; }
+_Trontastic .ui-icon-circle-check { background-position: -208px -192px; }
+_Trontastic .ui-icon-circlesmall-plus { background-position: 0 -208px; }
+_Trontastic .ui-icon-circlesmall-minus { background-position: -16px -208px; }
+_Trontastic .ui-icon-circlesmall-close { background-position: -32px -208px; }
+_Trontastic .ui-icon-squaresmall-plus { background-position: -48px -208px; }
+_Trontastic .ui-icon-squaresmall-minus { background-position: -64px -208px; }
+_Trontastic .ui-icon-squaresmall-close { background-position: -80px -208px; }
+_Trontastic .ui-icon-grip-dotted-vertical { background-position: 0 -224px; }
+_Trontastic .ui-icon-grip-dotted-horizontal { background-position: -16px -224px; }
+_Trontastic .ui-icon-grip-solid-vertical { background-position: -32px -224px; }
+_Trontastic .ui-icon-grip-solid-horizontal { background-position: -48px -224px; }
+_Trontastic .ui-icon-gripsmall-diagonal-se { background-position: -64px -224px; }
+_Trontastic .ui-icon-grip-diagonal-se { background-position: -80px -224px; }
+
+
+/* Misc visuals
+----------------------------------*/
+
+/* Corner radius */
+_Trontastic .ui-corner-all,
+_Trontastic .ui-corner-top,
+_Trontastic .ui-corner-left,
+_Trontastic .ui-corner-tl {
+	border-top-left-radius: 6px;
+}
+_Trontastic .ui-corner-all,
+_Trontastic .ui-corner-top,
+_Trontastic .ui-corner-right,
+_Trontastic .ui-corner-tr {
+	border-top-right-radius: 6px;
+}
+_Trontastic .ui-corner-all,
+_Trontastic .ui-corner-bottom,
+_Trontastic .ui-corner-left,
+_Trontastic .ui-corner-bl {
+	border-bottom-left-radius: 6px;
+}
+_Trontastic .ui-corner-all,
+_Trontastic .ui-corner-bottom,
+_Trontastic .ui-corner-right,
+_Trontastic .ui-corner-br {
+	border-bottom-right-radius: 6px;
+}
+
+/* Overlays */
+_Trontastic .ui-widget-overlay {
+	background: #262626 url("images/ui-bg_diagonals-small_50_262626_40x40.png") 50% 50% repeat;
+	opacity: .3;
+	filter: Alpha(Opacity=30); /* support: IE8 */
+}
+_Trontastic .ui-widget-shadow {
+	-webkit-box-shadow: -6px -6px 6px #303030;
+	box-shadow: -6px -6px 6px #303030;
+}

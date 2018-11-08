@@ -1,0 +1,709 @@
+﻿@{
+    //Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="@Url.Content("~/Content/DataTable/jquery-ui.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/DataTable/dataTables.jqueryui.min.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/DataTable/DatatTableGrouping.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/bootstrap-toggle.min.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/ControlVehicular/Revista.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/chosen.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/bootstrap-datetimepicker.min.css")" rel="stylesheet" type="text/css" media="screen" />
+
+<style>
+    .printControls{
+        padding: 1px 5px; height: 20px;font-size: 9px;
+    }
+</style>
+
+<div style="text-align:right;" id="divUsuarioImpresion"></div>
+
+<div class="row" style="padding:0px 0px 0px 0px; font-size: 8px;">
+    <table class="table">
+        <thead>
+            <tr>
+                <th width="33%">UNIDAD</th>
+                <th width="33%">REVISTA</th>
+                <th width="33%">EVALUACIÓN</th>
+            </tr>
+        </thead>
+        <tbody style="font-size: 9px;">
+            <tr>
+                <td style="padding: 1px;"><div class="input-group input-group-sm">
+    <span style="padding: 1px 5px; height: 20px;font-size: 9px;" class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-bed"></i>Unidad</span>
+    <input style="padding: 1px 5px; height: 20px;font-size: 9px;" id="idUnidad" type="text" disabled class="form-control">
+</div> </td>
+                <td style="padding: 1px;"><div class="input-group input-group-sm">
+    <span style="padding: 1px 5px; height: 20px;font-size: 9px;" class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-calendar"></i>Inicia</span>
+    <input style="padding: 1px 5px; height: 20px;font-size: 9px;" id="FechaRevista" type="text" disabled class="form-control">
+</div></td>
+                <td style="padding: 1px;"><div class="input-group input-group-sm">
+    <span style="padding: 1px 5px; height: 20px;font-size: 9px;" class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user"></i>Inspector</span>
+    <input style="padding: 1px 5px; height: 20px;font-size: 9px;" id="Inspector" type="text" disabled class="printControls form-control" placeholder="" aria-describedby="sizing-addon1">
+</div></td>
+            </tr>
+            <tr>
+                <td style="padding: 1px;"><div class="input-group input-group-sm">
+    <span style="padding: 1px 5px; height: 20px;font-size: 9px;" class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-calendar"></i>Año</span>
+    <input style="padding: 1px 5px; height: 20px;font-size: 9px;" id="Anio" type="text" disabled class="form-control" placeholder="" aria-describedby="sizing-addon1">
+</div></td>
+                <td style="padding: 1px;"><div class="input-group input-group-sm">
+    <span style="padding: 1px 5px; height: 20px;font-size: 9px;" class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-calendar"></i>Vence</span>
+    <input style="padding: 1px 5px; height: 20px;font-size: 9px;" id="FechaVencimiento" type="text" disabled class="form-control" placeholder="" aria-describedby="sizing-addon1">
+</div></td>
+                <td style="padding: 1px;"><div class="input-group input-group-sm">
+    <span style="padding: 1px 5px; height: 20px;font-size: 9px;" class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-sort-by-order"></i>Puntaje</span>
+    <input style="padding: 1px 5px; height: 20px;font-size: 9px;" id="Evaluacion" type="text" disabled class="form-control" placeholder="" aria-describedby="sizing-addon1" style="font-weight: bold;">
+</div></td>
+            </tr>
+            <tr>
+                <td style="padding: 1px;"><div class="input-group input-group-sm">
+    <span style="padding: 1px 5px; height: 20px;font-size: 9px;" class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-map-marker"></i>Km Ult. Mnto.</span>
+    <input style="padding: 1px 5px; height: 20px;font-size: 9px;" id="KilometrajeManto" type="text" disabled class="form-control" placeholder="" aria-describedby="sizing-addon1">
+</div></td>
+                <td style="padding: 1px;"><div class="input-group input-group-sm">
+    <span style="padding: 1px 5px; height: 20px;font-size: 9px;" class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-globe"></i>Estación</span>
+    <input style="padding: 1px 5px; height: 20px;font-size: 9px;" id="idEstacion" type="text" disabled class="form-control">
+</div></td>
+                <td style="padding: 1px;"><div class="input-group input-group-sm">
+    <span style="padding: 1px 5px; height: 20px;font-size: 9px;" class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-exclamation-sign"></i>Criticos</span>
+    <input style="padding: 1px 5px;font-size: 9px;" id="PresentaCriticos" type='checkbox' data-size='small'>
+</div></td>
+            </tr>
+            <tr>
+                <td style="padding: 1px;"><div class="input-group input-group-sm">
+    <span style="padding: 1px 5px; height: 20px;font-size: 9px;" class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-flag"></i>Estacion</span>
+    <input style="padding: 1px 5px; height: 20px;font-size: 9px;" id="Estacion" type="text" disabled class="form-control" placeholder="" aria-describedby="sizing-addon1">
+</div></td>
+                <td style="padding: 1px;"><div class="input-group input-group-sm">
+    <span style="padding: 1px 5px; height: 20px;font-size: 9px;" class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-map-marker"></i>Kilometraje</span>
+    <input style="padding: 1px 5px; height: 20px;font-size: 9px;" id="Kilometraje" type="text" class="form-control" placeholder="" aria-describedby="sizing-addon1" onkeypress="return isNumberKey(event);">
+</div></td>
+                <td style="padding: 1px;"><div class="input-group input-group-sm">
+    <span style="padding: 1px 5px; height: 20px;font-size: 9px;" class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user"></i>Conductor Unidad</span>
+    <input style="padding: 1px 5px; height: 20px;font-size: 9px;" id="ConductorUnidad" type="text" disabled class="form-control" placeholder="" aria-describedby="sizing-addon1" style="font-weight: bold;">
+</div></td>
+            </tr>
+            <tr>
+                <td style="padding: 1px;"><div class="input-group input-group-sm">
+    <span style="padding: 1px 5px; height: 20px;font-size: 9px;" class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-bookmark"></i>División</span>
+    <input style="padding: 1px 5px; height: 20px;font-size: 9px;" id="Division" type="text" disabled class="form-control" placeholder="" aria-describedby="sizing-addon1">
+</div></td>
+                <td style="padding: 1px;"><div class="input-group input-group-sm">
+    <span style="padding: 1px 5px; height: 20px;font-size: 9px;" class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-info-sign"></i>Taximetro</span>
+    <input style="padding: 1px 5px; height: 20px;font-size: 9px;" id="Taximetro" type="text" class="form-control" placeholder="" aria-describedby="sizing-addon1">
+</div></td>
+                <td style="padding: 1px;"><div class="input-group input-group-sm">
+    <span style="padding: 1px 5px; height: 20px;font-size: 9px;" class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user"></i>Conductor Revista</span>
+    <input style="padding: 1px 5px; height: 20px;font-size: 9px;" id="ConductorRevista" type="text" disabled class="form-control" placeholder="" aria-describedby="sizing-addon1" style="font-weight: bold;">
+</div></td>
+            </tr>
+            <tr>
+                <td style="padding: 1px;"><div class="input-group input-group-sm">
+    <span style="padding: 1px 5px; height: 20px;font-size: 9px;" class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-briefcase"></i>Empresa</span>
+    <input style="padding: 1px 5px; height: 20px;font-size: 9px;" id="Empresa" type="text" disabled class="form-control" placeholder="" aria-describedby="sizing-addon1">
+</div></td>
+                <td style="padding: 1px;"><div class="input-group input-group-sm">
+    <span style="padding: 1px 5px; height: 20px;font-size: 9px;" class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user"></i>Otro Conductor</span>
+    <input style="padding: 1px 5px; font-size: 9px;" id="ConductorDiferente" type='checkbox' data-size='small'>
+</div></td>
+                <td style="padding: 1px;"><div id="divEstatus">
+</div></td>
+            </tr>
+            <tr>
+                <td style="padding: 1px;"><div class="input-group input-group-sm">
+    <span style="padding: 1px 5px; height: 20px;font-size: 9px;" class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user"></i>Conductor</span>
+    <input style="padding: 1px 5px; height: 20px;font-size: 9px;" id="Conductor" type="text" disabled class="form-control" placeholder="" aria-describedby="sizing-addon1">
+</div></td>
+                <td style="padding: 1px;"><div class="input-group input-group-sm">
+    <span style="padding: 1px 5px; height: 20px;font-size: 9px;" class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user"></i>Nombre</span>
+    <input style="padding: 1px 5px; height: 20px;font-size: 9px;" id="NombreConductorDiferente" type="text" class="form-control" placeholder="" aria-describedby="sizing-addon1">
+</div></td>
+                <td style="padding: 1px;"><div id="divEstatusUnidad">
+</div></td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+
+<div class="row">
+            <div class="col-md-12" id="divTableRevista">
+            </div>
+</div>
+
+
+
+
+
+
+@section Scripts {
+
+    @Scripts.Render("~/Scripts/jquery.dataTables.min.js")
+    @Scripts.Render("~/Scripts/dataTables.jqueryui.min.js")
+    @Scripts.Render("~/Scripts/jquery.dataTables.rowGrouping.js")
+    @Scripts.Render("~/Scripts/bootstrap-toggle.min.js")
+    @Scripts.Render("~/Scripts/chosen.jquery.js")
+    @Scripts.Render("~/Scripts/jasny-bootstrap.js")
+    @Scripts.Render("~/Scripts/bootstrap-datetimepicker.js")
+    @Scripts.Render("~/Scripts/locales/bootstrap-datetimepicker.fr.js")
+    @Scripts.Render("~/Scripts/GeneralesJS/signature.js")
+    @Scripts.Render("~/Scripts/GeneralesJS/signature_pad.js")
+    @*@Scripts.Render("~/Scripts/GeneralesJS/app.js")*@
+
+<script type="text/javascript">
+    @*@if (Session["Usuario_ID"] == null) {
+        Response.Redirect(@Url.Action("Login", "Account"));
+    }*@
+    var valUsuario_id = 'revista.piloto';//"@Session["Usuario_ID"]";
+    var _RevistaUnidad_ID = parseInt("@ViewBag._RevistaUnidad_ID");
+    var _Unidad_ID = parseInt("@ViewBag._Unidad_ID");
+
+    var rutaConsulta = "@Url.Action("obtieneDetalleAtributosRevista", "Consultas")";
+    var revistaUnidades_ID = _RevistaUnidad_ID;
+    var revistaUnidadesDetalle_ID;
+    var spanCantidadEvidencia;
+    var Estatus_ID;
+    var FechaActual = new Date().toISOString().substring(0, 10);
+    var f = new Date();
+
+
+    $(document).ready(function () {
+        console.log(f.getUTCHours());
+        //mostrarLinkFormato();
+        $('#divUsuarioImpresion').html('Usuario de Impresión: ' + valUsuario_id + '         Fecha: ' + FechaActual + '  '+ f.getHours() + ":" + f.getMinutes());
+
+        $('.form_date').datetimepicker({
+            language: 'es',
+            setStartDate: FechaActual,
+            todayBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            minView: 2,
+            forceParse: 0
+        });
+        $('.form_date').datetimepicker('setStartDate', FechaActual);
+        desHabilitaRevista(true);
+
+        //Si existe un valor por QueryString carga el dato
+        if (revistaUnidades_ID != 0) {
+            $('#cmbUnidades').val(_Unidad_ID);
+            $('#cmbUnidades').trigger("chosen:updated");
+            obtieneInformacionRevista();
+        }
+
+
+        
+    });
+
+
+    function conexionInternet() {
+        if (navigator.onLine == false) {
+            muestraMensaje('modalMensaje', 'divMsj', 'No cuenta con conexión a Internet.');
+            return false;
+        }
+    }
+
+    //Muestra mensaje modal bootstrap por ID modal, ID Div donde mostrara mensaje y texto de mensaje
+    function muestraFirma() {
+        var urlFirma = '../RevistaEvidencia/' + revistaUnidades_ID + '/Firma_' + revistaUnidades_ID + '.jpg';
+        if (!fileExists(urlFirma)) {
+            muestraMensaje('modalMensaje', 'divMsj', 'Sin Firma para mostrar...');
+            return false;
+        }
+
+        var canvas = document.getElementById('newSignature');
+        canvas.width = canvas.width;
+        canvas.height = canvas.height;
+        $('#modalFirma').modal({ backdrop: 'static', keyboard: false, show: true });
+        loadFirma(urlFirma);
+    }
+
+    //Carga Firma en Canvas
+    function loadFirma(urlFirma) {
+        signatureClear();
+
+        context = canvas.getContext('2d');
+        base_image = new Image();
+        base_image.src = urlFirma;
+        context.drawImage(base_image, 0, 0);
+        console.log('Mostrando Imagen de Firma' + revistaUnidades_ID);
+    }
+
+    function fileExists(url) {
+        if (url) {
+            var req = new XMLHttpRequest();
+            req.open('GET', url, false);
+            req.send();
+            return req.status == 200;
+        } else {
+            return false;
+        }
+    }
+
+    //Asigna Id de Click detalle cuando abre modal
+    $(document).on("click", ".open-Modal", function () {
+        revistaUnidadesDetalle_ID = $(this).data('id');
+        spanCantidadEvidencia = $(this).find('span');
+        obtieneRevistaDetalleEvidencia(revistaUnidadesDetalle_ID);
+    });
+
+
+
+    //Obtiene Evidencia Imagenes.
+    function obtieneRevistaDetalleEvidencia(_revistaUnidadesDetalle_ID) {
+        var _rutaEvidencia = "@Url.Action("ObtieneRevistaDetalleEvidencia", "Ejecutor")";
+        $("#snapshot").val('');
+        conexionInternet();
+        $.ajax({
+            type: "POST",
+            url: _rutaEvidencia,
+            cache: false,
+            dataType: 'json',
+            data: { revistaUnidadesDetalle_ID: _revistaUnidadesDetalle_ID },
+            success: createCarrusel,
+            error: function (xhr, status, errormsg) {
+                muestraMensaje('modalMensaje', 'divMsj', errormsg);
+            }
+        });
+    }
+
+    //Crea Carrusel de imagenes
+    function createCarrusel(json, status, xhr) {
+        $("#divInCarrusel").html('');
+        var obj = JSON.parse(json);
+
+        //Limpiar div contenedor
+        var sDivCarrusel = '<div id="myCarousel" class="carousel slide" data-ride="carousel">';
+        var sDivIndicators = '<ol class="carousel-indicators">';
+        var sDivImagesCarrusel = '<div class="carousel-inner" role="listbox">';
+        var contadorEvidencia = 0;
+        for (var i = 0; i < obj.length; i++) {
+            //drawRow(tbl, obj[i]);
+            if (i == 0) {
+                sDivIndicators += '<li data-target="#myCarousel" data-slide-to="' + i + '" class="active"></li>'; //obj[i]
+
+                sDivImagesCarrusel += '<div class="item active">' +
+                                          '<img src="' + obj[i].Path + '" >' +
+                                      '</div>';
+            } else {
+                sDivIndicators += '<li data-target="#myCarousel" data-slide-to="' + i + '" ></li>'; //obj[i]
+
+                sDivImagesCarrusel += '<div class="item">' +
+                                          '<img src="' + obj[i].Path + '">' +
+                                      '</div>';
+            }
+            contadorEvidencia++;
+        }
+        sDivIndicators += '</ol>';
+        sDivImagesCarrusel += '</div>';
+        var sControls = '<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"> ' +
+                            '<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> ' +
+                            '<span class="sr-only">Previous</span> ' +
+                        '</a> ' +
+                        '<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> ' +
+                            '<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> ' +
+                            '<span class="sr-only">Next</span> ' +
+                        '</a>';
+
+        sDivCarrusel += sDivIndicators +
+                        sDivImagesCarrusel +
+                        sControls +
+                        '</div>';
+
+        $("#divInCarrusel").html(sDivCarrusel);
+        spanCantidadEvidencia.html(contadorEvidencia);
+    }
+
+
+    //Recargar Informacion de Revista vigente
+    function obtieneInformacionRevista() {
+        desHabilitaRevista(true);
+        limpiarControles();
+
+        getInformacionUnidad(_Unidad_ID, revistaUnidades_ID);
+        ConsultarCompromisos(_Unidad_ID);
+        $("#cmbUnidades").attr("disabled", "disabled").trigger('chosen:updated');
+    }
+
+
+    //Muestra mensaje modal bootstrap por ID modal, ID Div donde mostrara mensaje y texto de mensaje
+    function muestraMensaje(idModal, idDivMensaje, mensaje) {
+        $("#" + idDivMensaje).html(mensaje);
+        $('#' + idModal).modal('show');
+    }
+
+    // valida solo caracteres de tipo numero
+    function isNumberKey(evt) {
+        var charCode = (evt.which) ? evt.which : event.keyCode
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+        return true;
+    }
+
+    //Recarga control tipo chosen
+    function reloadChosen(idSelect) {
+        $("#" + idSelect).chosen();
+        $("#" + idSelect).append('<option selected="selected" value="-1">-Seleccione-</option>');
+        $("#" + idSelect).trigger("chosen:updated");
+    }
+
+    //Controles de Revista Habilitar/Deshabilitar
+    function desHabilitaRevista(deshabilita) {
+        if (deshabilita == true) {
+            $("#Kilometraje").attr('disabled', 'disabled');
+            $("#Taximetro").attr('disabled', 'disabled');
+            $("#NombreConductorDiferente").attr('disabled', 'disabled');
+        } else {
+            $("#Kilometraje").removeAttr('disabled');
+            $("#Taximetro").removeAttr('disabled');
+            $("#NombreConductorDiferente").removeAttr('disabled');
+        }
+    }
+
+    //Limpia Controles.
+    function limpiarControles() {
+        $("#divInCarrusel").html('');
+        $("#divEstatus").html('');
+        $("#divEstatusUnidad").html('');
+        $("#divTableRevista").html('');
+        $('input').each(
+            function (index) {
+                var input = $(this);
+                if (input.attr('type') == 'text') {
+                    input.val('');
+                }
+            }
+        );
+    }
+
+
+    // Obtiene la informacion de la unidad
+    function getInformacionUnidad(valunidad_id, valrevistaUnidades_id) {
+        if (!$.isNumeric(valunidad_id) || valunidad_id == "-1") {
+            muestraMensaje('modalMensaje', 'divMsj', 'Seleccione Unidad o Busque por # Económico.');
+            $('#cmbUnidades').focus();
+            return false;
+        }
+        var rutaConsultaGeneral = "@Url.Action("obtieneInformacionRevistaUnidad", "ConsultasGeneral")";
+        conexionInternet();
+        $.ajax({
+            type: "POST",
+            url: rutaConsultaGeneral,
+            cache: false,
+            dataType: 'json',
+            data: { unidad_id: valunidad_id, revistaUnidades_id: valrevistaUnidades_id },
+            success: function (data) {
+                var dataJson = JSON.parse(data);
+
+                desHabilitaRevista(false);
+                if (dataJson.length == 0) {
+                    muestraMensaje('modalMensaje', 'divMsj', 'La unidad no tiene Revista PROGRAMADA.');
+                    return false;
+                }
+                $.each(dataJson, function (idx, item) {
+                    var PuntajeMinimo = parseInt(item.PuntajeMinimo);
+                    var Evaluacion = parseInt(item.Evaluacion);
+                    esPuntajeMinimo(Evaluacion, PuntajeMinimo);
+                    $('#idUnidad').val(item.NumeroEconomico + ' / ' + item.Placas + ' / ' + item.Modelo);
+
+                    $('#Anio').val(item.Anio);
+                    $('#Division').val(item.Division);
+                    $('#FechaRevista').val(item.FechaRevista);
+                    $('#FechaVencimiento').val(item.FechaVencimiento);
+                    $('#Evaluacion').val(item.Evaluacion);
+                    $('#divTotalPuntaje').html("PUNTAJE OBTENIDO: <strong>" + item.Evaluacion + "</strong>");
+
+                    $('#Empresa').val(item.Empresa);
+                    $('#Estacion').val(item.Estacion);
+
+                    $('#idEstacion').val(item.RevistaEstacion);
+
+                    $('#Taximetro').val(item.Taximetro);
+                    $('#Kilometraje').val(item.Kilometraje);
+                    $('#KilometrajeManto').val(item.KilometrajeManto);
+                    if (item.Criticos > 0) {
+                        $("#PresentaCriticos").attr('checked', true);
+                    } else {
+                        $("#PresentaCriticos").attr('checked', false);
+                    }
+                    $('#Inspector').val(item.Usuario_ID);
+                    $('#Conductor').val(item.Conductor);
+                    if (item.EsConductorDiferente == "1") {
+                        $("#ConductorDiferente").attr('checked', true);
+                        $('#NombreConductorDiferente').val('');
+                        $("#NombreConductorDiferente").removeAttr('disabled');
+                    } else {
+                        $("#ConductorDiferente").attr('checked', false);
+                        $("#NombreConductorDiferente").attr('disabled', 'disabled');
+                    }
+                    $('#NombreConductorDiferente').val(item.ConductorDiferente);
+
+                    // Conductores Información
+                    $('#ConductorUnidad').val(item.Conductor);
+                    $('#ConductorRevista').val(item.ConductorDiferente);
+
+                    //Color de Estatus
+                    var classEstatus = 'success';
+                    if (item.Estatus_ID == "3" || item.Estatus_ID == "6" || item.Estatus_ID == "7") {
+                        classEstatus = 'danger';
+                    }
+                    $("#divEstatus").html('<h4> Revista: <span class="label label-' + classEstatus + '">' + item.Estatus.toUpperCase() + '</span></h4>');
+
+                    var classEstatusUnidad = 'success';
+                    var Estatus = item.EstatusUnidad.trim();
+                    switch (Estatus) {
+                        case "DISPONIBLE":
+                            classEstatusUnidad = 'info';
+                            break;
+                        case "CIRCULANDO":
+                            classEstatusUnidad = 'success';
+                            break;
+                        case "BAJA":
+                            classEstatusUnidad = 'danger';
+                            break;
+                        case "INACTIVA":
+                            classEstatusUnidad = 'warning';
+                            break;
+                    }
+                    $("#divEstatusUnidad").html('<h4> Unidad: <span class="label label-' + classEstatusUnidad + '">' + item.EstatusUnidad.toUpperCase() + '</span></h4>');
+
+                    desHabilitaRevista(true);
+                    Estatus_ID = parseInt(item.Estatus_ID);
+                    revistaUnidades_ID = parseInt(item.RevistaUnidades_ID);
+                });
+                //Obtiene el detalle de Atributos a calificar.
+                ConsultarAtributos(valunidad_id, revistaUnidades_ID, valUsuario_id);
+                $('#cmbEstaciones').trigger('chosen:activate');
+            },
+            error: function (xhr, status, errormsg) {
+                muestraMensaje('modalMensaje', 'divMsj', errormsg);
+            }
+        });
+    }
+
+    //Se consultan los atributos de la revista programada
+    function ConsultarAtributos(varunidad_id, revistaUnidades_ID, valusuario_id) {
+        conexionInternet();
+        $.ajax({
+            type: "POST",
+            url: rutaConsulta,
+            cache: false,
+            dataType: 'json',
+            data: { unidad_id: varunidad_id, revistaUnidades_id: revistaUnidades_ID, usuario_id: valusuario_id },
+            success: createGrid,
+            error: function (xhr, status, errormsg) {
+                muestraMensaje('modalMensaje', 'divMsj', errormsg);
+            }
+        });
+    }
+
+    //Creacion de tabla Revista
+    function createGrid(json, status, xhr) {
+        var obj = JSON.parse(json);
+        createTableHtml('RevistaDataTable', 'divTableRevista')
+
+        var tbl = $('#RevistaDataTable');
+        for (var i = 0; i < obj.length; i++) {
+            drawRow(tbl, obj[i]);
+        }
+
+        window.print();
+    }
+
+
+    //Obtiene Informacion de Compromisos para la unidad
+    function ConsultarCompromisos(valunidad_id) {
+        var rutaCompromisos = "@Url.Action("ObtieneUnidadCompromisos", "Ejecutor")";
+        conexionInternet();
+        $.ajax({
+            type: "POST",
+            url: rutaCompromisos,
+            cache: false,
+            dataType: 'json',
+            data: { unidad_ID: valunidad_id },
+            success: creaTablacompromisos,
+            error: function (xhr, status, errormsg) {
+                muestraMensaje('modalMensaje', 'divMsj', errormsg);
+            }
+        });
+
+    }
+
+    // Crea Tabla Compromisos
+    function creaTablacompromisos(json, status, xhr) {
+        var objJson = JSON.parse(json);
+        var colsHead = ["Compromiso", "Fecha Compromiso", "Captura", "Fecha Concluido", "Usuario", "Paro de Motor", "Cumplido"];
+        var colsName = ["Compromiso", "FechaCompromiso", "FechaCaptura", "FechaConcluido", "Usuario_ID", "RequiereParo", "Activo"];
+        $("#divPlanEjecucion").html('');
+        HeadTablacompromisos("tableEjecuccion", colsHead, "divPlanEjecucion");
+        RowsTablacompromisos("tableEjecuccion", objJson, colsName);
+    }
+
+    //Tabla HTML dinamic
+    function HeadTablacompromisos(idTable, columnsName, divIdCreateIn) {
+        var fLen, i;
+        fLen = columnsName.length;
+        textTable = '<table class="table" style="background-color:white;font-size:10px;" id="' + idTable + '" >' +
+                        '<thead class="thead">' +
+                        '<tr>';
+        for (i = 0; i < fLen; i++) {
+            textTable += "<th>" + columnsName[i] + "</th>";
+        }
+        textTable += '</tr>' +
+                     '</thead>' +
+                    '</table>';
+        $("#" + divIdCreateIn).html(textTable);
+    }
+
+    //Create RowsTable
+    function RowsTablacompromisos(idTable, jsonData, columnsName) {
+        var tbl = $('#' + idTable);
+
+        //Recorremos el Json (Datos)
+        for (var i = 0; i < jsonData.length; i++) {
+            var textRow;
+            var row = $("<tr />");
+
+            //Recorremos el aarray de columnas
+            var RevistaCompromiso_ID = jsonData[i].RevistaCompromiso_ID;
+            var check = (jsonData[i].Activo == "1" ? '' : 'checked');
+            var checkDisable = (jsonData[i].Activo == "0" ? ' disabled = "disabled" ' : '');
+
+            for (var ii = 0; ii < columnsName.length; ii++) {
+                if (columnsName[ii] == "Activo") {
+                    textRow = '<td><input type="checkbox" id="checkboxC_' + RevistaCompromiso_ID + '" ' + check + checkDisable + ' onchange="ActualizarCompromiso(' + RevistaCompromiso_ID + ');" data-size="small" data-onstyle="success" data-offstyle="danger" data-style="slow" data-toggle="toggle" data-on="<i class=&#039;glyphicon glyphicon-ok&#039; ></i>" data-off="<i class=&#039;glyphicon glyphicon-remove&#039;></i>"> </td>';
+                } else {
+                    if (columnsName[ii] == "RequiereParo") {
+                        textRow = "<td>" + (jsonData[i][columnsName[ii]] == '1' ? 'SI' : 'NO') + "</td>";
+                    } else {
+                        textRow = "<td>" + jsonData[i][columnsName[ii]] + "</td>";
+                    }
+
+                }
+                row.append($(textRow));
+            }
+            row.appendTo(tbl);
+        }
+    }
+
+    // Crea encabezado de tabla HTML
+    function createTableHtml(idTable, idDiv) {
+        var table = '<table id="' + idTable + '" align="center" width="80%">' +
+                        '<thead style="font-size:8px;">' +
+                        '<tr>' +
+                            '<th width="25%">CLASIFICACIÓN</th>' +
+                            '<th width="30%">ATRIBUTO</th>' +
+                            '<th width="10%">PUNTAJE</th>' +
+                            '<th width="10%">EVALUACIÓN</th>' +
+                            '<th width="10%">CRITICO</th>' +
+                            '<th width="15%">OBSERVACIONES</th>' +
+                        '</tr>' +
+                        '</thead>' +
+                    '</table>';
+        $("#" + idDiv).html(table);
+    }
+
+    //Crea renglon
+    function drawRow(idTable, rowData) {
+        var row = $("<tr />")
+        var Detalle_ID = rowData.RevistaUnidadesDetalle_ID;
+        var suspenClass = (rowData.Critico == "1" ? 'SI' : 'NO');
+        var check = (rowData.Evaluacion == "1" ? 'checked' : '');
+        var checkDisable = ' disabled = "disabled" ';
+        var textarDisable = ' disabled ';
+        var RequiereEvidencia = (rowData.RequiereEvidenciaFisica == "1" ? '<a data-toggle="modal" data-id="' + Detalle_ID + '" href="#modalEvidencia" class="open-Modal btn-sm btn-info"><i class="glyphicon glyphicon-camera"></i><span class="badge"> ' + rowData.EvidenciaTotal + ' </span> </a>' : '');
+
+        var Evaluacion = rowData.Evaluacion;
+        row.append($("<td style='font-size:8px;'>" + rowData.Orden + ".- " + rowData.Clasificacion + "</td>"));
+        row.append($("<td style='font-size:8px;'>" + rowData.Atributo + "</td>"));
+        row.append($("<td style='text-align:center; font-size:8px;'>" + rowData.Puntaje + "</td>"));
+        row.append($('<td style="text-align:center; font-size:8px;"><input type="checkbox" id="checkbox_' + Detalle_ID + '" ' + check + checkDisable + ' onchange="asignaEventoEvaluar(' + Detalle_ID + '); return false;" data-size="small" data-onstyle="success" data-offstyle="danger" data-style="ios slow" data-toggle="toggle" data-on="<i class=&#039;glyphicon glyphicon-ok&#039; ></i>" data-off="<i class=&#039;glyphicon glyphicon-remove&#039;></i>"> </td>'));
+        row.append($("<td style='text-align:center;font-size:8px;'>" + suspenClass + "</td>"));
+        row.append($("<td> <textarea style='font-size:8px;' " + textarDisable + " id='textarea_" + Detalle_ID + "' rows='1'> " + rowData.Observaciones + "</textarea> </td>"));
+
+        row.appendTo(idTable);
+    }
+
+
+    //Valida y colorea el textbox si no cubre el minimo de puntos
+    function esPuntajeMinimo(Evaluacion, PuntajeMinimo) {
+        if (Evaluacion < PuntajeMinimo) {
+            $("#Evaluacion").css({ 'background-image': '-webkit-linear-gradient(top,#f2dede 0,#e7c3c3 100%)' });
+        } else {
+            $("#Evaluacion").css({ 'background-image': '-webkit-linear-gradient(top,#dff0d8 0,#c8e5bc 100%)' });
+        }
+    }
+
+
+    function reloadTable(idTable) {
+        if ($.fn.DataTable.isDataTable("#" + idTable)) {
+            $("#" + idTable).dataTable();
+        } else {
+            $("#" + idTable).dataTable({
+                paginate: false,
+                info: false,
+                "sScrollX": "100%",
+                "sScrollXInner": "100%",
+                "lengthMenu": [[-1, 50], ["Todo", 50]],
+                "language": {
+                    "lengthMenu": "<i class='glyphicon glyphicon-sort-by-attributes'></i> Mostrar _MENU_ Filas por página", // icono bootstrsp
+                    "zeroRecords": "Sin resultados para mostrar...",
+                    "info": "<i class='glyphicon glyphicon-list-alt'></i> Página _PAGE_ de _PAGES_",  //icono bootstrap
+                    "infoEmpty": "Sin registros disponibles",
+                    "infoFiltered": "(filtered from _MAX_ total records)",
+                    "search": "<strong>Buscar</strong> <i class='glyphicon glyphicon-search'></i>", // icono buscar
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "<i class='glyphicon glyphicon-chevron-right'></i>",  //Siguiente
+                        "previous": "<i class='glyphicon glyphicon-chevron-left'></i>" //Anterior
+                    }
+                }
+            }).rowGrouping({
+                bExpandableGrouping: true,
+                iGroupingColumnIndex: 0
+            });
+        }
+    }
+
+    //Activa DataTable para GridView Jquery
+    function aplicarDataTableJquery(idTabla) {
+        if ($.fn.DataTable.isDataTable("#" + idTabla)) {
+            $("#" + idTabla).dataTable();
+        } else {
+            var oTable = $("#" + idTabla).dataTable({
+                paginate: false,
+                info: false,
+                "sScrollX": "100%",
+                "sScrollXInner": "100%",
+                "lengthMenu": [[-1, 50], ["Todo", 50]],
+                "language": {
+                    "lengthMenu": "<i class='glyphicon glyphicon-sort-by-attributes'></i> Mostrar _MENU_ Filas por página", // icono bootstrsp
+                    "zeroRecords": "Sin resultados para mostrar...",
+                    "info": "<i class='glyphicon glyphicon-list-alt'></i> Página _PAGE_ de _PAGES_",  //icono bootstrap
+                    "infoEmpty": "Sin registros disponibles",
+                    "infoFiltered": "(filtered from _MAX_ total records)",
+                    "search": "<strong>Buscar</strong> <i class='glyphicon glyphicon-search'></i>", // icono buscar
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "<i class='glyphicon glyphicon-chevron-right'></i>",  //Siguiente
+                        "previous": "<i class='glyphicon glyphicon-chevron-left'></i>" //Anterior
+                    }
+                }
+            });
+        }
+    }
+
+
+
+</script>
+
+}

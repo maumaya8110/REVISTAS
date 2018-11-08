@@ -1,0 +1,2270 @@
+﻿@{
+    ViewBag.Title = "Ejecución de Revista";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="@Url.Content("~/Content/DataTable/jquery-ui.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/DataTable/dataTables.jqueryui.min.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/DataTable/DatatTableGrouping.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/bootstrap-toggle.min.css")" rel="stylesheet" type="text/css" media="screen" />
+
+@*<script src="~/Scripts/bootstrap-toggle.min.js"></script>
+<a href="~/Scripts/bootstrap-toggle.min.js.map">~/Scripts/bootstrap-toggle.min.js.map</a>*@
+<link href="@Url.Content("~/Content/ControlVehicular/Revista.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/chosen.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/bootstrap-datetimepicker.min.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/ControlVehicular/signature-pad.css")" rel="stylesheet" type="text/css" media="screen" />
+
+<link href="@Url.Content("~/Content/Select2/select2.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/select2-bootstrap.css")" rel="stylesheet" type="text/css" media="screen" />
+
+<link href="~/Content/select2-bootstrap.css" rel="stylesheet" />
+
+
+
+
+<style>
+    .toggle.ios, .toggle-on.ios, .toggle-off.ios {
+        border-radius: 20px;
+    }
+
+        .toggle.ios .toggle-handle {
+            border-radius: 20px;
+        }
+
+    .wizard {
+        margin: 10px auto;
+        background: #fff;
+    }
+
+        .wizard .nav-tabs {
+            position: relative;
+            margin: 10px auto;
+            margin-bottom: 0;
+            border-bottom-color: #e0e0e0;
+        }
+
+        .wizard > div.wizard-inner {
+            position: relative;
+        }
+
+    .connecting-line {
+        height: 2px;
+        background: #e0e0e0;
+        position: absolute;
+        width: 80%;
+        margin: 0 auto;
+        left: 0;
+        right: 0;
+        top: 50%;
+        z-index: 1;
+    }
+
+    .wizard .nav-tabs > li.active > a, .wizard .nav-tabs > li.active > a:hover, .wizard .nav-tabs > li.active > a:focus {
+        color: #555555;
+        cursor: default;
+        border: 0;
+        border-bottom-color: transparent;
+    }
+
+    span.round-tab {
+        width: 70px;
+        height: 70px;
+        line-height: 70px;
+        display: inline-block;
+        border-radius: 100px;
+        background: #fff;
+        border: 2px solid #e0e0e0;
+        z-index: 2;
+        position: absolute;
+        left: 0;
+        text-align: center;
+        font-size: 25px;
+    }
+
+        span.round-tab i {
+            color: #555555;
+        }
+
+    .wizard li.active span.round-tab {
+        background: #fff;
+        border: 2px solid #5bc0de;
+    }
+
+        .wizard li.active span.round-tab i {
+            color: #5bc0de;
+        }
+
+    span.round-tab:hover {
+        color: #333;
+        border: 2px solid #333;
+    }
+
+    .wizard .nav-tabs > li {
+        width: 20%;
+    }
+
+    .wizard li:after {
+        content: " ";
+        position: absolute;
+        left: 46%;
+        opacity: 0;
+        margin: 0 auto;
+        bottom: 0px;
+        border: 5px solid transparent;
+        border-bottom-color: #5bc0de;
+        transition: 0.1s ease-in-out;
+    }
+
+    .wizard li.active:after {
+        content: " ";
+        position: absolute;
+        left: 46%;
+        opacity: 1;
+        margin: 0 auto;
+        bottom: 0px;
+        border: 10px solid transparent;
+        border-bottom-color: #5bc0de;
+    }
+
+    .wizard .nav-tabs > li a {
+        width: 70px;
+        height: 70px;
+        margin: 20px auto;
+        border-radius: 100%;
+        padding: 0;
+    }
+
+        .wizard .nav-tabs > li a:hover {
+            background: transparent;
+        }
+
+    .wizard .tab-pane {
+        position: relative;
+        padding-top: 2x;
+    }
+
+    .wizard h3 {
+        margin-top: 0;
+    }
+
+    /*media( max-width : 585px ) {*/
+
+    .wizard {
+        width: 100%;
+        height: auto !important;
+    }
+
+    span.round-tab {
+        font-size: 16px;
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+    }
+
+    .wizard .nav-tabs > li a {
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+    }
+
+    .wizard li.active:after {
+        content: " ";
+        position: absolute;
+        left: 35%;
+    }
+
+    .no-js #loader {
+        display: none;
+    }
+
+    .js #loader {
+        display: block;
+        position: absolute;
+        left: 100px;
+        top: 0;
+    }
+
+    .se-pre-con {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: url(../Images/loadingRubic.gif) center no-repeat #fff;
+    }
+
+    .se-text {
+        position: absolute;
+        left: 47%;
+        top: 54%;
+        z-index: 9999;
+    }
+</style>
+
+<h4>
+    <span class="label label-default">@ViewBag.Title</span>
+</h4>
+
+
+
+
+<div class="wizard">
+    <div class="wizard-inner">
+
+        <div class="connecting-line"></div>
+        <ul class="nav nav-tabs" role="tablist">
+            <li id="liUnidad" role="presentation" class="active">
+                <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="Unidad">
+                    <span class="round-tab">
+                        <i class="glyphicon glyphicon-bed"></i>
+                    </span>
+                </a>
+            </li>
+
+            <li id="liRevista" role="presentation" class="disabled">
+                <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="Revista">
+                    <span class="round-tab">
+                        <i class="glyphicon glyphicon-pencil"></i>
+                    </span>
+                </a>
+            </li>
+
+            <li id="liPuntos" role="presentation" class="disabled">
+                <a href="#step3" data-toggle="tab" aria-controls="step3" role="tab" title="Ejecución">
+                    <span class="round-tab">
+                        <i class="glyphicon glyphicon-edit"></i>
+                    </span>
+                </a>
+            </li>
+
+            <li id="liCompromisos" role="presentation" class="disabled">
+                <a href="#Compromisos" data-toggle="tab" aria-controls="complete" role="tab" title="Plan de Acción">
+                    <span class="round-tab">
+                        <i class="glyphicon glyphicon-cog"></i>
+                    </span>
+                </a>
+            </li>
+
+            <li id="liEvaluacion" role="presentation" class="disabled">
+                <a href="#complete" data-toggle="tab" aria-controls="complete" role="tab" title="Evaluación">
+                    <span class="round-tab">
+                        <i class="glyphicon glyphicon-ok"></i>
+                    </span>
+                </a>
+            </li>
+
+        </ul>
+    </div>
+
+    <form role="form">
+        <div class="tab-content">
+
+            <div class="row" style="text-align:center;">
+                <div class="col-sm-6">
+                    <span id="spnUnidad"></span>
+                </div>
+                <div class="col-sm-6">
+                    <span id="spnPeriodo"></span>
+                </div>
+            </div>
+            <div class="row" style="text-align:center;">
+                <div class="col-sm-6">
+                </div>
+                <div class="col-sm-6">
+                    <span id="spnFin"></span>
+                </div>
+            </div>
+
+            <div class="tab-pane active" role="tabpanel" id="step1">
+                <h4>Unidad</h4>
+
+                <p><strong>Paso 1:</strong> Seleccione la Unidad a Evaluar.</p>
+                <div class="row">
+                    <div class="col-lg-3"></div>
+                    <div class="col-lg-6">
+                        <div class="panel panel-default" style="background:#c8e5bc; box-shadow:0 20px 25px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important; border-radius: 15px 50px;">
+                            <div class="panel-body" style="padding:15px;">
+
+                                <div id="divEstatus2" style="text-align:right;">
+                                </div>
+
+                                <span class="label label-success">Unidad</span>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-bed"></i>Num. Económico</span>
+                                            @*@Html.DropDownList("cmbUnidades", (SelectList)ViewBag.Unidades)*@
+                                            @Html.DropDownList("cmbUnidades", (SelectList) ViewBag.Unidades)
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-calendar"></i>Año</span>
+                                            <input id="Anio" type="text" disabled class="form-control" placeholder="" aria-describedby="sizing-addon1">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-map-marker"></i>Km Ult. Mnto.</span>
+                                            <input id="KilometrajeManto" type="text" disabled class="form-control" placeholder="" aria-describedby="sizing-addon1">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-flag"></i>Estacion</span>
+                                            <input id="Estacion" type="text" disabled class="form-control" placeholder="" aria-describedby="sizing-addon1">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-bookmark"></i>División</span>
+                                            <input id="Division" type="text" disabled class="form-control" placeholder="" aria-describedby="sizing-addon1">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-briefcase"></i>Empresa</span>
+                                            <input id="Empresa" type="text" disabled class="form-control" placeholder="" aria-describedby="sizing-addon1">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user"></i>Conductor</span>
+                                            <input id="Conductor" type="text" disabled class="form-control" placeholder="" aria-describedby="sizing-addon1">
+                                            @*@Html.DropDownList("cmbConductores", (SelectList)ViewBag.Conductores)*@
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3"></div>
+                </div>
+
+                <ul class="list-inline pull-right-njl">
+                    <li><button id="next1" type="button" class="btn btn-warning btn-lg next-step"> <i class="glyphicon glyphicon-arrow-right"></i></button></li>
+                </ul>
+            </div>
+
+            <div class="tab-pane" role="tabpanel" id="step2">
+                <h4>Revista</h4>
+                <p><strong>Paso 2:</strong> Ingrese la Información General.</p>
+
+                <div class="row">
+                    <div class="col-lg-3"></div>
+                    <div class="col-lg-6">
+                        <div class="panel panel-default" style="background:#b9def0; box-shadow:0 20px 25px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important; border-radius: 15px 50px;">
+                            <div class="panel-body" style="padding:15px;">
+
+                                <span class="label label-info">Revista</span>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-calendar"></i>Inicia</span>
+                                            <input id="FechaRevista" type="text" disabled class="form-control" placeholder="" aria-describedby="sizing-addon1">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-calendar"></i>Vence</span>
+                                            <input id="FechaVencimiento" type="text" disabled class="form-control" placeholder="" aria-describedby="sizing-addon1">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-globe"></i>Estación</span>
+                                            @Html.DropDownList("cmbEstaciones", (SelectList) ViewBag.Estaciones)
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-map-marker"></i>Kilometraje</span>
+                                            <input id="Kilometraje" type="text" class="form-control" placeholder="" aria-describedby="sizing-addon1" onkeypress="return isNumberKey(event);">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-info-sign"></i>Taximetro</span>
+                                            <input id="Taximetro" maxlength="20" type="text" class="form-control" placeholder="" aria-describedby="sizing-addon1">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row" id="dvTanque">
+                                    <div class="col-md-12">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-warning-sign"></i>Serie Tanque Gas</span>
+
+                                            <input id="hdntxtTanque" name="hdntxtTanque" type="hidden" />
+
+                                            <input id="hdnIntentos" name="hdnIntentos" type="hidden" />
+
+
+                                            <input id="txtSerieTanque" maxlength="20" type="text" class="form-control" placeholder="" aria-describedby="sizing-addon1">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user"></i>Otro Conductor</span>
+                                            <input id="ConductorDiferente" onchange="actualizarRevistaUnidadMaestro(this); return false;" type='checkbox' data-size='small' data-toggle='togglen' data-on='SI' data-off='NO' data-onstyle='danger' data-offstyle='success'>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user"></i>Nombre</span>
+                                            <input id="NombreConductorDiferente" type="text" class="form-control" placeholder="" aria-describedby="sizing-addon1">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3"></div>
+                </div>
+
+                <ul class="list-inline pull-right-njl">
+                    <li><button id="prev2" type="button" class="btn btn-warning btn-lg prev-step"> <i class="glyphicon glyphicon-arrow-left"></i></button></li>
+                    <li><button id="next2" type="button" class="btn btn-warning btn-lg next-step"> <i class="glyphicon glyphicon-arrow-right"></i></button></li>
+                </ul>
+            </div>
+
+            <div class="tab-pane" role="tabpanel" id="step3">
+                <h4>Ejecución</h4>
+                <p><strong> Paso 3:</strong> Realice el Checklist de Puntos a Evaluar.</p>
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="panel panel-warning" style="box-shadow:0 20px 25px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important; border-radius: 15px 50px 30px">
+                            <div class="panel-heading">Puntos a Evaluar</div>
+                            <div class="panel-body">
+
+                                <div id="console-event"></div>
+
+
+
+                                <div class="row">
+                                    <div class="col-md-12" id="divTableRevista">
+                                    </div>
+                                </div>
+
+                                <br />
+                                @*aqui el total de puntos Fotante *@
+                                <div class="row">
+                                    <div class="col-md-12" id="divTotalPuntaje" style="text-align:center;"></div>
+                                </div>
+                                <br />
+
+                                <div class="row">
+                                    <div class="col-md-12" style="text-align:center;">
+                                        <a id="finalizar" class="btn btn-success" onclick="finalizarRevista(); return false;"><i class="glyphicon glyphicon-ok"></i> FINALIZAR </a>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <ul class="list-inline pull-right-njl">
+                    <li><button id="prev3" type="button" class="btn btn-warning btn-lg prev-step"> <i class="glyphicon glyphicon-arrow-left"></i></button></li>
+                    <li><button id="next3" type="button" class="btn btn-warning btn-lg next-step"> <i class="glyphicon glyphicon-arrow-right"></i></button></li>
+                </ul>
+            </div>
+
+
+            <div class="tab-pane" role="tabpanel" id="Compromisos">
+                <h4>Plan de Acción.</h4>
+                <p><strong> Paso 4:</strong> Plan de Acciones.</p>
+                <div class="row">
+                    <div class="col-lg-3"></div>
+                    <div class="col-lg-6">
+
+                        <div class="panel panel-default" style="background:#f2dede; box-shadow:0 20px 25px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important; border-radius: 15px 50px;">
+                            <div class="panel-body" style="padding:15px;">
+
+
+
+                                <span class="label label-danger">Compromisos</span>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user"></i>Compromiso</span>
+                                            <input id="TxtComptromiso" type="text" class="form-control" placeholder="" aria-describedby="sizing-addon1" value="">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group" style="margin-bottom:-20px;">
+                                            <div class="input-group date form_date col-md-5" data-date="" data-date-format="dd-mm-yyyy" data-link-field="txtFechaCompromiso" data-link-format="yyyy-mm-dd">
+                                                <input class="form-control" size="16" placeholder="Fecha Compromiso" type="text" value="" readonly>
+                                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                            </div>
+                                            <input type="hidden" id="txtFechaCompromiso" value="" /><br />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-sunglasses"></i>¿Paro de Motor?</span>
+                                            <input id="chkRequiereParo" type='checkbox' data-size='small' data-toggle='togglen' data-on='SI' data-off='NO' data-onstyle='danger' data-offstyle='success'>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="text-align:right;">
+                                        <a id="idCompromiso" class="btn btn-success" onclick="AgregarCompromiso(); return false;"><i class="glyphicon glyphicon-plus"></i> Agregar </a>
+                                    </div>
+                                </div>
+
+                                <br />
+
+                                <div class="row" style="text-align:center;">
+                                    <a id="btnMuestraFirma" data-toggle="modal" href="#" class="btn btn-primary" onclick="muestraFirma();">
+                                        <i class="glyphicon glyphicon-pencil"></i>
+                                        <span> Firma de Conductor</span>
+                                    </a>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12" id="divPlanEjecucion">
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-3"></div>
+                </div>
+
+                <ul class="list-inline pull-right-njl">
+                    <li><button id="prevCompromisos" type="button" class="btn btn-warning btn-lg prev-step"> <i class="glyphicon glyphicon-arrow-left"></i></button></li>
+                    <li><button id="nextCompromisos" type="button" class="btn btn-warning btn-lg next-step"> <i class="glyphicon glyphicon-arrow-right"></i></button></li>
+                </ul>
+
+            </div>
+
+
+            <div class="tab-pane" role="tabpanel" id="complete">
+                <h4>Evaluación</h4>
+                <p><strong> Completada:</strong> Resultado de Evaluación.</p>
+                <div class="row">
+                    <div class="col-lg-3"></div>
+                    <div class="col-lg-6">
+
+                        <div class="panel panel-default" style="background:#faf4d2; box-shadow:0 20px 25px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important; border-radius: 15px 50px;">
+                            <div class="panel-body" style="padding:15px;">
+                                <span class="label label-warning">Evaluación</span>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user"></i>Inspector</span>
+                                            <input id="Inspector" type="text" disabled class="form-control" placeholder="" aria-describedby="sizing-addon1">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-sort-by-order"></i>Puntaje</span>
+                                            <input id="Evaluacion" type="text" disabled class="form-control" placeholder="" aria-describedby="sizing-addon1" style="font-weight: bold;">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-exclamation-sign"></i>Presenta Criticos</span>
+                                            <input id="PresentaCriticos" type='checkbox' data-size='small' data-toggle='togglen' data-on='SI' data-off='NO' data-onstyle='danger' data-offstyle='success'>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user"></i>Conductor Unidad</span>
+                                            <input id="ConductorUnidad" type="text" disabled class="form-control" placeholder="" aria-describedby="sizing-addon1" style="font-weight: bold;">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user"></i>Conductor Revista</span>
+                                            <input id="ConductorRevista" type="text" disabled class="form-control" placeholder="" aria-describedby="sizing-addon1" style="font-weight: bold;">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12" style="text-align:center;">
+                                        <div id="divEstatus">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                    <div class="col-lg-3"></div>
+                </div>
+                <ul class="list-inline pull-right-njl">
+                    <li><button id="prev4" type="button" class="btn btn-warning btn-lg prev-step"> <i class="glyphicon glyphicon-arrow-left"></i></button></li>
+                </ul>
+            </div>
+
+
+
+
+            <div class="clearfix"></div>
+
+        </div>
+    </form>
+
+
+</div>
+
+
+
+<!-- Modal Evidencia -->
+<div class="modal fade" id="modalEvidencia" role="dialog">
+    <div class="modal-dialog modal-lg" style="z-index:3500;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Agregar Evidencia</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        @* Aqui se crea el carrusel detalle de evidencia (Imagenes) *@
+                        <div id="divInCarrusel">
+                        </div>
+
+                    </div>
+                </div>
+
+                <br>
+                <br>
+
+                <div class="row">
+                    <div class="col-sm-12" style="background-color:darkgray">
+                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                            <span class="btn btn-default btn-file">
+                                <i class="glyphicon glyphicon-picture"></i> <span>Capturar</span>
+                                <input type="file" id="snapshot" value="Capture Imagen" class="btn btn-success" accept="image/*" capture>
+                            </span>
+                            <span class="fileinput-filename"></span><span class="fileinput-new">Sin imagen</span>
+                            <a id="arfSaveFile" class="btn btn-success" onclick="saveFile();"><i class="glyphicon glyphicon-arrow-up"></i> Cargar </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="divMsjEvidencia">
+                </div>
+
+                <div class="modal-footer">
+                    <a id="lnCancelar" class="btn btn-warning" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cerrar </a>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Firma -->
+<div class="modal fade" id="modalFirma" role="dialog">
+    <div class="modal-dialog modal-lg" style="z-index:3500;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Agregar Firma</h4>
+            </div>
+            <div class="modal-body">
+
+
+                <div id="signature-pad" class="m-signature-pad">
+                    <div class="m-signature-pad--body">
+                        <canvas id="newSignature" width="549" height="512" onresize="loadFirma();"></canvas>
+                    </div>
+                    <div class="m-signature-pad--footer">
+                        <div class="description">Firma del Conductor</div>
+                        <button type="button" class="button clear btn btn-default" data-action="clear" onclick="resizeCanvas();"> <i class="glyphicon glyphicon-erase"></i>Iniciar</button>
+                        <button type="button" class="button save btn btn-success" onclick="saveFirma()"><i class="glyphicon glyphicon-floppy-disk"></i>Guardar</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <a id="lnCancelar" class="btn btn-warning" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cerrar </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Mensaje -->
+<div class="modal fade" id="modalMensaje" role="dialog">
+    <div class="modal-dialog modal-md" style="z-index:3500;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Información</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning" role="alert">
+                    <div id="divMsj">
+                        Unidad sin Revista Asignada.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Modal Mensaje -->
+<div class="modal fade" id="modalMensajeTanqueGas" role="dialog">
+    <div class="modal-dialog modal-md" style="z-index:3500;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Información</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning" role="alert">
+                    <img width="500" src="~/Images/etiquetaserie.JPG" />
+                    <div id="divMsj">
+                        Serie Tanque de Gas no concuerda con el capturado para esta unidad.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Modal Mensaje -->
+<div class="modal fade" id="modalParo" role="dialog">
+    <div class="modal-dialog modal-md" style="z-index:3500;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" onclick="cancelaParoMotor();">&times;</button>
+                <h4 class="modal-title">Confirmación Paro de Motor</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger" role="alert">
+                    <div>
+                        <h4>¿Esta Seguro de Solicitar Paro de Motor?.</h4>
+                        <p>Se enviará Correo Electronico al area de monitoreo para solicitar paro de motor.</p>
+
+                        <br>
+                        <h5><strong>Mensaje:</strong></h5>
+                        <textarea id="txtComentarioParo" class="form-control" style="width:100%; height:100%;"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <a id="lnGuardarParo" onclick="envioParoMotor();" class="btn btn-success" data-dismiss="modal"><i class="glyphicon glyphicon-envelope"></i> Solicitar </a>
+                <a id="lnCancelarParo" onclick="cancelaParoMotor();" class="btn btn-warning" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cancelar </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div>
+    <div class="se-pre-con"></div>
+    <div class="se-text">Procesando...</div>
+</div>
+
+@section Scripts {
+
+    @Scripts.Render("~/Scripts/jquery.dataTables.min.js")
+    @Scripts.Render("~/Scripts/dataTables.jqueryui.min.js")
+    @Scripts.Render("~/Scripts/jquery.dataTables.rowGrouping.js")
+    @Scripts.Render("~/Scripts/bootstrap-toggle.min.js")
+    @Scripts.Render("~/Scripts/chosen.jquery.js")
+    @Scripts.Render("~/Scripts/jasny-bootstrap.js")
+    @Scripts.Render("~/Scripts/bootstrap-datetimepicker.js")
+    @Scripts.Render("~/Scripts/locales/bootstrap-datetimepicker.fr.js")
+    @Scripts.Render("~/Scripts/GeneralesJS/signature.js")
+    @Scripts.Render("~/Scripts/GeneralesJS/signature_pad.js")
+    @Scripts.Render("~/Scripts/GeneralesJS/app.js")
+    @Scripts.Render("~/Content/Select2/select2.js")
+
+
+
+
+
+
+
+    <script type="text/javascript">
+
+
+        function ValidateNumber(e) {
+            var evt = (e) ? e : window.event;
+            var charCode = (evt.keyCode) ? evt.keyCode : evt.which;
+            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                return false;
+            }
+            return true;
+        };
+
+
+        @if (Session["Usuario_ID"] == null) {
+        Response.Redirect(@Url.Action("Login", "Account"));
+    }
+
+        var inputImageFile = $("#snapshot");
+        var valUsuario_id = "@Session["Usuario_ID"]";
+
+        var rutaConsulta = "@Url.Action("ObtienePlantillaUnidad", "Ejecutor")";
+        var revistaUnidades_ID;
+        var revistaUnidadesDetalle_ID;
+        var spanCantidadEvidencia;
+        var Estatus_ID;
+        var FechaActual = new Date().toISOString().substring(0, 10);
+
+
+
+        $(document).ready(function () {
+
+            $('.form_date').datetimepicker({
+                language: 'es',
+                setStartDate: FechaActual,
+                todayBtn: 1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                minView: 2,
+                forceParse: 0
+            });
+            $('.form_date').datetimepicker('setStartDate', FechaActual);
+
+            limpiarControlesNextPrev();
+            inicializaWizard();
+            showLoading();
+            //reloadChosen('cmbUnidades');
+           // alert("event prevented"); // Code goes here
+            //display loading
+          //  $("#loadingDialog").dialog("open");
+             $("#cmbUnidades").select2();
+            $('.select2-container').width($('#KilometrajeManto').width());
+
+
+
+            showLoading();
+            reloadChosen('cmbEstaciones');
+            desHabilitaRevista(true);
+            //Oculta el boton de finalizar
+            $("#finalizar").css("visibility", "hidden");
+            $("#btnMuestraFirma").css("visibility", "hidden");
+
+            //Asingna eventos para guardar informacion
+            $("#cmbUnidades").change(function () {
+                alert("Demo");
+
+                //showLoading();
+                //obtieneInformacionRevista();
+                //verBotonesNext();
+                //hideLoading();
+
+                //if (conexionInternet()) {
+                //    readaccionesOffline();
+                //} else {
+                //    return false;
+                //}
+                showLoading();
+                obtieneInformacionRevista();
+                verBotonesNext();
+                hideLoading();
+            });
+
+
+
+
+
+            //  var _serieTanque = $('#hdntxtTanque').val();
+            //  if (_serieTanque.length != 0) {
+            $("#txtSerieTanque").change(function () {
+                //Aqui llamo a guardar datos de Revista
+
+                var x = $("#hdnIntentos").val();
+                var t = 0;
+                if (x == "") {
+                    //alert("vacio");
+                    x = 1;
+                    $("#hdnIntentos").val(x);
+                }
+                else {
+
+                    x = 2;
+
+                    $("#hdnIntentos").val(x);
+                }
+                //alert("checar 1");
+                actualizarRevistaUnidadMaestro(this);
+                verBotonesNext();
+            });
+
+
+
+
+
+
+            $("#cmbEstaciones").change(function () {
+                //Aqui llamo a guardar datos de Revista
+                actualizarRevistaUnidadMaestro(this);
+                verBotonesNext();
+            });
+            $("#Kilometraje").blur(function () {
+                //Aqui llamo a guardar datos de Revista
+                actualizarRevistaUnidadMaestro(this);
+                verBotonesNext();
+            });
+            $("#Taximetro").blur(function () {
+                //Aqui llamo a guardar datos de Revista
+                actualizarRevistaUnidadMaestro(this);
+                verBotonesNext();
+            });
+            $("#NombreConductorDiferente").blur(function () {
+                //Aqui llamo a guardar datos de Revista
+                actualizarRevistaUnidadMaestro(this);
+                verBotonesNext();
+            });
+
+            //Asingna eventos para guardar informacion
+            $("#snapshot").change(function () {
+                limpiarFileSave();
+            });
+
+        });
+
+
+
+
+        // Actializar datos de Maestro
+        function actualizarRevistaUnidadMaestro(evt) {
+            var rutaActualizar = "@Url.Action("actualizaRevistaUnidadesMaestro", "Ejecutor")";
+
+            if (revistaUnidades_ID != 0) {
+                var _revistaUnidadesid = revistaUnidades_ID;
+                var _estacionid = $("#cmbEstaciones option:selected").val();
+                var _kilometraje = $('#Kilometraje').val();
+                var _usuario = valUsuario_id; //$("#UsuarioID").val();
+                var _taximetro = $('#Taximetro').val() + "|" + $('#txtSerieTanque').val();
+                var _EsConductorDiferente = ($("#ConductorDiferente").prop('checked')) ? 1 : 0;
+                var _ConductorDiferente = $('#NombreConductorDiferente').val().toUpperCase();
+
+                var seriereal = $('#hdntxtTanque').val();
+                var seriecaptura = $('#txtSerieTanque').val();
+
+                var intento = $("#hdnIntentos").val();
+
+                switch (evt.id) {
+
+                    case "txtSerieTanque":
+
+
+
+                        if (intento == "1") {
+                            // alert(intento);
+                            if (seriereal.length > 0) {
+
+
+                                if (seriereal != seriecaptura) {
+                                    muestraMensaje('modalMensajeTanqueGas', 'divMsj', '');
+                                    $('#' + evt.id).trigger('chosen:activate');
+                                }
+                                //else {
+                                //    alert("sin cambios");
+
+                                //}
+                            }
+
+                        }
+
+                        break;
+
+
+                    case "cmbEstaciones":
+                        if (_estacionid == "-1") {
+                            muestraMensaje('modalMensaje', 'divMsj', 'Seleccione una Estación');
+                            $('#' + evt.id).trigger('chosen:activate');
+                            //return false;
+                        }
+                        break;
+                    case "Kilometraje":
+                        if (_kilometraje.length == 0 || parseInt(_kilometraje) <= 0) {
+                            muestraMensaje('modalMensaje', 'divMsj', 'Kilometraje no Valido.');
+                            //$('#' + evt.id).focus();
+                            return false;
+                        }
+                        break;
+                    case "Taximetro":
+                        if (_taximetro.length == 0) {
+                            muestraMensaje('modalMensaje', 'divMsj', 'Ingrese Taximetro.');
+                            //$('#' + evt.id).focus();
+                            return false;
+                        }
+                        break;
+                    case "NombreConductorDiferente":
+                        if (_ConductorDiferente.length == 0) {
+                            muestraMensaje('modalMensaje', 'divMsj', 'Ingrese Nombre de Conductor.');
+                            //$('#' + evt.id).focus();
+                            return false;
+                        }
+                        break;
+                    case "ConductorDiferente":
+                        if (_EsConductorDiferente == 1) {
+                            $("#NombreConductorDiferente").removeAttr('disabled');
+                            $('#NombreConductorDiferente').focus();
+                        } else {
+                            _ConductorDiferente = '';
+                            $('#NombreConductorDiferente').val('');
+                            $("#NombreConductorDiferente").attr('disabled', 'disabled');
+                        }
+                        break;
+                }
+                var parametros = {
+                    revistaUnidades_id: _revistaUnidadesid
+                    , estacion_id: _estacionid
+                    , kilometraje: _kilometraje
+                    , usuarioUltMod: _usuario
+                    , taximetro: _taximetro
+                    , esConductorDiferente: _EsConductorDiferente
+                    , ConductorDiferente: _ConductorDiferente
+                    //, serieTanque: seriereal
+                }
+
+                //if (conexionInternet()) {
+                //    readaccionesOffline();
+                //} else {
+                //    setActionOffLine(rutaActualizar, parametros);
+                //    return false;
+                //}
+
+                $.ajax({
+                    type: "POST",
+                    url: rutaActualizar,
+                    cache: false,
+                    dataType: 'json',
+                    data: parametros,
+                    success: function (data) {
+                        //muestraMensaje('modalMensaje', 'divMsj', 'Información Actualizada.');
+                        //console.log('Información Actualizada.');
+                    },
+                    error: function (xhr, status, errormsg) {
+                        muestraMensaje('modalMensaje', 'divMsj', errormsg);
+                    }
+                });
+            }
+        }
+
+
+
+
+        $(window).load(function () {
+            hideLoading();
+        });
+
+        function showLoading() {
+            $(".se-pre-con").fadeIn("slow");
+            $(".se-text").fadeIn("slow");
+        }
+        function hideLoading() {
+            $(".se-pre-con").fadeOut("slow");
+            $(".se-text").fadeOut("slow");
+        }
+
+        //Asigna Id de Click detalle cuando abre modal
+        $(document).on("click", ".open-Modal", function () {
+            revistaUnidadesDetalle_ID = $(this).data('id');
+            spanCantidadEvidencia = $(this).find('span');
+            obtieneRevistaDetalleEvidencia(revistaUnidadesDetalle_ID);
+        });
+
+        //Guardamos un nuevo compromiso.
+        function AgregarCompromiso() {
+            var rutaAgregarCompromiso = "@Url.Action("AgregaUnidadCompromiso", "Ejecutor")";
+            var valunidad_id = $("#cmbUnidades").val();
+            var valCompromiso = $('#TxtComptromiso').val();
+            var valFechaCompromiso = $('#txtFechaCompromiso').val();
+            var valRequiereParo = ($("#chkRequiereParo").prop('checked')) ? 1 : 0;
+
+            if (valCompromiso.length > 0 && valFechaCompromiso.length > 0) {
+                var parametros = {
+                    unidad_id: valunidad_id
+                    , compromiso: valCompromiso
+                    , fechaCompromiso: valFechaCompromiso
+                    , usuario_id: valUsuario_id
+                    , RequiereParo: valRequiereParo
+                }
+
+                //if (conexionInternet()) {
+                //    readaccionesOffline();
+                //} else {
+                //    setActionOffLine(rutaAgregarCompromiso, parametros);
+                //    return false;
+                //}
+
+                $.ajax({
+                    type: "POST",
+                    url: rutaAgregarCompromiso,
+                    cache: false,
+                    dataType: 'json',
+                    data: parametros,
+                    success: function (data) {
+                        muestraMensaje('modalMensaje', 'divMsj', 'Plan de Ejecución Capturado correctamente.');
+                        ConsultarCompromisos(valunidad_id);
+                        $('#TxtComptromiso').val('');
+                        $('.form_date').datetimepicker('setStartDate', FechaActual);
+                        $('#chkRequiereParo').bootstrapToggle('off');
+                    },
+                    error: function (xhr, status, errormsg) {
+                        muestraMensaje('modalMensaje', 'divMsj', errormsg);
+                    }
+                });
+
+            } else {
+                muestraMensaje('modalMensaje', 'divMsj', 'Ingrese Compromiso y Fecha.');
+            }
+        }
+
+
+
+
+
+        //Obtiene Evidencia Imagenes.
+        function obtieneRevistaDetalleEvidencia(_revistaUnidadesDetalle_ID) {
+            var _rutaEvidencia = "@Url.Action("ObtieneRevistaDetalleEvidencia", "Ejecutor")";
+            var param = { revistaUnidadesDetalle_ID: _revistaUnidadesDetalle_ID };
+            $("#snapshot").val('');
+
+           // conexionInternet();
+
+            $.ajax({
+                type: "POST",
+                url: _rutaEvidencia,
+                cache: false,
+                dataType: 'json',
+                data: param,
+                success: createCarrusel,
+                error: function (xhr, status, errormsg) {
+                    muestraMensaje('modalMensaje', 'divMsj', errormsg);
+                }
+            });
+        }
+
+        //Crea Carrusel de imagenes
+        function createCarrusel(json, status, xhr) {
+            $("#divInCarrusel").html('');
+            var obj = JSON.parse(json);
+
+            //Limpiar div contenedor
+            var sDivCarrusel = '<div id="myCarousel" class="carousel slide" data-ride="carousel">';
+            var sDivIndicators = '<ol class="carousel-indicators">';
+            var sDivImagesCarrusel = '<div class="carousel-inner" role="listbox">';
+            var contadorEvidencia = 0;
+            for (var i = 0; i < obj.length; i++) {
+                //drawRow(tbl, obj[i]);
+                if (i == 0) {
+                    sDivIndicators += '<li data-target="#myCarousel" data-slide-to="' + i + '" class="active"></li>'; //obj[i]
+
+                    sDivImagesCarrusel += '<div class="item active">' +
+                                              '<img src="' + obj[i].Path + '" >' +
+                                          '</div>';
+                } else {
+                    sDivIndicators += '<li data-target="#myCarousel" data-slide-to="' + i + '" ></li>'; //obj[i]
+
+                    sDivImagesCarrusel += '<div class="item">' +
+                                              '<img src="' + obj[i].Path + '">' +
+                                          '</div>';
+                }
+                contadorEvidencia++;
+            }
+            sDivIndicators += '</ol>';
+            sDivImagesCarrusel += '</div>';
+            var sControls = '<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"> ' +
+                                '<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> ' +
+                                '<span class="sr-only">Previous</span> ' +
+                            '</a> ' +
+                            '<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> ' +
+                                '<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> ' +
+                                '<span class="sr-only">Next</span> ' +
+                            '</a>';
+
+            sDivCarrusel += sDivIndicators +
+                            sDivImagesCarrusel +
+                            sControls +
+                            '</div>';
+
+            $("#divInCarrusel").html(sDivCarrusel);
+            spanCantidadEvidencia.html(contadorEvidencia);
+        }
+
+
+        //Recargar Informacion de Revista vigente
+        function obtieneInformacionRevista() {
+            desHabilitaRevista(true);
+            limpiarControles();
+            revistaUnidades_ID = 0;
+            var unidad_id = $("#cmbUnidades").val();
+            getInformacionUnidad(unidad_id, 0);
+            ConsultarCompromisos(unidad_id);
+
+        }
+
+        function dataURItoBlob(dataURI) {
+            // convert base64/URLEncoded data component to raw binary data held in a string
+            var byteString;
+            if (dataURI.split(',')[0].indexOf('base64') >= 0)
+                byteString = atob(dataURI.split(',')[1]);
+            else
+                byteString = unescape(dataURI.split(',')[1]);
+
+            // separate out the mime component
+            var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+            // write the bytes of the string to a typed array
+            var ia = new Uint8Array(byteString.length);
+            for (var i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+
+            return new Blob([ia], { type: mimeString });
+        }
+
+        //Guardar Firma Revista
+        function saveFirma() {
+            var _rutaSaveFile = "@Url.Action("GuardaFirma", "Ejecutor")";
+            var _canvas = document.getElementById("newSignature");// save canvas image as data url (png format by default)
+            var imgblob = dataURItoBlob(_canvas.toDataURL("image/png"));
+            if (window.FormData !== undefined) {
+                var fileData = new FormData();
+                fileData.append('File_' + revistaUnidades_ID, imgblob);
+                fileData.append('revistaUnidades_ID', revistaUnidades_ID);
+            }
+
+           // conexionInternet();
+
+            $.ajax({
+                type: "POST",
+                url: _rutaSaveFile,
+                cache: false,
+                dataType: 'json',
+                processData: false,
+                contentType: false,
+                data: fileData,
+                success: function (data) {
+                    muestraMensaje('modalMensaje', 'divMsj', 'Firma Almacenada Correctamente.');
+                },
+                error: function (xhr, status, errormsg) {
+                    muestraMensaje('modalMensaje', 'divMsj', errormsg);
+                }
+            });
+        }
+
+        //Carga Firma en Canvas
+        function loadFirma() {
+            signatureClear();
+
+            context = canvas.getContext('2d');
+            base_image = new Image();
+            base_image.src = '../RevistaEvidencia/' + revistaUnidades_ID + '/Firma_' + revistaUnidades_ID + '.jpg';
+            context.drawImage(base_image, 0, 0);
+            console.log('Mostrando Imagen de Firma' + revistaUnidades_ID);
+        }
+
+
+        function fileExists(url) {
+            if (url) {
+                var req = new XMLHttpRequest();
+                req.open('GET', url, false);
+                req.send();
+                return req.status == 200;
+            } else {
+                return false;
+            }
+        }
+
+        //Guardar Imagen
+        function saveFile() {
+            var _revistaUnidades_ID = revistaUnidades_ID;
+            var _revistaUnidadesDetalle_ID = revistaUnidadesDetalle_ID;
+            var _rutaSaveFile = "@Url.Action("GuardaImagenEvidencia", "Ejecutor")";
+            var _file = document.getElementById('snapshot').files[0];
+
+
+            var fileData = new FormData();
+            if (window.FormData !== undefined) {
+                fileData.append('File_' + revistaUnidadesDetalle_ID, _file);
+                fileData.append('revistaUnidades_ID', _revistaUnidades_ID);
+                fileData.append('revistaUnidadesDetalle_ID', _revistaUnidadesDetalle_ID);
+            }
+
+          //  conexionInternet();
+
+            $.ajax({
+                type: "POST",
+                url: _rutaSaveFile,
+                cache: false,
+                dataType: 'json',
+                processData: false,
+                contentType: false,
+                data: fileData,
+                success: function (data) {
+                    $("#divMsjEvidencia").html('Imagen almacenada correctamente...');
+                    inputImageFile.replaceWith(inputImageFile.val('').clone(true));
+                    if (revistaUnidadesDetalle_ID > 0)
+                        obtieneRevistaDetalleEvidencia(revistaUnidadesDetalle_ID);
+                },
+                error: function (xhr, status, errormsg) {
+                    muestraMensaje('modalMensaje', 'divMsj', errormsg);
+                }
+            });
+
+        }
+
+        //Muestra mensaje modal bootstrap por ID modal, ID Div donde mostrara mensaje y texto de mensaje
+        function muestraMensaje(idModal, idDivMensaje, mensaje) {
+            $("#" + idDivMensaje).html(mensaje);
+            $('#' + idModal).modal('show');
+        }
+
+        //Muestra mensaje modal bootstrap por ID modal, ID Div donde mostrara mensaje y texto de mensaje
+        function muestraFirma() {
+            var canvas = document.getElementById('newSignature');
+            canvas.width = canvas.width;
+            canvas.height = canvas.height;
+            $('#modalFirma').modal({ backdrop: 'static', keyboard: false, show: true });
+            loadFirma();
+        }
+
+
+
+        function ajustarCanvas() {
+            var canvas = document.getElementById("newSignature");
+            var context = canvas.getContext("2d");
+            canvas.width = $("#modalFirma .modal-body").width() - 10;
+            canvas.height = $("#modalFirma .modal-body").height() - 10;
+        }
+
+        // valida solo caracteres de tipo numero
+        function isNumberKey(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode > 31 && (charCode < 48 || charCode > 57))
+                return false;
+            return true;
+        }
+
+        //Recarga control tipo chosen
+        function reloadChosen(idSelect) {
+            $("#" + idSelect).chosen();
+            $("#" + idSelect).append('<option selected="selected" value="-1">-Seleccione-</option>');
+            $("#" + idSelect).trigger("chosen:updated");
+        }
+
+        //Controles de Revista Habilitar/Deshabilitar
+        function desHabilitaRevista(deshabilita) {
+            if (deshabilita == true) {
+                $("#Kilometraje").attr('disabled', 'disabled');
+                $("#Taximetro").attr('disabled', 'disabled');
+                $("#ConductorDiferente").bootstrapToggle('disable');
+                $("#NombreConductorDiferente").attr('disabled', 'disabled');
+                $("#cmbEstaciones").attr("disabled", "disabled").trigger('chosen:updated');
+            } else {
+                $("#Kilometraje").removeAttr('disabled');
+                $("#Taximetro").removeAttr('disabled');
+                $('#ConductorDiferente').bootstrapToggle('enable')
+                $("#NombreConductorDiferente").removeAttr('disabled');
+                $("#cmbEstaciones").removeAttr("disabled").trigger('chosen:updated');
+            }
+        }
+
+        //Limpia Controles.
+        function limpiarControles() {
+            //signatureClear();
+            $('#PresentaCriticos').removeAttr('disabled');
+            $("#spnUnidad").html('');
+            $("#spnPeriodo").html('');
+            $("#spnFin").html('');
+
+            $("#divInCarrusel").html('');
+            $("#divEstatus").html('');
+            $("#divEstatus2").html('');
+            $("#divTableRevista").html('');
+            $('#cmbEstaciones').val(-1);
+            $('#cmbEstaciones').trigger("chosen:updated");
+            $("#finalizar").css("visibility", "hidden");
+            $("#btnMuestraFirma").css("visibility", "hidden");
+
+            $("#arfSaveFile").css("visibility", "hidden");
+
+            $("#snapshot").val('');
+            limpiarControlesNextPrev();
+
+            $('input').each(
+                function (index) {
+                    var input = $(this);
+                    if (input.attr('type') == 'text') {
+                        input.val('');
+                    }
+                    if (input.attr('type') == 'checkbox') {
+                        $('#' + input.attr('id')).bootstrapToggle('off');
+                    }
+                }
+            );
+        }
+
+
+        // Obtiene la informacion de la unidad
+        function getInformacionUnidad(valunidad_id, valrevistaUnidades_id) {
+            if (!$.isNumeric(valunidad_id) || valunidad_id == "-1") {
+                muestraMensaje('modalMensaje', 'divMsj', 'Seleccione Unidad o Busque por # Económico.');
+                $('#cmbUnidades').focus();
+                return false;
+            }
+            var rutaConsultaGeneral = "@Url.Action("obtieneInformacionRevistaUnidad", "ConsultasGeneral")";
+            var param = { unidad_id: valunidad_id, revistaUnidades_id: valrevistaUnidades_id };
+           // conexionInternet();
+
+            $.ajax({
+                type: "POST",
+                url: rutaConsultaGeneral,
+                cache: false,
+                dataType: 'json',
+                data: param,
+                success: function (data) {
+                    var dataJson = JSON.parse(data);
+
+                    desHabilitaRevista(false);
+                    if (dataJson.length == 0) {
+                        muestraMensaje('modalMensaje', 'divMsj', 'La unidad no tiene Revista PROGRAMADA.');
+                        return false;
+                    }
+                    $.each(dataJson, function (idx, item) {
+                        var PuntajeMinimo = parseInt(item.PuntajeMinimo);
+                        var Evaluacion = parseInt(item.Evaluacion);
+                        esPuntajeMinimo(Evaluacion, PuntajeMinimo);
+
+                        $('#Anio').val(item.Anio);
+                        $('#Division').val(item.Division);
+                        $('#FechaRevista').val(item.FechaRevista);
+                        $('#FechaVencimiento').val(item.FechaVencimiento);
+                        $('#Evaluacion').val(item.Evaluacion);
+                        $('#divTotalPuntaje').html("Puntaje Obtenido: <strong>" + item.Evaluacion + "</strong>");
+
+                        $('#Empresa').val(item.Empresa);
+                        $('#Estacion').val(item.Estacion);
+                        $('#cmbEstaciones').val(item.RevistaEstacion_ID);
+                        $('#cmbEstaciones').trigger("chosen:updated");
+                        $('#Taximetro').val(item.Taximetro);
+                        $('#Kilometraje').val(item.Kilometraje);
+                        $('#KilometrajeManto').val(item.KilometrajeManto);
+
+                        $('#hdntxtTanque').val(item.NumeroSerieTanque);
+
+                        $("#hdnIntentos").val("");
+
+                        var _serieTanque = $('#hdntxtTanque').val();
+                        if (_serieTanque.length == 0) {
+                            $("#dvTanque").css("display", "none");
+
+                        }
+                        else {
+                            $("#dvTanque").css("display", "block");
+                        }
+
+
+
+                        //  $('#txtSerieTanque').val(item.NumeroSerieTanque);
+
+
+
+                        if (item.Criticos > 0) {
+                            $('#PresentaCriticos').bootstrapToggle('on');
+                        } else {
+                            $('#PresentaCriticos').bootstrapToggle('off');
+                        }
+                        $('#PresentaCriticos').attr('disabled', 'disabled');
+
+                        $('#Inspector').val(item.Usuario_ID);
+                        $('#Conductor').val(item.Conductor);
+                        if (item.EsConductorDiferente == "1") {
+                            $('#ConductorDiferente').bootstrapToggle('on');
+                            $('#NombreConductorDiferente').val('');
+                            $("#NombreConductorDiferente").removeAttr('disabled');
+                        } else {
+                            $('#ConductorDiferente').bootstrapToggle('off');
+                            $("#NombreConductorDiferente").attr('disabled', 'disabled');
+                        }
+                        $('#NombreConductorDiferente').val(item.ConductorDiferente);
+
+                        // Conductores Información
+                        $('#ConductorUnidad').val(item.Conductor);
+                        $('#ConductorRevista').val(item.ConductorDiferente);
+
+                        //Color de Estatus
+                        var classEstatus = 'success';
+                        if (item.Estatus_ID == "3" || item.Estatus_ID == "6" || item.Estatus_ID == "7") {
+                            classEstatus = 'danger';
+                        }
+                        $("#divEstatus").html('<h4><span class="label label-' + classEstatus + '">' + item.Estatus.toUpperCase() + '</span></h4>');
+                        $("#divEstatus2").html('<h4><span class="label label-' + classEstatus + '">' + item.Estatus.toUpperCase() + '</span></h4>');
+                        //Visible o invisible el boton Finalizar
+                        var classFinalizar = 'visible';
+                        $("#btnMuestraFirma").css("visibility", "hidden");
+                        if (item.Estatus_ID != "1" && item.Estatus_ID != "2") {
+                            $("li[role='presentation']").removeClass('disabled');
+                            $("#liRevista").removeClass('disabled');
+                            $("#liPuntos").removeClass('disabled');
+                            $("#liEvaluacion").removeClass('disabled');
+                            classFinalizar = 'hidden';
+                            desHabilitaRevista(true);
+                            $("#btnMuestraFirma").css("visibility", "visible");
+                        }
+                        $("#finalizar").css("visibility", classFinalizar);
+
+                        verBotonesNext();
+                        Estatus_ID = parseInt(item.Estatus_ID);
+                        revistaUnidades_ID = parseInt(item.RevistaUnidades_ID);
+
+                        $("#spnUnidad").html('<strong>Unidad:  </strong>' + $("#cmbUnidades option:selected").text());
+                        $("#spnPeriodo").html('<strong>Periodo:  </strong>' + item.FechaRevista + '  <strong>Al</strong> ' + item.FechaVencimiento);
+                        $("#spnFin").html('<strong>Finalizada:  </strong>' + item.FechaFin);
+                        loadFirma();
+                    });
+
+
+                    //Obtiene el detalle de Atributos a calificar.
+                    ConsultarAtributos(valunidad_id, revistaUnidades_ID, valUsuario_id);
+                    $('#cmbEstaciones').trigger('chosen:activate');
+
+                },
+                error: function (xhr, status, errormsg) {
+                    muestraMensaje('modalMensaje', 'divMsj', errormsg);
+                }
+            });
+        }
+
+        //Se consultan los atributos de la revista programada
+        function ConsultarAtributos(varunidad_id, revistaUnidades_ID, valusuario_id) {
+            var param = { unidad_id: varunidad_id, revistaUnidades_id: revistaUnidades_ID, usuario_id: valusuario_id };
+           // conexionInternet();
+
+            $.ajax({
+                type: "POST",
+                url: rutaConsulta,
+                cache: false,
+                dataType: 'json',
+                data: param,
+                success: createGrid,
+                error: function (xhr, status, errormsg) {
+                    muestraMensaje('modalMensaje', 'divMsj', errormsg);
+                }
+            });
+        }
+
+        //Creacion de tabla Revista
+        function createGrid(json, status, xhr) {
+            var obj = JSON.parse(json);
+            createTableHtml('RevistaDataTable', 'divTableRevista')
+
+            var tbl = $('#RevistaDataTable');
+            for (var i = 0; i < obj.length; i++) {
+                drawRow(tbl, obj[i]);
+            }
+            reloadTable("RevistaDataTable");
+            $('input:checkbox').bootstrapToggle();
+        }
+
+
+        //Obtiene Informacion de Compromisos para la unidad
+        function ConsultarCompromisos(valunidad_id) {
+            var rutaCompromisos = "@Url.Action("ObtieneUnidadCompromisos", "Ejecutor")";
+
+         //   conexionInternet();
+
+            $.ajax({
+                type: "POST",
+                url: rutaCompromisos,
+                cache: false,
+                dataType: 'json',
+                data: { unidad_ID: valunidad_id },
+                success: creaTablacompromisos,
+                error: function (xhr, status, errormsg) {
+                    muestraMensaje('modalMensaje', 'divMsj', errormsg);
+                }
+            });
+
+        }
+
+        // Crea Tabla Compromisos
+        function creaTablacompromisos(json, status, xhr) {
+            var objJson = JSON.parse(json);
+            var colsHead = ["Compromiso", "Fecha Compromiso", "Captura", "Fecha Concluido", "Usuario", "Paro de Motor", "Cumplido"];
+            var colsName = ["Compromiso", "FechaCompromiso", "FechaCaptura", "FechaConcluido", "Usuario_ID", "RequiereParo", "Activo"];
+            $("#divPlanEjecucion").html('');
+            HeadTablacompromisos("tableEjecuccion", colsHead, "divPlanEjecucion");
+            RowsTablacompromisos("tableEjecuccion", objJson, colsName);
+            aplicarDataTableJquery("tableEjecuccion");
+            $('input:checkbox').bootstrapToggle();
+        }
+
+        //Tabla HTML dinamic
+        function HeadTablacompromisos(idTable, columnsName, divIdCreateIn) {
+            var fLen, i;
+            fLen = columnsName.length;
+
+            textTable = '<table class="table" style="background-color:white;font-size:12px;" id="' + idTable + '" >' +
+                            '<thead class="thead">' +
+                            '<tr>';
+            for (i = 0; i < fLen; i++) {
+                textTable += "<th>" + columnsName[i] + "</th>";
+            }
+            textTable += '</tr>' +
+                         '</thead>' +
+                        '</table>';
+            $("#" + divIdCreateIn).html(textTable);
+        }
+
+        //Create RowsTable
+        function RowsTablacompromisos(idTable, jsonData, columnsName) {
+            var tbl = $('#' + idTable);
+
+            //Recorremos el Json (Datos)
+            for (var i = 0; i < jsonData.length; i++) {
+                var textRow;
+                var row = $("<tr />");
+
+                //Recorremos el aarray de columnas
+                var RevistaCompromiso_ID = jsonData[i].RevistaCompromiso_ID;
+                var check = (jsonData[i].Activo == "1" ? '' : 'checked');
+                var checkDisable = (jsonData[i].Activo == "0" ? ' disabled = "disabled" ' : '');
+
+                for (var ii = 0; ii < columnsName.length; ii++) {
+                    if (columnsName[ii] == "Activo") {
+                        textRow = '<td><input type="checkbox" id="checkboxC_' + RevistaCompromiso_ID + '" ' + check + checkDisable + ' onchange="ActualizarCompromiso(' + RevistaCompromiso_ID + ');" data-size="small" data-onstyle="success" data-offstyle="danger" data-style="slow" data-toggle="toggle" data-on="<i class=&#039;glyphicon glyphicon-ok&#039; ></i>" data-off="<i class=&#039;glyphicon glyphicon-remove&#039;></i>"> </td>';
+                    } else {
+                        if (columnsName[ii] == "RequiereParo") {
+                            textRow = "<td>" + (jsonData[i][columnsName[ii]] == '1' ? 'SI' : 'NO') + "</td>";
+                        } else {
+                            textRow = "<td>" + jsonData[i][columnsName[ii]] + "</td>";
+                        }
+                    }
+                    row.append($(textRow));
+                }
+                row.appendTo(tbl);
+            }
+        }
+
+        //Actualizar compromiso de Revista
+        function ActualizarCompromiso(revistaCompromiso_ID) {
+            //console.log('Actualizando Compromiso.');
+            var rutaActualizacompromiso = "@Url.Action("ActualizaUnidadCompromiso", "Ejecutor")";
+            var valunidad_id = $("#cmbUnidades").val();
+            var param = { revistaCompromiso_ID: revistaCompromiso_ID, usuario_id: valUsuario_id, activo: 0 };
+
+            //if (conexionInternet()) {
+            //    readaccionesOffline();
+            //} else {
+            //    setActionOffLine(rutaActualizacompromiso, param);
+            //    return false;
+            //}
+
+            $.ajax({
+                type: "POST",
+                url: rutaActualizacompromiso,
+                cache: false,
+                dataType: 'json',
+                data: param,
+                success: function (data) {
+                    var dataJson = JSON.parse(data);
+                    ConsultarCompromisos(valunidad_id);
+
+                },
+                error: function (xhr, status, errormsg) {
+                    muestraMensaje('modalMensaje', 'divMsj', errormsg);
+                }
+            });
+        }
+
+        // Crea encabezado de tabla HTML
+        function createTableHtml(idTable, idDiv) {
+            var table = '<table data-toggle="table" id="' + idTable + '" >' +
+                            '<thead style="font-size:9px;">' +
+                            '<tr>' +
+                                '<th>Clasificación</th>' +
+                                '<th>Atributo</th>' +
+                                '<th>Puntaje</th>' +
+                                '<th>Evaluación</th>' +
+                                '<th>Critico</th>' +
+                                '<th>Paro de Motor</th>' +
+                                '<th>Observaciones</th>' +
+                                '<th>Evidencia</th>' +
+                            '</tr>' +
+                            '</thead>' +
+                        '</table>';
+            $("#" + idDiv).html(table);
+        }
+
+        //Crea renglon
+        function drawRow(idTable, rowData) {
+            var row = $("<tr />")
+            var Detalle_ID = rowData.RevistaUnidadesDetalle_ID;
+            var suspenClass = (rowData.Critico == "1" ? 'class="warningImg"' : '');
+
+            var check = (rowData.Evaluacion == "1" ? 'checked' : '');
+            var checkParo = (rowData.ParoMotor == "1" ? 'checked' : '');
+            var checkDisable = (Estatus_ID > 2 ? ' disabled = "disabled" ' : '');
+            var checkDisableParo = (rowData.ParoMotor == "1" || Estatus_ID > 2 ? ' disabled = "disabled" ' : '');
+
+            var textarDisable = (Estatus_ID > 2 ? ' disabled ' : '');
+            var RequiereEvidencia = (rowData.RequiereEvidenciaFisica == "1" ? '<a data-toggle="modal" data-id="' + Detalle_ID + '" href="#modalEvidencia" class="open-Modal btn-sm btn-info"><i class="glyphicon glyphicon-camera"></i><span class="badge"> ' + rowData.EvidenciaTotal + ' </span> </a>' : '');
+
+            var Evaluacion = rowData.Evaluacion;
+            row.append($("<td>" + rowData.Orden + ".- " + rowData.Clasificacion + "</td>"));
+            row.append($("<td>" + rowData.Atributo + "</td>"));
+            row.append($("<td style='text-align:center;font-weight: bold;'>" + rowData.Puntaje + "</td>"));
+            row.append($('<td style="text-align:center;"><input type="checkbox" id="checkbox_' + Detalle_ID + '" ' + check + checkDisable + ' onchange="asignaEventoEvaluar(' + Detalle_ID + '); return false;" data-size="large" data-onstyle="success" data-offstyle="danger" data-style="slow" data-toggle="toggle" data-on="<i class=&#039;glyphicon glyphicon-ok&#039; ></i>" data-off="<i class=&#039;glyphicon glyphicon-remove&#039;></i>"> </td>'));
+            row.append($("<td " + suspenClass + "></td>"));
+
+            //Paro de motor.
+            row.append($('<td style="text-align:center;"><input type="checkbox" id="checkboxParo_' + Detalle_ID + '" ' + checkParo + checkDisableParo + ' onchange="modalConfirmacionParo(' + Detalle_ID + '); return false;" data-style="slow" data-size="small" data-onstyle="warning" data-offstyle="default" data-toggle="toggle"  data-on="SI" data-off="NO" </td>'));
+
+            row.append($("<td> <textarea " + textarDisable + " id='textarea_" + Detalle_ID + "' onblur='asignaEventoEvaluar(" + Detalle_ID + "); return false;' rows='1' class='form-control'> " + rowData.Observaciones + "</textarea> </td>"));
+            row.append($("<td style='text-align:center;'>" + RequiereEvidencia + "</td>"));
+
+            row.appendTo(idTable);
+        }
+
+        //Atributo evaluado
+        function asignaEventoEvaluar(Detalle_ID) {
+            var _puntaje = ($("#checkbox_" + Detalle_ID).prop('checked')) ? 1 : 0;
+            var _observaciones = $("#textarea_" + Detalle_ID).val();
+            actualizaDetalleEvaluacion(Detalle_ID, _puntaje, _observaciones);
+        }
+
+
+        //Valida conexion a internet
+        function conexionInternet() {
+            if (navigator.onLine == false) {
+                muestraMensaje('modalMensaje', 'divMsj', '(Sin Conexion a Internet) La acción lo requiere.');
+                return false;
+            }
+            return true;
+        }
+
+        //Funcion para agragar Variable Accion Offline
+        function setActionOffLine(url, operacion) {
+            var accion = [];
+            accion[0] = url;
+            accion[1] = operacion;
+            if (typeof (Storage) !== "undefined") {
+                if (localStorage.accionesOffline) {
+                    var accion2 = [];
+                    accion2 = JSON.parse(localStorage.getItem("accionesOffline"));
+                    accion2[accion2.length] = accion;
+                    localStorage.setItem("accionesOffline", JSON.stringify(accion2));
+                } else {
+                    localStorage.setItem("accionesOffline", JSON.stringify([accion]));
+                }
+                console.log('Agregado LocalStorage: ' + JSON.parse(localStorage.getItem("accionesOffline")));
+                muestraMensaje('modalMensaje', 'divMsj', '(Sin Conexion a Internet) Almacenado local, se guardara en automatico su avance cuando re-establezca conexion.');
+            } else {
+                muestraMensaje('modalMensaje', 'divMsj', '(Sin Conexion a Internet) El navegador no soporta Almacenamiento Local.');
+            }
+        }
+
+        ///Aqui se recorre el local storage para almacenar de forma local
+        function readaccionesOffline() {
+            var accion2 = [];
+            var accionError = [];
+            if (typeof (Storage) !== "undefined") {
+
+                if (localStorage.accionesOffline) {
+                    accion2 = JSON.parse(localStorage.getItem("accionesOffline"));
+                    delete localStorage["accionesOffline"];
+
+
+                    for (i = 0; i < accion2.length; i++) {
+                        //Aqui el ajax para el llamado a ejecutar
+                        var urls = accion2[i][0];
+                        var parame = accion2[i][1];
+                        console.log('URL: ' + urls + '  Param: ' + parame);
+                        $.ajax({
+                            type: "POST",
+                            url: urls,
+                            cache: false,
+                            dataType: 'json',
+                            data: parame,
+                            success: function (data) {
+                                // Terminado
+                                console.log('Terminado item Local Storage...');
+                            },
+                            error: function (xhr, status, errormsg) {
+                                //se almacena como local storage
+                                console.log('Falló item Local Storage...');
+                                setActionOffLine(urls, parame);
+                            }
+                        });
+                    }
+
+                }
+
+            }
+        }
+
+
+
+        //Atributo Paro Motor
+        function envioParoMotor() {
+            //Enviar a paro
+            var msj = $("#txtComentarioParo").val();
+            var valunidad = $("#cmbUnidades option:selected").text();
+            var rutaEnvioParo = "@Url.Action("InsertaActualizaRevistaParoMotor", "Ejecutor")";
+            var parametros = { RevistaUnidad_ID: revistaUnidades_ID, RevistaUnidadesDetalle_ID: revistaUnidadesDetalle_ID, comentario: msj, unidad: valunidad, Usuario_ID: valUsuario_id, activo: 0 };
+
+            if (msj.trim().length == 0) {
+                muestraMensaje('modalMensaje', 'divMsj', 'Es necesario un comentario para solicitar, Paro de Motor.');
+                $('#checkboxParo_' + revistaUnidadesDetalle_ID).bootstrapToggle('off');
+                return false;
+            }
+            conexionInternet();
+
+            $.ajax({
+                type: "POST",
+                url: rutaEnvioParo,
+                cache: false,
+                dataType: 'json',
+                data: parametros,
+                success: function (data) {
+                    if (data) {
+                        muestraMensaje('modalMensaje', 'divMsj', 'Se solicitará el paro de motor, por E-mail.');
+                        $("#checkboxParo_" + revistaUnidadesDetalle_ID).attr('disabled', 'disabled');
+                    } else {
+                        muestraMensaje('modalMensaje', 'divMsj', 'Ocurrio un error al Solicitar Paro de Motor. Intente Nuevamente.');
+                    }
+                },
+                error: function (xhr, status, errormsg) {
+                    muestraMensaje('modalMensaje', 'divMsj', 'Error: ' + errormsg);
+                }
+            });
+
+        }
+
+        //Atributo Paro Motor
+        function cancelaParoMotor() {
+            //Enviar a paro
+            $("#checkboxParo_" + revistaUnidadesDetalle_ID).removeAttr('disabled', 'disabled');
+            $('#checkboxParo_' + revistaUnidadesDetalle_ID).bootstrapToggle('off');
+        }
+
+        function modalConfirmacionParo(Detalle_ID) {
+            revistaUnidadesDetalle_ID = Detalle_ID;
+            var _paro = ($("#checkboxParo_" + revistaUnidadesDetalle_ID).prop('checked')) ? 1 : 0;
+            if (_paro > 0) {
+                $('#modalParo').modal({ backdrop: 'static', keyboard: false, show: true });
+            }
+        }
+
+        //Valida y colorea el textbox si no cubre el minimo de puntos
+        function esPuntajeMinimo(Evaluacion, PuntajeMinimo) {
+            if (Evaluacion < PuntajeMinimo) {
+                $("#Evaluacion").css({ 'background-image': '-webkit-linear-gradient(top,#f2dede 0,#e7c3c3 100%)' });
+            } else {
+                $("#Evaluacion").css({ 'background-image': '-webkit-linear-gradient(top,#dff0d8 0,#c8e5bc 100%)' });
+            }
+        }
+
+        //Actualiza el detalle de la evaluacion
+        function actualizaDetalleEvaluacion(valdetalle_ID, valpuntaje, valObservaciones) {
+            var rutaActualizaDetalle = "@Url.Action("actualizaDetalleEvaluacion", "Ejecutor")";
+            var parametros = { RevistaUnidadesDetalle_ID: valdetalle_ID, PuntajeReal: valpuntaje, observaciones: valObservaciones };
+
+            if (conexionInternet()) {
+                readaccionesOffline();
+            } else {
+                setActionOffLine(rutaActualizaDetalle, parametros);
+                return false;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: rutaActualizaDetalle,
+                cache: false,
+                dataType: 'json',
+                data: parametros,
+                success: function (data) {
+                    var dataJson = JSON.parse(data);
+                    $.each(dataJson, function (idx, item) {
+                        $('#Evaluacion').val(item.Evaluacion);
+                        $('#divTotalPuntaje').html("Puntaje Obtenido: <strong>" + item.Evaluacion + "</strong>");
+                        var PuntajeMinimo = parseInt(item.PuntajeMinimo);
+                        var Evaluacion = parseInt(item.Evaluacion);
+                        esPuntajeMinimo(Evaluacion, PuntajeMinimo);
+                        if (item.Critico == "0") {
+                            $('#PresentaCriticos').bootstrapToggle('off');
+                        } else {
+                            $('#PresentaCriticos').bootstrapToggle('on');
+                        }
+                        $('#PresentaCriticos').attr('disabled', 'disabled');
+                    });
+                },
+                error: function (xhr, status, errormsg) {
+                    muestraMensaje('modalMensaje', 'divMsj', errormsg);
+                }
+            });
+
+        }
+
+        //Finaliza y cierra la Revista.
+        function finalizarRevista() {
+            var rutaFinalizaRevista = "@Url.Action("actualizafinalizarEstatusRevista", "Ejecutor")";
+            var param = { revistaUnidades_id: revistaUnidades_ID, usuario_id: valUsuario_id };
+
+
+
+       //     alert("Finaliza");
+
+
+
+            //if (conexioninternet()) {
+            //    readaccionesoffline();
+            //} else {
+            //    setactionoffline(rutafinalizarevista, param);
+            //    return false;
+            //}
+          //  alert("Finaliza");
+            if (validarDatosMaestro()) {
+                $.ajax({
+                    type: "POST",
+                    url: rutaFinalizaRevista,
+                    cache: false,
+                    dataType: 'json',
+                    data: param,
+                    success: function (data) {
+                        muestraMensaje('modalMensaje', 'divMsj', 'Fue registrada la evaluación de Revista.');
+                        muestraFirma();
+                    },
+                    error: function (xhr, status, errormsg) {
+                        muestraMensaje('modalMensaje', 'divMsj', errormsg);
+                    }
+                });
+                obtieneInformacionRevista();
+                verBotonesNext();
+            }
+        }
+
+        //Validar Datos de Revista
+        function validarDatosMaestro() {
+            var _revistaUnidadesid = revistaUnidades_ID;
+            var _estacionid = $("#cmbEstaciones option:selected").val();
+            var _kilometraje = $('#Kilometraje').val();
+            var _usuario = valUsuario_id; //$("#UsuarioID").val();
+
+            var _taximetro = $('#Taximetro').val();
+            var _EsConductorDiferente = ($("#ConductorDiferente").prop('checked')) ? 1 : 0;
+            var _ConductorDiferente = $('#NombreConductorDiferente').val().toUpperCase();
+            //console.log("ID:" + _revistaUnidadesid + " Estacion:" + _estacionid + " Km:" + _kilometraje + " User:" + _usuario + " Taxi:" + _taximetro + " dif:" + _EsConductorDiferente + " Nom:" + _ConductorDiferente);
+
+            var seriereal = $('#hdntxtTanque').val();
+
+
+          //  if (seriereal != $('#txtSerieTanque').val()) {
+
+                // alert("checar 3");
+                //   muestraMensaje('modalMensajeTanqueGas', 'divMsj', '');
+            //    return false;
+          //  }
+
+            if (_estacionid == "-1") {
+                muestraMensaje('modalMensaje', 'divMsj', 'Seleecione una Estación');
+                return false;
+            }
+            if (_kilometraje.length == 0 || parseInt(_kilometraje) <= 0) {
+                muestraMensaje('modalMensaje', 'divMsj', 'Kilometraje no Valido.');
+                return false;
+            }
+            if (_taximetro.length == 0) {
+                muestraMensaje('modalMensaje', 'divMsj', 'Ingrese Taximetro.');
+                return false;
+            }
+            if (_ConductorDiferente.length == 0 && _EsConductorDiferente == 1) {
+                muestraMensaje('modalMensaje', 'divMsj', 'Ingrese Nombre de Conductor.');
+                return false;
+            }
+            return true;
+        }
+
+
+        function validarDatosMaestroSinMsj() {
+            var _revistaUnidadesid = revistaUnidades_ID;
+            var _estacionid = $("#cmbEstaciones option:selected").val();
+            var _kilometraje = $('#Kilometraje').val();
+            var _usuario = valUsuario_id;
+            var _taximetro = $('#Taximetro').val() + "|" + $('#txtSerieTanque').val();
+            var _EsConductorDiferente = ($("#ConductorDiferente").prop('checked')) ? 1 : 0;
+            var _ConductorDiferente = $('#NombreConductorDiferente').val().toUpperCase();
+
+            var seriereal = $('#hdntxtTanque').val();
+
+
+            var intentos = $('#hdnIntentos').val();
+
+
+            if (seriereal.length != 0) {
+
+                if (intentos == "1") {
+                    if (seriereal != $('#txtSerieTanque').val()) {
+
+                        return false;
+                    }
+                }
+
+
+            }
+
+
+
+
+
+            if (_estacionid == "-1") {
+                return false;
+            }
+            if (_kilometraje.length == 0 || parseInt(_kilometraje) <= 0) {
+                return false;
+            }
+            if (_taximetro.length == 0) {
+                return false;
+            }
+            if (_ConductorDiferente.length == 0 && _EsConductorDiferente == 1) {
+                return false;
+            }
+            return true;
+        }
+
+
+
+
+        function reloadTable(idTable) {
+            if ($.fn.DataTable.isDataTable("#" + idTable)) {
+                $("#" + idTable).dataTable();
+            } else {
+                $("#" + idTable).dataTable({
+                    paginate: false,
+                    info: false,
+                    "sScrollX": "100%",
+                    "sScrollXInner": "100%",
+                    "lengthMenu": [[-1, 50], ["Todo", 50]],
+                    "language": {
+                        "lengthMenu": "<i class='glyphicon glyphicon-sort-by-attributes'></i> Mostrar _MENU_ Filas por página", // icono bootstrsp
+                        "zeroRecords": "Sin resultados para mostrar...",
+                        "info": "<i class='glyphicon glyphicon-list-alt'></i> Página _PAGE_ de _PAGES_",  //icono bootstrap
+                        "infoEmpty": "Sin registros disponibles",
+                        "infoFiltered": "(filtered from _MAX_ total records)",
+                        "search": "<strong>Buscar</strong> <i class='glyphicon glyphicon-search'></i>", // icono buscar
+                        "loadingRecords": "Cargando...",
+                        "processing": "Procesando...",
+                        "paginate": {
+                            "first": "Primero",
+                            "last": "Ultimo",
+                            "next": "<i class='glyphicon glyphicon-chevron-right'></i>",  //Siguiente
+                            "previous": "<i class='glyphicon glyphicon-chevron-left'></i>" //Anterior
+                        }
+                    }
+                }).rowGrouping({
+                    bExpandableGrouping: true,
+                    iGroupingColumnIndex: 0
+                });
+            }
+        }
+
+        //Activa DataTable para GridView Jquery
+        function aplicarDataTableJquery(idTabla) {
+            if ($.fn.DataTable.isDataTable("#" + idTabla)) {
+                $("#" + idTabla).dataTable();
+            } else {
+                var oTable = $("#" + idTabla).dataTable({
+                    paginate: false,
+                    info: false,
+                    "sScrollX": "100%",
+                    "sScrollXInner": "100%",
+                    "lengthMenu": [[-1, 50], ["Todo", 50]],
+                    "language": {
+                        "lengthMenu": "<i class='glyphicon glyphicon-sort-by-attributes'></i> Mostrar _MENU_ Filas por página", // icono bootstrsp
+                        "zeroRecords": "Sin resultados para mostrar...",
+                        "info": "<i class='glyphicon glyphicon-list-alt'></i> Página _PAGE_ de _PAGES_",  //icono bootstrap
+                        "infoEmpty": "Sin registros disponibles",
+                        "infoFiltered": "(filtered from _MAX_ total records)",
+                        "search": "<strong>Buscar</strong> <i class='glyphicon glyphicon-search'></i>", // icono buscar
+                        "loadingRecords": "Cargando...",
+                        "processing": "Procesando...",
+                        "paginate": {
+                            "first": "Primero",
+                            "last": "Ultimo",
+                            "next": "<i class='glyphicon glyphicon-chevron-right'></i>",  //Siguiente
+                            "previous": "<i class='glyphicon glyphicon-chevron-left'></i>" //Anterior
+                        }
+                    }
+                });
+            }
+        }
+
+
+
+
+        function verBotonesNext() {
+            if ($("#cmbUnidades").val() != "-1") {
+                $("#next1").css("visibility", "");
+                $("#prev2").css("visibility", "");
+            } else {
+                $("#next1").css("visibility", "hidden");
+                $("#prev2").css("visibility", "hidden");
+            }
+
+            if (validarDatosMaestroSinMsj()) {
+                $("#prev2").css("visibility", "");
+                $("#next2").css("visibility", "");
+                $("#prev3").css("visibility", "");
+            } else {
+                $("#next2").css("visibility", "hidden");
+                $("#prev3").css("visibility", "hidden");
+                $("#next3").css("visibility", "hidden");
+                $("#prev4").css("visibility", "hidden");
+            }
+
+            if ($("#finalizar").css('visibility') === "visible") {
+                $("#prev3").css("visibility", "");
+                $("#next3").css("visibility", "hidden");
+                $("#prev4").css("visibility", "hidden");
+            } else {
+                $("#next3").css("visibility", "");
+                $("#prev4").css("visibility", "");
+            }
+        }
+
+        function limpiarControlesNextPrev() {
+            $("#next1").css("visibility", "hidden");
+            $("#next2").css("visibility", "hidden");
+            $("#next3").css("visibility", "hidden");
+            $("#prev2").css("visibility", "hidden");
+            $("#prev3").css("visibility", "hidden");
+            $("#prev4").css("visibility", "hidden");
+            //$("li[role='presentation']").addClass('disabled');
+            $("#liRevista").addClass('disabled');
+            $("#liPuntos").addClass('disabled');
+            $("#liEvaluacion").addClass('disabled');
+        }
+
+
+
+
+        function limpiarFileSave() {
+            if ($("#snapshot").val().length > 0) {
+                $("#arfSaveFile").css('visibility', 'visible');
+            } else {
+                $("#arfSaveFile").css('visibility', 'hidden');
+            }
+            $("#divMsjEvidencia").html('');
+        }
+
+
+        function inicializaWizard() {
+            //Initialize tooltips
+            $('.nav-tabs > li a[title]').tooltip();
+
+            //Wizard
+            $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+                var $target = $(e.target);
+                if ($target.parent().hasClass('disabled')) {
+                    return false;
+                }
+            });
+
+            $(".next-step").click(function (e) {
+                var $active = $('.wizard .nav-tabs li.active');
+                $active.next().removeClass('disabled');
+                nextTab($active);
+            });
+
+            $(".prev-step").click(function (e) {
+                var $active = $('.wizard .nav-tabs li.active');
+                prevTab($active);
+            });
+        }
+        function nextTab(elem) {
+            $(elem).next().find('a[data-toggle="tab"]').click();
+            $('#RevistaDataTable').DataTable().columns.adjust();
+            $('#tableEjecuccion').DataTable().columns.adjust();
+        }
+        function prevTab(elem) {
+            $(elem).prev().find('a[data-toggle="tab"]').click();
+            $('#RevistaDataTable').DataTable().columns.adjust();
+            $('#tableEjecuccion').DataTable().columns.adjust();
+        }
+    </script>
+
+}
+
+
+
+

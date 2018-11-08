@@ -1,0 +1,1155 @@
+﻿@{
+    ViewBag.Title = "Consulta de Revistas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="@Url.Content("~/Content/DataTable/jquery-ui.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/DataTable/dataTables.jqueryui.min.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/DataTable/DatatTableGrouping.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/bootstrap-toggle.min.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/ControlVehicular/Revista.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/chosen.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/bootstrap-datetimepicker.min.css")" rel="stylesheet" type="text/css" media="screen" />
+
+<link href="@Url.Content("~/Content/trirand/ui.jqgrid-bootstrap.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/trirand/ui.jqgrid.css")" rel="stylesheet" type="text/css" media="screen" />
+
+
+<style type="text/css">
+    .popover {
+        max-width: 600px;
+    }
+
+    .no-js #loader {
+        display: none;
+    }
+
+    .js #loader {
+        display: block;
+        position: absolute;
+        left: 100px;
+        top: 0;
+    }
+
+    .se-pre-con {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: url(../Images/loadingRubic.gif) center no-repeat #fff;
+    }
+
+    .se-text {
+        position: absolute;
+        left: 47%;
+        top: 54%;
+        z-index: 9999;
+    }
+</style>
+
+<h4>
+    <span class="label label-default">@ViewBag.Title</span>
+</h4>
+
+<div class="container">
+
+
+    <div class="row">
+
+        <div class="col-sm-12">
+            <div class="panel panel-default" style="background:#b9def0; box-shadow:0 20px 25px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important; border-radius: 15px 50px;">
+                <div class="panel-body" style="padding:15px;">
+
+                    <span class="label label-info">Seleccione Filtros</span>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-bookmark"></i>División</span>
+                                @Html.DropDownList("cmbMercados", (SelectList) ViewBag.Mercados)
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-briefcase"></i>Empresa</span>
+                                @Html.DropDownList("cmbEmpresas", (SelectList) ViewBag.Empresas)
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-flag"></i>Estación</span>
+                                @Html.DropDownList("cmbEstaciones", (SelectList) ViewBag.Estaciones)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-bed"></i>Unidad</span>
+                                @Html.DropDownList("cmbUnidades", (SelectList) ViewBag.Unidades)
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-md-4">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-bed"></i>Modelo</span>
+                                @Html.DropDownList("cmbModelosUnidades", (SelectList) ViewBag.ModelosUnidades)
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-md-4">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-bed"></i>Año</span>
+                                <input id="txtAnio" type="text" class="form-control" placeholder="" aria-describedby="sizing-addon1" onkeypress="return isNumberKey(event);">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-tags"></i>Estatus Revista</span>
+                                @Html.DropDownList("cmbEstatusRevistas", (SelectList) ViewBag.EstatusRevistas)
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user"></i>Ejecutor</span>
+                                @Html.DropDownList("cmbUsuariosRevistas", (SelectList) ViewBag.UsuariosRevista)
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-info-sign"></i>Presenta Criticos</span>
+                                <select id="cmbPresentaCriticos">
+                                    <option value="-1">Todos</option>
+                                    <option value="1">SI</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user"></i>Conductor Diferente</span>
+                                <select id="cmbConductordif">
+                                    <option value="-1">Todos</option>
+                                    <option value="1">SI</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-thumbs-down"></i>Paro de Motor</span>
+                                <select id="cmbParoMotor">
+                                    <option value="-1">Todos</option>
+                                    <option value="1">SI</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-comment"></i>PA</span>
+                                <select id="cmbCompromisos">
+                                    <option value="-1">Todos</option>
+                                    <option value="1">SI</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-calendar"></i>Fecha Programación</span>
+
+                                <div class="input-append date" id="dateInicio" data-date="" data-date-format="yyyy-mm-dd">
+                                    <input size="16" type="text" value="" placeholder="Desde" readonly id="txtDateInicio">
+                                    <span class="add-on"><i class="icon-th"></i></span>
+                                </div>
+
+                                <div class="input-append date" id="dateFin" data-date="" data-date-format="yyyy-mm-dd">
+                                    <input size="16" type="text" value="" placeholder="Hasta" readonly id="txtDateFin">
+                                    <span class="add-on"><i class="icon-th"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                        </div>
+                        <div class="col-md-2" style="text-align:right;">
+                            <br />
+                            <a id="finalizar" class="btn btn-success" onclick="ConsultarRevistas(); return false;"><i class="glyphicon glyphicon-search"></i> Consultar </a>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-10">
+                        </div>
+                        <div class="col-md-2" style="text-align:right;">
+
+                            <a id="finalizar" class="btn btn-info" onclick="ExportaRevistaXLS(); return false;"><i class="glyphicon glyphicon-search"></i> Exportar XLS </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="panel-group" id="accordion">
+        <div class="panel panel-info">
+            <div class="panel-heading" style="height:30px;">
+                <h1 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Total por Estatus.</a>
+                </h1>
+            </div>
+            <div id="collapse1" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <p>
+                        <span class="label label-warning" id="sProgramadas"> 0 </span>&nbsp; Progamadas &nbsp
+                        <span class="label label-info" id="sProceso"> 0 </span>&nbsp; Proceso &nbsp
+                        <span class="label label-success" id="sAprobadas"> 0 </span>&nbsp; Aprobadas &nbsp
+                        <span class="label label-danger" id="sNoAprobadas"> 0 </span>&nbsp; No Aprobadas &nbsp;
+                        <span class="label label-danger" id="sVencidas"> 0 </span>&nbsp; Vencidas &nbsp;
+                        <span class="label label-default" id="sCanceladas"> 0 </span>&nbsp; Canceladas &nbsp;
+
+                        <span class="label label-primary" id="sTotalGeneral"> 0 </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12" id="divGridConsulta">
+            <table id="gridConsulta"></table>
+            <div id="pagerConsulta"></div>
+        </div>
+    </div>
+
+
+
+
+</div>
+
+
+<!-- Modal Evidencia -->
+<div class="modal fade" id="modalEvidencia" role="dialog">
+    <div class="modal-dialog modal-md" style="z-index:3500;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="titleEvidencia">Evidencia</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        @* Aqui se crea el carrusel detalle de evidencia (Imagenes) *@
+                        <div id="divInCarrusel">
+                        </div>
+
+                    </div>
+                </div>
+                <div id="divMsjEvidencia">
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Mensaje -->
+<div class="modal fade" id="modalMensaje" role="dialog">
+    <div class="modal-dialog modal-md" style="z-index:3500;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Información</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning" role="alert">
+                    @*<a href="#" class="close" data-dismiss="alert">&times;</a>*@
+                    <div id="divMsj">
+                        Unidad sin Revista Asignada.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <div class="se-pre-con"></div>
+    <div class="se-text">Procesando...</div>
+</div>
+
+
+@section Scripts {
+
+    @Scripts.Render("~/Scripts/trirand/jquery.jqGrid.js")
+    @Scripts.Render("~/Scripts/trirand/jquery.jqGrid.min.js")
+    @Scripts.Render("~/Scripts/trirand/i18n/grid.locale-en.js")
+
+
+    @Scripts.Render("~/Scripts/jquery.dataTables.min.js")
+    @Scripts.Render("~/Scripts/dataTables.jqueryui.min.js")
+    @Scripts.Render("~/Scripts/jquery.dataTables.rowGrouping.js")
+    @Scripts.Render("~/Scripts/bootstrap-toggle.min.js")
+    @Scripts.Render("~/Scripts/chosen.jquery.js")
+    @Scripts.Render("~/Scripts/jasny-bootstrap.js")
+    @Scripts.Render("~/Scripts/bootstrap-datetimepicker.js")
+    @Scripts.Render("~/Scripts/locales/bootstrap-datetimepicker.fr.js")
+    @Scripts.Render("~/Scripts/GeneralesJS/Funciones.js")
+    @Scripts.Render("~/Scripts/Excel/jquery.table2excel.js")
+
+
+    <script type="text/javascript">
+        var valUsuario_id = "@Session["Usuario_ID"]";
+        var FechaActual = new Date().toISOString().substring(0, 10);
+        $.jgrid.no_legacy_api = true;
+        $.jgrid.useJSON = true;
+
+        //Variables de totales.
+        var _TotalProgramdas = 0;
+        var _TotalProceso = 0;
+        var _TotalAprobadas = 0;
+        var _TotalNoAprobadas = 0;
+        var _TotalVencidas = 0;
+        var _TotalCanceladas = 0;
+        var _TotalGeneral = 0;
+
+        function limpiaTotales() {
+            _TotalProgramdas = 0;
+            _TotalProceso = 0;
+            _TotalAprobadas = 0;
+            _TotalNoAprobadas = 0;
+            _TotalVencidas = 0;
+            _TotalCanceladas = 0;
+            _TotalGeneral = 0;
+        }
+        function muestraTotales() {
+            //console.log('Muestra totales: ' + _TotalAprobadas);
+            $("#sProgramadas").html(_TotalProgramdas);
+            $("#sProceso").html(_TotalProceso);
+            $("#sAprobadas").html(_TotalAprobadas);
+            $("#sNoAprobadas").html(_TotalNoAprobadas);
+            $("#sVencidas").html(_TotalVencidas);
+            $("#sCanceladas").html(_TotalCanceladas);
+            $("#sTotalGeneral").html('Total General: ' + _TotalGeneral);
+        }
+
+        $(window).load(function () {
+            hideLoading();
+        });
+
+        function showLoading() {
+            $(".se-pre-con").fadeIn("slow");
+            $(".se-text").fadeIn("slow");
+        }
+        function hideLoading() {
+            $(".se-pre-con").fadeOut("slow");
+            $(".se-text").fadeOut("slow");
+        }
+
+        $(document).ready(function () {
+            reloadChosen('cmbMercados');
+            reloadChosen('cmbEmpresas');
+            reloadChosen('cmbEstaciones');
+            reloadChosenItemTodos('cmbUnidades');
+            reloadChosen('cmbModelosUnidades');
+            reloadChosen('cmbEstatusRevistas');
+            reloadChosen('cmbUsuariosRevistas');
+            reloadChosen('cmbPresentaCriticos');
+            reloadChosen('cmbConductordif');
+            reloadChosen('cmbCompromisos');
+            reloadChosen('cmbParoMotor');
+
+            $('#dateInicio').datetimepicker({
+                language: 'en' 
+                //setStartDate: FechaActual,
+               , todayBtn: 1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                minView: 2,
+                forceParse: 0
+               // daysOfWeekDisabled: [0, 2, 3, 4, 5, 6]
+            });
+            $('#dateFin').datetimepicker({
+                language: 'es'
+                //setStartDate: FechaActual,
+               , todayBtn: 1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                minView: 2,
+                forceParse: 0
+               // daysOfWeekDisabled: [1, 2, 3, 4, 5, 6]
+            });
+
+
+            $("#dateInicio").on("change", function (e) {
+                validaFechas();
+            });
+
+            $("#dateFin").on("change", function (e) {
+                validaFechas();
+            });
+
+        });
+
+
+        function conexionInternet() {
+            if (navigator.onLine == false) {
+                muestraMensaje('modalMensaje', 'divMsj', 'No cuenta con conexión a Internet.');
+                return false;
+            }
+        }
+
+        function validaFechas() {
+            if ($("#txtDateInicio").val().length > 0 && $("#txtDateFin").val().length > 0) {
+                var inicio = Date.parse($("#txtDateInicio").val());
+                var fin = Date.parse($("#txtDateFin").val());
+                console.log(inicio);
+                console.log(fin);
+                if (inicio > fin) {
+                    $("#txtDateInicio").val($("#txtDateFin").val());
+                    muestraMensaje('modalMensaje', 'divMsj', 'La fecha de inicio no puede ser mayor a la fecha final.');
+                }
+
+                var fecha1 = new Date($("#txtDateInicio").val().split("-")[1] + '/' + $("#txtDateInicio").val().split("-")[2] + '/' + $("#txtDateInicio").val().split("-")[0]);
+                var fecha2 = new Date($("#txtDateFin").val().split("-")[1] + '/' + $("#txtDateFin").val().split("-")[2] + '/' + $("#txtDateFin").val().split("-")[0]);
+                var datediff = parseInt((fecha1.getTime() - fecha2.getTime()) / (24 * 3600 * 1000)) * -1;
+                //if (datediff > 6) {
+                //    muestraMensaje('modalMensaje', 'divMsj', 'Seleccione la semana que desea consultar no mayor a 6 dias.');
+                //    return false;
+                //}
+
+            }
+        }
+
+        //Asigna Id de Click detalle cuando abre modal
+        $(document).on("click", ".open-Modal", function () {
+            revistaUnidadesDetalle_ID = $(this).data('id');
+            spanCantidadEvidencia = $(this).find('span');
+            obtieneRevistaDetalleEvidencia(revistaUnidadesDetalle_ID);
+        });
+
+        // Hide popover on click anywhere on the document except itself
+        $('body').on('click', function (e) {
+            $('[rel="popoverPA"]').each(function () {
+                if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                    $(this).popover('hide');
+                }
+            });
+            $('[rel="popoverPC"]').each(function () {
+                if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                    $(this).popover('hide');
+                }
+            });
+        });
+
+        //Obtiene Evidencia Imagenes.
+        function obtieneRevistaDetalleEvidencia(_revistaUnidadesDetalle_ID) {
+            var _rutaEvidencia = "@Url.Action("ObtieneRevistaDetalleEvidencia", "Ejecutor")";
+            $("#snapshot").val('');
+
+            conexionInternet();
+            $.ajax({
+                type: "POST",
+                url: _rutaEvidencia,
+                cache: false,
+                dataType: 'json',
+                data: { revistaUnidadesDetalle_ID: _revistaUnidadesDetalle_ID },
+                success: createCarrusel,
+                error: function (xhr, status, errormsg) {
+                    muestraMensaje('modalMensaje', 'divMsj', errormsg);
+                }
+            });
+        }
+        //Crea Carrusel de imagenes
+        function createCarrusel(json, status, xhr) {
+            $("#divInCarrusel").html('');
+            var obj = JSON.parse(json);
+            //Limpiar div contenedor
+            var sDivCarrusel = '<div id="myCarousel" class="carousel slide" data-ride="carousel">';
+            var sDivIndicators = '<ol class="carousel-indicators">';
+            var sDivImagesCarrusel = '<div class="carousel-inner" role="listbox">';
+            var contadorEvidencia = 0;
+            for (var i = 0; i < obj.length; i++) {
+                if (i == 0) {
+                    sDivIndicators += '<li data-target="#myCarousel" data-slide-to="' + i + '" class="active"></li>';
+
+                    sDivImagesCarrusel += '<div class="item active">' +
+                                              '<img src="' + obj[i].Path + '" >' +
+                                          '</div>';
+                } else {
+                    sDivIndicators += '<li data-target="#myCarousel" data-slide-to="' + i + '" ></li>';
+
+                    sDivImagesCarrusel += '<div class="item">' +
+                                              '<img src="' + obj[i].Path + '">' +
+                                          '</div>';
+                }
+                contadorEvidencia++;
+            }
+            sDivIndicators += '</ol>';
+            sDivImagesCarrusel += '</div>';
+            var sControls = '<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"> ' +
+                                '<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> ' +
+                                '<span class="sr-only">Previous</span> ' +
+                            '</a> ' +
+                            '<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> ' +
+                                '<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> ' +
+                                '<span class="sr-only">Next</span> ' +
+                            '</a>';
+
+            sDivCarrusel += sDivIndicators +
+                            sDivImagesCarrusel +
+                            sControls +
+                            '</div>';
+
+            $("#divInCarrusel").html(sDivCarrusel);
+            //spanCantidadEvidencia.html(contadorEvidencia);
+        }
+
+        //Recarga control tipo chosen
+        function reloadChosenItemTodos(idSelect) {
+            $("#" + idSelect).chosen();
+            $("#" + idSelect).append('<option selected="selected" value="0">Todas</option>');
+            $("#" + idSelect).trigger("chosen:updated");
+        }
+
+        //Obtiene Informacion de Compromisos para la unidad
+        function ConsultarRevistas() {
+
+            $('[role="tooltip"]').popover('hide');
+            $("#divGridConsulta").html('<table id="gridConsulta"></table> <div id="pagerConsulta"></div>');
+            var rutaConsultas = "@Url.Action("ObtieneConsultaRevistas", "Consultas")";
+            //debugger;
+            var _mercado_id = $("#cmbMercados option:selected").val();
+            var _empresa_id = $("#cmbEmpresas option:selected").val();
+            var _estacion_id = $("#cmbEstaciones option:selected").val();
+            var _unidad_id = $("#cmbUnidades option:selected").val();
+            var _modeloUnidad_id = $("#cmbModelosUnidades option:selected").val();
+            var _anio = ($("#txtAnio").val().length == 0 ? 0 : $("#txtAnio").val());
+            var _estatus_id = $("#cmbEstatusRevistas option:selected").val();
+            var _usuario_id = $("#cmbUsuariosRevistas option:selected").val();
+            var _fechaInicio = ($("#txtDateInicio").val().length == 0 ? null : $("#txtDateInicio").val());
+            var _fechaFin = ($("#txtDateFin").val().length == 0 ? null : $("#txtDateFin").val());
+            var _PresentaCriticos = $("#cmbPresentaCriticos option:selected").val();
+            var _esConductorDiferente = $("#cmbConductordif option:selected").val();
+            var _Compromisos = $("#cmbCompromisos option:selected").val();
+            var _ParoMotor = $("#cmbParoMotor option:selected").val();
+
+            //if (_estacion_id == 0 && _unidad_id == 0) {
+            //    muestraMensaje('modalMensaje', 'divMsj', 'Seleeccione Estacion o Unidad.');
+            //    return false;
+            //}
+
+
+
+            //if (_estatus_id == 0 && _unidad_id == 0) {
+            //    muestraMensaje('modalMensaje', 'divMsj', 'Seleeccione Estatus.');
+            //    return false;
+            //}
+            if (_fechaInicio == null || _fechaFin == null) {
+                muestraMensaje('modalMensaje', 'divMsj', 'Seleeccione un Rango de Fechas.');
+                return false;
+            }
+            var fecha1 = new Date($("#txtDateInicio").val().split("-")[1] + '/' + $("#txtDateInicio").val().split("-")[2] + '/' + $("#txtDateInicio").val().split("-")[0]);
+            var fecha2 = new Date($("#txtDateFin").val().split("-")[1] + '/' + $("#txtDateFin").val().split("-")[2] + '/' + $("#txtDateFin").val().split("-")[0]);
+            var datediff = parseInt((fecha1.getTime() - fecha2.getTime()) / (24 * 3600 * 1000)) * -1;
+            //if (datediff > 6) {
+            //    muestraMensaje('modalMensaje', 'divMsj', 'Seleccione la semana que desea consultar no mayor a 6 dias.');
+            //    return false;
+            //}
+
+
+            var parametros = { empresa_ID: _empresa_id, mercado_id: _mercado_id, estacion_id: _estacion_id, unidad_id: _unidad_id, modeloUnidad_id: _modeloUnidad_id, anio: _anio, estatus_id: _estatus_id, usuario_id: _usuario_id, fechaInicio: _fechaInicio, fechaFin: _fechaFin, presentaCriticos: _PresentaCriticos, esConductorDiferente: _esConductorDiferente, compromisos: _Compromisos, paroMotor: _ParoMotor };
+            conexionInternet();
+            showLoading();
+            $.ajax({
+                type: "POST",
+                url: rutaConsultas,
+                cache: false,
+                dataType: 'json',
+                data: parametros,
+                success: creaTablaConsultaRevistas,
+                error: function (xhr, status, errormsg) {
+                    alert(errormsg);
+                    hideLoading();
+                }
+            });
+        }
+
+
+
+
+        function ExportaRevistaXLS() {
+
+            $('[role="tooltip"]').popover('hide');
+            $("#divGridConsulta").html('<table id="gridConsulta"></table> <div id="pagerConsulta"></div>');
+            var rutaConsultas = "@Url.Action("ObtieneConsultaRevistas", "Consultas")";
+            //debugger;
+            var _mercado_id = $("#cmbMercados option:selected").val();
+            var _empresa_id = $("#cmbEmpresas option:selected").val();
+            var _estacion_id = $("#cmbEstaciones option:selected").val();
+            var _unidad_id = $("#cmbUnidades option:selected").val();
+            var _modeloUnidad_id = $("#cmbModelosUnidades option:selected").val();
+            var _anio = ($("#txtAnio").val().length == 0 ? 0 : $("#txtAnio").val());
+            var _estatus_id = $("#cmbEstatusRevistas option:selected").val();
+            var _usuario_id = $("#cmbUsuariosRevistas option:selected").val();
+            var _fechaInicio = ($("#txtDateInicio").val().length == 0 ? null : $("#txtDateInicio").val());
+            var _fechaFin = ($("#txtDateFin").val().length == 0 ? null : $("#txtDateFin").val());
+            var _PresentaCriticos = $("#cmbPresentaCriticos option:selected").val();
+            var _esConductorDiferente = $("#cmbConductordif option:selected").val();
+            var _Compromisos = $("#cmbCompromisos option:selected").val();
+            var _ParoMotor = $("#cmbParoMotor option:selected").val();
+
+          
+            if (_fechaInicio == null || _fechaFin == null) {
+                muestraMensaje('modalMensaje', 'divMsj', 'Seleeccione un Rango de Fechas.');
+                return false;
+            }
+            var fecha1 = new Date($("#txtDateInicio").val().split("-")[1] + '/' + $("#txtDateInicio").val().split("-")[2] + '/' + $("#txtDateInicio").val().split("-")[0]);
+            var fecha2 = new Date($("#txtDateFin").val().split("-")[1] + '/' + $("#txtDateFin").val().split("-")[2] + '/' + $("#txtDateFin").val().split("-")[0]);
+            var datediff = parseInt((fecha1.getTime() - fecha2.getTime()) / (24 * 3600 * 1000)) * -1;
+           
+
+
+            var parametros = { empresa_ID: _empresa_id, mercado_id: _mercado_id, estacion_id: _estacion_id, unidad_id: _unidad_id, modeloUnidad_id: _modeloUnidad_id, anio: _anio, estatus_id: _estatus_id, usuario_id: _usuario_id, fechaInicio: _fechaInicio, fechaFin: _fechaFin, presentaCriticos: _PresentaCriticos, esConductorDiferente: _esConductorDiferente, compromisos: _Compromisos, paroMotor: _ParoMotor };
+            conexionInternet();
+            showLoading();
+            $.ajax({
+                type: "POST",
+                url: rutaConsultas,
+                cache: false,
+                dataType: 'json',
+                data: parametros,
+                success: creaTablaConsultaRevistasXLS,
+                error: function (xhr, status, errormsg) {
+                    alert(errormsg);
+                    hideLoading();
+                }
+            });
+        }
+
+
+        @*function ExportaRevistaXLS() {
+
+            $('[role="tooltip"]').popover('hide');
+            $("#divGridConsulta").html('<table id="gridConsulta"></table> <div id="pagerConsulta"></div>');
+            var rutaConsultas = "@Url.Action("ObtieneConsultaRevistas", "Consultas")";
+            //debugger;
+            var _mercado_id = $("#cmbMercados option:selected").val();
+            var _empresa_id = $("#cmbEmpresas option:selected").val();
+            var _estacion_id = $("#cmbEstaciones option:selected").val();
+            var _unidad_id = $("#cmbUnidades option:selected").val();
+            var _modeloUnidad_id = $("#cmbModelosUnidades option:selected").val();
+            var _anio = ($("#txtAnio").val().length == 0 ? 0 : $("#txtAnio").val());
+            var _estatus_id = $("#cmbEstatusRevistas option:selected").val();
+            var _usuario_id = $("#cmbUsuariosRevistas option:selected").val();
+            var _fechaInicio = ($("#txtDateInicio").val().length == 0 ? null : $("#txtDateInicio").val());
+            var _fechaFin = ($("#txtDateFin").val().length == 0 ? null : $("#txtDateFin").val());
+            var _PresentaCriticos = $("#cmbPresentaCriticos option:selected").val();
+            var _esConductorDiferente = $("#cmbConductordif option:selected").val();
+            var _Compromisos = $("#cmbCompromisos option:selected").val();
+            var _ParoMotor = $("#cmbParoMotor option:selected").val();
+
+            //if (_estacion_id == 0 && _unidad_id == 0) {
+            //    muestraMensaje('modalMensaje', 'divMsj', 'Seleeccione Estacion o Unidad.');
+            //    return false;
+            //}
+
+
+
+            //if (_estatus_id == 0 && _unidad_id == 0) {
+            //    muestraMensaje('modalMensaje', 'divMsj', 'Seleeccione Estatus.');
+            //    return false;
+            //}
+            if (_fechaInicio == null || _fechaFin == null) {
+                muestraMensaje('modalMensaje', 'divMsj', 'Seleeccione un Rango de Fechas.');
+                return false;
+            }
+            var fecha1 = new Date($("#txtDateInicio").val().split("-")[1] + '/' + $("#txtDateInicio").val().split("-")[2] + '/' + $("#txtDateInicio").val().split("-")[0]);
+            var fecha2 = new Date($("#txtDateFin").val().split("-")[1] + '/' + $("#txtDateFin").val().split("-")[2] + '/' + $("#txtDateFin").val().split("-")[0]);
+            var datediff = parseInt((fecha1.getTime() - fecha2.getTime()) / (24 * 3600 * 1000)) * -1;
+            //if (datediff > 6) {
+            //    muestraMensaje('modalMensaje', 'divMsj', 'Seleccione la semana que desea consultar no mayor a 6 dias.');
+            //    return false;
+            //}
+
+
+            var parametros = { empresa_ID: _empresa_id, mercado_id: _mercado_id, estacion_id: _estacion_id, unidad_id: _unidad_id, modeloUnidad_id: _modeloUnidad_id, anio: _anio, estatus_id: _estatus_id, usuario_id: _usuario_id, fechaInicio: _fechaInicio, fechaFin: _fechaFin, presentaCriticos: _PresentaCriticos, esConductorDiferente: _esConductorDiferente, compromisos: _Compromisos, paroMotor: _ParoMotor };
+            conexionInternet();
+            showLoading();
+            $.ajax({
+                type: "POST",
+                url: rutaConsultas,
+                beforeSend: function () {
+                    //AjaxStart('...Export');
+                },
+                success: function (data, textStatus, jqXHR) {
+                    //AjaxStop();
+                    alert('success')
+                },
+                error: function (failure) {
+                    alert('error');
+                }
+                //type: "POST",
+                //url: rutaConsultas,
+                //cache: false,
+                //dataType: 'json',
+                //data: parametros,
+                //success: creaTablaConsultaRevistas,
+                //error: function (xhr, status, errormsg) {
+                //    alert(errormsg);
+                //    hideLoading();
+                //}
+            });
+
+
+            //$("#gridConsulta").table2excel({
+            //    name: "Revista",
+            //    filename: "Revista",
+            //    fileext: ".xls"
+            //});
+
+
+        }*@
+
+
+
+        function JSONToCSVConvertor(JSONData, ReportTitle, ShowLabel) {
+            //If JSONData is not an object then JSON.parse will parse the JSON string in an Object
+            var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
+
+            var CSV = '';
+            //Set Report title in first row or line
+
+            CSV += ReportTitle + '\r\n\n';
+
+            //This condition will generate the Label/Header
+            if (ShowLabel) {
+                var row = "";
+
+                //This loop will extract the label from 1st index of on array
+                for (var index in arrData[0]) {
+
+                    //Now convert each value to string and comma-seprated
+                    row += index + ',';
+                }
+
+                row = row.slice(0, -1);
+
+                //append Label row with line break
+                CSV += row + '\r\n';
+            }
+
+            //1st loop is to extract each row
+            for (var i = 0; i < arrData.length; i++) {
+                var row = "";
+
+                //2nd loop will extract each column and convert it in string comma-seprated
+                for (var index in arrData[i]) {
+                    row += '"' + arrData[i][index] + '",';
+                }
+
+                row.slice(0, row.length - 1);
+
+                //add a line break after each row
+                CSV += row + '\r\n';
+            }
+
+            if (CSV == '') {
+                alert("Invalid data");
+                return;
+            }
+
+            //Generate a file name
+            var fileName = "MyReport_";
+            //this will remove the blank-spaces from the title and replace it with an underscore
+            fileName += ReportTitle.replace(/ /g, "_");
+
+            //Initialize file format you want csv or xls
+            var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
+
+            // Now the little tricky part.
+            // you can use either>> window.open(uri);
+            // but this will not work in some browsers
+            // or you will not get the correct file extension    
+
+            //this trick will generate a temp <a /> tag
+            var link = document.createElement("a");
+            link.href = uri;
+
+            //set the visibility hidden so it will not effect on your web-layout
+            link.style = "visibility:hidden";
+            link.download = fileName + ".csv";
+
+            //this part will append the anchor tag and remove it after automatic click
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+
+        function creaTablaConsultaRevistasXLS(json, status, xhr) {
+
+            var objJson = JSON.parse(json);
+
+            JSONToCSVConvertor(objJson, "Revistas Consulta", true);
+
+
+
+            hideLoading();
+        }
+
+        // Crea Tabla Consulta
+        function creaTablaConsultaRevistas(json, status, xhr) {
+            limpiaTotales();
+
+            var objJson = JSON.parse(json);
+
+            var colsHead = ['División', 'Estación', '#Económico', 'Vehiculo', 'Año', 'Estatus Unidad', 'Fecha Planeada', 'Fecha Vence', 'Fecha Revista', 'Estatus', 'Calificación', 'PA', 'Criticos', 'Ejecutor', 'Conductor', 'Otro Conductor', 'Nombre Otro', 'UID', 'RUID'];
+
+            var colsName = ["Division", "Estacion", "NumeroEconomico", "Vehiculo", "Anio", "EstatusUnidad", "FechaRevista", "FechaVencimiento", "FechaFin", "Estatus", "Calificacion", "PA", "Criticos", "Usuario_ID", "Conductor", 'EsConductorDiferente', "ConductorDiferente", "Unidad_ID", "RevistaUnidades_ID"];
+
+
+            var colModel = [
+                    { name: 'Division', index: 'Division', width: 110 },
+                    { name: 'Estacion', index: 'Estacion', width: 100 },
+                    { name: 'NumeroEconomico', index: 'NumeroEconomico', width: 70, align: 'center' },
+                    { name: 'Vehiculo', index: 'Vehiculo', width: 70 },
+                    { name: 'Anio', index: 'Anio', width: 40, align: 'center' },
+                    { name: 'EstatusUnidad', index: 'EstatusUnidad', width: 80, align: 'center', formatter: formaterStatusUnidad },
+                    { name: 'FechaRevista', index: 'FechaRevista', width: 100, align: 'center' },
+                    { name: 'FechaVencimiento', index: 'FechaVencimiento', width: 80, align: 'center' },
+                    { name: 'FechaFin', index: 'FechaFin', width: 100, align: 'center' },
+                    { name: 'Estatus', index: 'Estatus', width: 80, align: 'center', formatter: formaterStatus },
+                    { name: 'Calificacion', index: 'Calificacion', width: 70, align: 'center', formatter: CalFormatter },
+                    { name: 'PA', index: 'PA', width: 40, align: 'center', formatter: PAFormatter },
+                    { name: 'Criticos', index: 'Criticos', width: 50, align: 'center', formatter: PCFormatter },
+                    { name: 'Usuario_ID', index: 'Usuario_ID', width: 100 },
+                    { name: 'Conductor', index: 'Conductor', width: 0 },
+                    { name: 'EsConductorDiferente', index: 'EsConductorDiferente', width: 50, align: 'center' },
+                    { name: 'ConductorDiferente', index: 'ConductorDiferente', width: 0 },
+                    { name: 'Unidad_ID', index: 'Unidad_ID', width: 1 },
+                    { name: 'RevistaUnidades_ID', index: 'RevistaUnidades_ID', width: 1 }
+            ];
+
+
+            groupsCols = ['Division', 'Estacion', 'NumeroEconomico'];
+            groupsColShow = [false, false, false];
+            creaGridAgrupado(objJson, colsHead, colModel, 'gridConsulta', 'pagerConsulta', 'Division', groupsCols, 'Revista Vehicular', groupsColShow);
+            var reportObjectsGrid = $('#' + 'gridConsulta');
+            reportObjectsGrid.setGridWidth($("#Calificacion").width());
+
+            setPopoverPA();
+            setPopoverPC();
+
+            limpiaTotales();
+            $.each(objJson, function (idx, item) {
+                var Estatus = item.Estatus.trim();
+                _TotalGeneral = _TotalGeneral + 1;
+                switch (Estatus) {
+                    case "PROGRAMADA":
+                        _TotalProgramdas = _TotalProgramdas + 1;
+                        break;
+                    case "EN PROCESO":
+                        _TotalProceso = _TotalProceso + 1;
+                        break;
+                    case "APROBADA":
+                        _TotalAprobadas = _TotalAprobadas + 1;
+                        break;
+                    case "NO APROBADA":
+                        _TotalNoAprobadas = _TotalNoAprobadas + 1;
+                        break;
+                    case "VENCIDA":
+                        _TotalVencidas = _TotalVencidas + 1;
+                        break;
+                    case "CANCELADA":
+                        _TotalCanceladas = _TotalCanceladas + 1;
+                        break;
+                    default:
+                }
+            });
+            muestraTotales();
+            hideLoading();
+        }
+
+
+        function creaGridAgrupado(_mydata, _colNames, _ColModel, _gridID, _pagerID, _shortNameCol, _groupCols, _title, _groupsColShow) {
+            $("#" + _gridID).jqGrid({
+                data: _mydata,
+                datatype: "local",
+                height: null,
+                width: null,
+                shrinkToFit: false,
+                rowNum: 30,
+                rowList: [30, 50, 100, _mydata.length],
+                colNames: _colNames,
+                colModel: _ColModel,
+                pager: "#" + _pagerID,
+                viewrecords: true,
+                sortname: _shortNameCol,
+                grouping: true,
+                groupingView: {
+                    groupColumnShow: _groupsColShow
+                },
+                caption: _title
+            });
+
+            $("#" + _gridID).jqGrid('groupingGroupBy', _groupCols);
+
+        }
+
+        //Dar formato a tooltip de Presenta Criticos.
+        function formaterStatusUnidad(cellvalue, options, rowObject) {
+            //Color de Estatus
+            var classEstatus = 'success';
+            var Estatus = rowObject["EstatusUnidad"].trim();
+            switch (Estatus) {
+                case "DISPONIBLE":
+                    classEstatus = 'info';
+                    break;
+                case "CIRCULANDO":
+                    classEstatus = 'success';
+                    break;
+                case "BAJA":
+                    classEstatus = 'danger';
+                    break;
+                case "INACTIVA":
+                    classEstatus = 'warning';
+                    break;
+            }
+
+            var cellHtml = "<span style='color:white;' class='label label-" + classEstatus + "'>" + cellvalue + "</span>";
+            return cellHtml;
+        }
+
+        //Dar formato a tooltip de Presenta Criticos.
+        function formaterStatus(cellvalue, options, rowObject) {
+            var idU = rowObject["Unidad_ID"];
+            var idRU = rowObject["RevistaUnidades_ID"];
+            var url_aux = "@Url.Action("ConsultaRevista", "Consultas" )";
+            url_aux += '?unidad_id=' + idU + '&revistaUnidad_id=' + idRU;
+
+            //Color de Estatus
+            var classEstatus = 'success';
+            var Estatus = rowObject["Estatus"].trim();
+            if (Estatus == "VENCIDA" || Estatus == "CANCELADA" || Estatus == "NO APROBADA") {
+                classEstatus = 'danger';
+            }
+            console.log(Estatus);
+            switch (Estatus) {
+                case "PROGRAMADA":
+                    classEstatus = 'warning';
+                    _TotalProgramdas = _TotalProgramdas + 1;
+                    break;
+                case "EN PROCESO":
+                    classEstatus = 'info';
+                    _TotalProceso = _TotalProceso + 1;
+                    break;
+                case "APROBADA":
+                    classEstatus = 'success';
+                    _TotalAprobadas = _TotalAprobadas + 1;
+                    break;
+                case "NO APROBADA":
+                    classEstatus = 'danger';
+                    _TotalNoAprobadas = _TotalNoAprobadas + 1;
+                    break;
+                case "VENCIDA":
+                    classEstatus = 'danger';
+                    _TotalVencidas = _TotalVencidas + 1;
+                    break;
+                case "CANCELADA":
+                    classEstatus = 'default';
+                    _TotalCanceladas = _TotalCanceladas + 1;
+                    break;
+                default:
+            }
+
+            var cellHtml = "<a style='color:white;' class='label label-" + classEstatus + "' href='" + url_aux + "' title='Ver Revista' target='_blank'>" + cellvalue + "</a>";
+            return cellHtml;
+        }
+
+
+        //Dar formato a tooltip de Planes de accion.
+        function PAFormatter(cellvalue, options, rowObject) {
+            var idR = rowObject["Unidad_ID"];
+            var color = "blue";
+            var cellHtml = "<a href='#' title='Planes de Acción' style='color:blue;' data-id='" + idR + "' rel='popoverPA'>" + cellvalue + "</a>";
+            return cellHtml;
+        }
+
+        //Dar formato a tooltip de Planes de accion.
+        function PCFormatter(cellvalue, options, rowObject) {
+            var idRU = rowObject["RevistaUnidades_ID"];
+            var color = "blue";
+            var cellHtml = "<a href='#' title='Criticos No Aprobados' style='color:blue;' data-id='" + idRU + "' rel='popoverPC'>" + cellvalue + "</a>";
+            return cellHtml;
+        }
+
+        //Dar formato a tooltip de Planes de accion.
+        function CalFormatter(cellvalue, options, rowObject) {
+            var cellHtml = "<h5><span class='label label-info'>" + cellvalue + "</h5></span>";
+            return cellHtml;
+        }
+
+
+
+        function setPopoverPA() {
+            $('[rel="popoverPA"]').popover({
+                container: 'body',
+                html: true,
+                content: clickGetData,
+            }
+            ).click(function (e) {
+                e.preventDefault();
+            });
+        }
+
+        function setPopoverPC() {
+            $('[rel="popoverPC"]').popover({
+                container: 'body',
+                html: true,
+                content: GetCriticos,
+            }
+            ).click(function (e) {
+                e.preventDefault();
+            });
+        }
+
+
+        function clickGetData() {
+            var cachedData = Array();
+            var element = $(this);
+            var id = element.data('id');
+            var rutaCompromisos = "@Url.Action("ObtieneUnidadCompromisos", "Ejecutor")";
+            if (id in cachedData) {
+                return cachedData[id];
+            }
+            var localData = "Espere..";
+            conexionInternet();
+            $.ajax({
+                type: "POST",
+                url: rutaCompromisos,
+                cache: false,
+                dataType: 'json',
+                async: false,
+                data: { unidad_id: id },
+                success: function (data) {
+                    debugger;
+                    var dataJson = JSON.parse(data);
+                    if (dataJson.length > 0) {
+                        var sli = '<ul class="list-group">';
+                        var sColor = '';
+                        var slabelActivo = '';
+                        for (var i = 0; i < dataJson.length; i++) {
+                            if (dataJson[i].Activo == "0") { sColor = 'label-success'; slabelActivo = 'Concluido'; } else { sColor = 'label-danger'; slabelActivo = 'Pendiente'; }
+
+                            sli += '<li class="list-group-item">';
+                            sli += '<span class="label ' + sColor + ' pull-xs-left">' + slabelActivo + '</span>';
+                            sli += '<span class="badge pull-xs-right">' + dataJson[i].FechaCompromiso + '</span> ' + dataJson[i].Compromiso;
+                            sli += '</li>';
+                        }
+                        sli += '</ul>';
+                        localData = sli;
+                    } else {
+                        localData = '<div> Sin Planes de Accion para la Unidad </div>';
+                    }
+                },
+                error: function (xhr, status, errormsg) {
+                    alert(errormsg);
+                }
+            });
+
+            return localData;
+        }
+
+        function GetCriticos() {
+            var cachedData = Array();
+            var element = $(this);
+            var id = element.data('id');
+            var rutaCriticos = "@Url.Action("obtieneCriticosRevistaUnidad", "Consultas")";
+            if (id in cachedData) {
+                return cachedData[id];
+            }
+            var localData = "Espere..";
+            conexionInternet();
+            $.ajax({
+                type: "POST",
+                url: rutaCriticos,
+                cache: false,
+                dataType: 'json',
+                async: false,
+                data: { revistaUnidades_ID: id },
+                success: function (data) {
+                    debugger;
+                    var dataJson = JSON.parse(data);
+
+                    if (dataJson.length > 0) {
+                        var sli = '<ul class="list-group">';
+                        var sColor = '';
+                        var slabelActivo = '';
+                        for (var i = 0; i < dataJson.length; i++) {
+                            var RequiereEvidencia = (dataJson[i].EvidenciaTotal != "0" ? '<a data-toggle="modal" data-id="' + dataJson[i].RevistaUnidadesDetalle_ID + '" href="#modalEvidencia" class="open-Modal btn-xs btn-info"><i class="glyphicon glyphicon-picture"></i><span class="badge"> ' + dataJson[i].EvidenciaTotal + ' </span></a>' : '');
+
+                            sli += '<li class="list-group-item">';
+                            sli += '<span>' + RequiereEvidencia + '</span> ';
+                            sli += '<span class="label label-success">' + dataJson[i].Clasificacion + '</span>';
+                            sli += '<span class="label label-warning">' + dataJson[i].Atributo + '</span>';
+                            sli += '<span>' + dataJson[i].Observaciones + '</span> ';
+                            sli += '</li>';
+                        }
+                        sli += '</ul>';
+                        localData = sli;
+                    } else {
+                        localData = '<div> Sin daños criticos. </div>';
+                    }
+
+                },
+                error: function (xhr, status, errormsg) {
+                    alert(errormsg);
+                }
+            });
+
+            return localData;
+        }
+
+
+
+        function setMinFechaFin(fInicio) {
+            //var fechaFin = new Date(fInicio.val());
+
+            console.log($("#" + fInicio.id).val());
+        }
+
+
+
+    </script>
+
+
+}

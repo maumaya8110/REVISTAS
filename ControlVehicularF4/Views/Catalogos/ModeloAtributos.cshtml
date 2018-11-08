@@ -1,0 +1,344 @@
+﻿@{
+    ViewBag.Title = "Modelo Atributos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="@Url.Content("~/Content/DataTable/jquery-ui.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/DataTable/dataTables.jqueryui.min.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/DataTable/DatatTableGrouping.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/bootstrap-toggle.min.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/chosen.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/trirand/ui.jqgrid-bootstrap.css")" rel="stylesheet" type="text/css" media="screen" />
+<link href="@Url.Content("~/Content/trirand/ui.jqgrid.css")" rel="stylesheet" type="text/css" media="screen" /> 
+
+<style type="text/css" media="screen">
+    th.ui-th-column div {
+        white-space: normal !important;
+        height: auto !important;
+        padding: 2px;
+    }
+
+    .success-njl {
+        background-color: #5cb85c;
+        color: white;
+    }
+
+    .info-njl {
+        background-color: #5bc0de;
+        color: white;
+    }
+
+    .warning-njl {
+        background-color: #f0ad4e;
+        color: white;
+    }
+
+    .danger-njl {
+        background-color: #d9534f;
+        color: white;
+    }
+
+    .default-njl {
+        background-color: #777;
+        color: white;
+    }
+
+    .primary-njl {
+        background-color: #337ab7;
+        color: white;
+    }
+</style>
+
+
+<h4>
+    <span class="label label-default">@ViewBag.Title</span>
+</h4>
+
+
+<div class="row">
+
+    <div class="col-sm-12">
+        <div class="panel panel-default" style="background:#b9def0; box-shadow:0 20px 25px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important; border-radius: 15px 50px;">
+            <div class="panel-body" style="padding:15px;">
+
+                <span class="label label-info">Seleccione Filtros</span>
+
+                <div class="row">
+
+                    <div class="col-md-8">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-flag"></i>Modelo de Unidad</span>
+                            @Html.DropDownList("cmbModelos", (SelectList)ViewBag.Modelos)
+                        </div>
+                    </div>
+
+                    <div class="col-md-4" style="text-align:right;">
+                        <a id="finalizar" class="btn btn-success" onclick="ConsultarModelos(); return false;"><i class="glyphicon glyphicon-search"></i> Consultar </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="row">
+    <div class="col-md-12" id="divAtributos">
+    </div>
+</div>
+
+                <p>
+                    <h3><span style="z-index:2000;" class="label label-warning pull-right-njl" id="sTotalGeneral"> </span></h3>
+                </p>
+
+
+@*Grid*@
+<div class="row">
+    <div class="col-md-12" id="divGridConsulta">
+        <table id="gridConsulta"></table>
+        <div id="pagerConsulta"></div>
+    </div>
+</div>
+
+
+
+<!-- Modal Mensaje -->
+<div class="modal fade" id="modalMensaje" role="dialog">
+    <div class="modal-dialog modal-md" style="z-index:3500;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Información</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning" role="alert">
+                    @*<a href="#" class="close" data-dismiss="alert">&times;</a>*@
+                    <div id="divMsj">
+                        Unidad sin Revista Asignada.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+@Scripts.Render("~/Scripts/trirand/jquery.jqGrid.js")
+@Scripts.Render("~/Scripts/trirand/jquery.jqGrid.min.js")
+@Scripts.Render("~/Scripts/trirand/i18n/grid.locale-en.js")
+@Scripts.Render("~/Scripts/jquery.dataTables.min.js")
+@Scripts.Render("~/Scripts/dataTables.jqueryui.min.js")
+@Scripts.Render("~/Scripts/jquery.dataTables.rowGrouping.js")
+@Scripts.Render("~/Scripts/bootstrap-toggle.min.js")
+@Scripts.Render("~/Scripts/chosen.jquery.js")
+@Scripts.Render("~/Scripts/jasny-bootstrap.js")
+@Scripts.Render("~/Scripts/bootstrap-datetimepicker.js")
+@Scripts.Render("~/Scripts/locales/bootstrap-datetimepicker.fr.js")
+@Scripts.Render("~/Scripts/GeneralesJS/Funciones.js")
+
+
+<script type="text/javascript">
+    @if (Session["Usuario_ID"] == null) {
+        Response.Redirect(@Url.Action("Login", "Account"));
+    }
+    var _usuario_id = "@Session["Usuario_ID"]";
+
+
+    $(document).ready(function () {
+        reloadChosen('cmbModelos');
+    });
+
+
+    function getTotalPuntaje() {
+        var rows = $(".jqgrow.ui-row-ltr.ui-widget-content");
+        var sumaPuntaje = 0;
+        for (i = 0; i < rows.length; i++) {
+            sumaPuntaje = sumaPuntaje + parseInt(rows[i].cells[5].getElementsByTagName('input')[0].value);
+        }
+        return sumaPuntaje;
+    }
+
+    function getTotalPuntajeinput(obj, idRU) {
+        console.log(obj.value);
+        if (obj.value.length == 0) {
+            obj.value = 0;
+        }
+        var puntajeTecleado = obj.value;
+        var _sumaPuntaje = getTotalPuntaje();
+
+        if (_sumaPuntaje > 100) {
+            muestraMensaje('modalMensaje', 'divMsj', 'La suma de los puntajes no debe exceder 100.');
+            puntajeTecleado = (puntajeTecleado - (_sumaPuntaje - 100) < 0) ? 0 : puntajeTecleado - (_sumaPuntaje - 100);
+            obj.value = puntajeTecleado;
+        } else {
+            var rutaActualizaPuntaje = "@Url.Action("actualizaAtributoModeloUnidad", "Catalogos")";
+            $.ajax({
+                type: "POST",
+                url: rutaActualizaCritico,
+                cache: false,
+                dataType: 'json',
+                data: { RevistaAtributo_ID: idRU, puntaje: puntajeTecleado, Accion: 1, usuario_ID: _usuario_id },
+                success: function (data) {
+                    var dataJson = JSON.parse(data);
+                    muestraMensaje('modalMensaje', 'divMsj', 'Se actualizó correctamente.');
+                },
+                error: function (xhr, status, errormsg) {
+                    muestraMensaje('modalMensaje', 'divMsj', 'Ocurrio un error al actualizar.: ' + errormsg);
+                }
+            });
+        }
+        _sumaPuntaje = getTotalPuntaje();
+        $("#sTotalGeneral").html('Puntaje Total: ' + _sumaPuntaje);
+    }
+
+    //Obtiene Informacion de Atributos
+    function ConsultarModelos() {
+        var rutaAtributos = "@Url.Action("obtieneDetalleAtributosRevista", "Catalogos")";
+        var _modeloUnidad_ID = $("#cmbModelos").val();
+        $("#divGridConsulta").html('<table id="gridConsulta"></table> <div id="pagerConsulta"></div>');
+        $.ajax({
+            type: "POST",
+            url: rutaAtributos,
+            cache: false,
+            dataType: 'json',
+            data: { modeloUnidad_ID: _modeloUnidad_ID },
+            success: creaTablaConsultaRevistas,
+            error: function (xhr, status, errormsg) {
+                muestraMensaje('modalMensaje', 'divMsj', errormsg);
+            }
+        });
+    }
+
+
+    function creaTablaConsultaRevistas(json, status, xhr) {
+        //limpiaTotales();
+        var objJson = JSON.parse(json);
+        var colsHead = ["RevistaAtributo_ID", "Orden Clasificación", "Clasificacion", "Orden Atributo", "Atributo", "Puntaje", "Critico", "Activo"];
+        var colsName = ["RevistaAtributo_ID", "OrdenC", "Clasificacion", "Orden", "Atributo", "Puntaje", "Critico", "Activo"];
+        var colModel = [
+                { name: 'RevistaAtributo_ID', index: 'RevistaAtributo_ID', width: 1 },
+                { name: 'OrdenC', index: 'OrdenC', width: 60, sorttype: 'number' },
+                { name: 'Clasificacion', index: 'Clasificacion', width: 150 },
+                { name: 'Orden', index: 'Orden', width: 60, sorttype: 'number' },
+                { name: 'Atributo', index: 'Atributo', width: 300 },
+                { name: 'Puntaje', index: 'Puntaje', width: 80, align: 'center', formatter: PuntajeFormatter },
+                { name: 'Critico', index: 'Critico', width: 80, align: 'center', formatter: CriticoFormatter },
+                { name: 'Activo', index: 'Activo', width: 80, align: 'center', formatter: ActivoFormatter }
+        ];
+        groupsCols = ['OrdenC','Clasificacion'];
+        groupsColShow = [false, false];
+        JqGridResumen(objJson, colsHead, colModel, 'gridConsulta', 'pagerConsulta', 'Orden', groupsCols, '<strong>Atributos de Revista</strong>', groupsColShow);
+        var reportObjectsGrid = $('#' + 'gridConsulta');
+        reportObjectsGrid.setGridWidth($("#Clasificacion").width());
+        jQuery("#" + "gridConsulta").jqGrid('setGroupHeaders', {
+            useColSpanStyle: false,
+        });
+        $('input:checkbox').bootstrapToggle();
+
+        var _TotalGeneral = 0;
+        $.each(objJson, function (idx, item) {
+            _TotalGeneral = item.Puntaje + _TotalGeneral;
+        });
+        console.log('total:  ' + _TotalGeneral);
+        $("#sTotalGeneral").html('Puntaje Total: ' + _TotalGeneral);
+    }
+
+    function JqGridResumen(_mydata, _colNames, _ColModel, _gridID, _pagerID, _shortNameCol, _groupCols, _title, _groupsColShow) {
+        $("#" + _gridID).jqGrid({
+            data: _mydata,
+            datatype: "local",
+            height: null,
+            width: null,
+            shrinkToFit: false,
+            rowNum: _mydata.length,
+            rowList: [30, 50, 100, _mydata.length],
+            colNames: _colNames,
+            colModel: _ColModel,
+            pager: "#" + _pagerID,
+            viewrecords: true,
+            sortname: _shortNameCol,
+            grouping: true,
+                groupingView: {
+                groupColumnShow: _groupsColShow
+                },
+            caption: _title
+        });
+        $("#" + _gridID).jqGrid('groupingGroupBy', _groupCols);
+    }
+
+
+
+    //Dar formato a tooltip de Planes de accion.
+    function PuntajeFormatter(cellvalue, options, rowObject) {
+        var idRU = rowObject["RevistaAtributo_ID"];
+        var cellHtml = "<input onblur='getTotalPuntajeinput(this, " + idRU + ");' class='form-control Puntaje' type='text' name='txtPunt_" + idRU + "' value='" + rowObject["Puntaje"] + "' onkeypress='return isNumberKey(event);'>";
+        return cellHtml;
+    }
+
+    function CriticoFormatter(cellvalue, options, rowObject) {
+        var idRU = rowObject["RevistaAtributo_ID"];
+        var checkCritico = (rowObject["Critico"] == "0" ? '' : 'checked');
+        var cellHtml = '<input type="checkbox" id="chkCritico_' + idRU + '" ' + checkCritico + ' onchange="ActualizarCritico(' + idRU + ');" data-size="small" data-onstyle="success" data-offstyle="danger" data-style="slow" data-toggle="toggle" data-on="<i class=&#039;glyphicon glyphicon-ok&#039; ></i>" data-off="<i class=&#039;glyphicon glyphicon-remove&#039;></i>">';
+        return cellHtml;
+    }
+
+    function ActivoFormatter(cellvalue, options, rowObject) {
+        var idRU = rowObject["RevistaAtributo_ID"];
+        var checkActivo = (rowObject["Activo"] == "0" ? '' : 'checked');
+        var cellHtml = '<input type="checkbox" id="chkActivo_' + idRU + '" ' + checkActivo + ' onchange="ActualizarActivo(' + idRU + ');" data-size="small" data-onstyle="success" data-offstyle="danger" data-style="slow" data-toggle="toggle" data-on="<i class=&#039;glyphicon glyphicon-ok&#039; ></i>" data-off="<i class=&#039;glyphicon glyphicon-remove&#039;></i>">';
+
+        return cellHtml;
+    }
+
+
+    //Atributo evaluado
+    function ActualizarCritico(idRU) {
+        var _valor = ($("#chkCritico_" + idRU).prop('checked')) ? 1 : 0;
+        var rutaActualizaCritico = "@Url.Action("actualizaAtributoModeloUnidad", "Catalogos")";
+        debugger;
+        $.ajax({
+            type: "POST",
+            url: rutaActualizaCritico,
+            cache: false,
+            dataType: 'json',
+            data: { RevistaAtributo_ID: idRU, valor: _valor, accion: 2, usuario_ID: _usuario_id },
+            success: function (data) {
+                var dataJson = JSON.parse(data);
+                muestraMensaje('modalMensaje', 'divMsj', 'Se actualizó correctamente.');
+            },
+            error: function (xhr, status, errormsg) {
+                muestraMensaje('modalMensaje', 'divMsj', 'Ocurrio un error.: ' + errormsg);
+            }
+        });
+    }
+
+    //Atributo evaluado
+    function ActualizarActivo(idRU) {
+        var _valor = ($("#chkActivo_" + idRU).prop('checked')) ? 1 : 0;
+        var rutaActualizaActivo = "@Url.Action("actualizaAtributoModeloUnidad", "Catalogos")";
+        $.ajax({
+            type: "POST",
+            url: rutaActualizaActivo,
+            cache: false,
+            dataType: 'json',
+            data: { RevistaAtributo_ID: idRU, esCritico: _valor, Accion: 3, usuario_ID: _usuario_id },
+            success: function (data) {
+                var dataJson = JSON.parse(data);
+                muestraMensaje('modalMensaje', 'divMsj', 'Se actualizó correctamente.');
+            },
+            error: function (xhr, status, errormsg) {
+                muestraMensaje('modalMensaje', 'divMsj', 'Ocurrio un error.: ' + errormsg);
+            }
+        });
+        ConsultarModelos();
+    }
+
+
+</script>
+
+
+}
